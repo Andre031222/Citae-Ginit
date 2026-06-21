@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:0056D6,100:0F2444&height=190&section=header&text=CITAE&fontColor=ffffff&fontSize=58&desc=Plataforma%20acad%C3%A9mica%20todo-en-uno&descAlignY=74&descSize=18" width="100%">
+</p>
+
 <!-- ============================================================
      CITAE · README oficial
      ============================================================ -->
@@ -337,3 +341,7 @@ Desarrollado por **Richar Andre Vilca Solórzano** — Universidad Nacional del 
 ## Licencia
 
 Proyecto **propietario** — todos los derechos reservados. El uso, copia o distribución requiere autorización expresa del autor.
+
+<p align="center">
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:0F2444,100:0056D6&height=120&section=footer&text=CITAE%20%C2%B7%20v1.0.0&fontColor=ffffff&fontSize=20&fontAlignY=70" width="100%">
+</p>
