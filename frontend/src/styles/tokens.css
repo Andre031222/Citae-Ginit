@@ -1,0 +1,249 @@
+﻿/* Design System v14 — tokens: variables de color, tipografía, tema */
+
+/* ─────────────── Variables — Tema claro (default) ─────────────── */
+:root {
+  /* Acento principal — Azul académico (Elsevier #0056D6) */
+  --accent:        #0056D6;
+  --accent-hover:  #003E9C;
+  --accent-soft:   #3B82F6;
+  --accent-glow:   rgba(0,86,214,0.12);
+  --accent-subtle: rgba(0,86,214,0.06);
+  --accent-dim:    rgba(0,86,214,0.15);
+  --accent-border: rgba(0,86,214,0.20);
+
+  /* Gold — Firma Glasp: resaltados, citas, accents secundarios */
+  --gold:        #FBE34D;
+  --gold-hover:  #EAB308;
+  --gold-soft:   #FFF8E0;
+  --gold-border: rgba(234,179,8,0.40);
+  --gold-glow:   rgba(251,227,77,0.28);
+
+  /* Ink / Headings */
+  --ink:     #0a1628;
+  --ink-mid: #0f2244;
+
+  /* Fondos */
+  --bg:            #ffffff;
+  --bg-raised:     #F7F8FA;
+  --bg-subtle:     #f1f5f9;
+
+  /* Superficies */
+  --surface-0:     #ffffff;
+  --surface-1:     #F7F8FA;
+  --surface-2:     #f1f5f9;
+  --surface-3:     #e2e8f0;
+  --surface-hover: #f1f5f9;
+  --surface-active:#e2e8f0;
+
+  /* Texto */
+  --text-1: #0C0F12;
+  --text-2: #334155;
+  --text-3: #64748b;
+  --text-4: #94a3b8;
+
+  /* Bordes */
+  --border:       #dbeafe;
+  --border-soft:  #eff6ff;
+  --border-focus: #0056D6;
+  --separator:    #e2e8f0;
+
+  /* Sombras */
+  --shadow-xs: 0 1px 2px rgba(0,0,0,.04);
+  --shadow-sm: 0 1px 4px rgba(0,0,0,.06);
+  --shadow-md: 0 2px 8px rgba(0,0,0,.08);
+  --shadow-lg: 0 4px 16px rgba(0,0,0,.10);
+  --shadow-xl: 0 8px 24px rgba(0,0,0,.12);
+  --shadow-accent: 0 2px 12px rgba(0,86,214,0.18);
+  --shadow-gold:   0 2px 12px rgba(251,227,77,0.30);
+
+  /* Nav */
+  --header-bg:       rgba(255,255,255,0.95);
+  --vibrancy-bg:     rgba(255,255,255,0.90);
+  --vibrancy-border: #e2e8f0;
+
+  /* Estados */
+  --error:      #DC2626;
+  --error-bg:   rgba(220,38,38,0.08);
+  --success:    #16A34A;
+  --success-bg: rgba(22,163,74,0.08);
+  --warning:    #D97706;
+  --warning-bg: rgba(217,119,6,0.08);
+
+  /* Feature icon colors (landing) */
+  --feat-blue:   rgba(0,86,214,0.10);
+  --feat-indigo: rgba(79,70,229,0.10);
+  --feat-violet: rgba(124,58,237,0.10);
+  --feat-teal:   rgba(13,148,136,0.10);
+  --feat-orange: rgba(234,88,12,0.10);
+  --feat-amber:  rgba(217,119,6,0.10);
+  --feat-yellow: rgba(251,227,77,0.20);
+  --feat-green:  rgba(22,163,74,0.10);
+
+  /* Highlight colors (Glasp × Citae) */
+  --hl-yellow-bg:  rgba(251,227,77,.32);
+  --hl-yellow-bdr: rgba(234,179,8,.70);
+  --hl-yellow-hex: #FBE34D;
+  --hl-green-bg:   rgba(46,204,113,.28);
+  --hl-green-bdr:  rgba(46,204,113,.70);
+  --hl-green-hex:  #2ecc71;
+  --hl-blue-bg:    rgba(0,86,214,.18);
+  --hl-blue-bdr:   rgba(0,86,214,.60);
+  --hl-blue-hex:   #0056D6;
+  --hl-pink-bg:    rgba(231,76,128,.28);
+  --hl-pink-bdr:   rgba(231,76,128,.70);
+  --hl-pink-hex:   #e74c80;
+  --hl-navy-bg:    rgba(30,62,156,.22);
+  --hl-navy-bdr:   rgba(30,62,156,.65);
+  --hl-navy-hex:   #1E3E9C;
+
+  /* Radios */
+  --r-xs:   4px;
+  --r-sm:   6px;
+  --r-md:   8px;
+  --r-lg:   10px;
+  --r-xl:   16px;
+  --r-full: 9999px;
+
+  /* Tipografía */
+  --font:      'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+
+  /* Escala tipográfica */
+  --fs-xs:   0.75rem;
+  --fs-sm:   0.875rem;
+  --fs-base: 1rem;
+  --fs-lg:   1.125rem;
+  --fs-xl:   1.25rem;
+  --fs-2xl:  1.5rem;
+  --fs-3xl:  clamp(1.75rem, 3vw, 2.25rem);
+  --fs-4xl:  clamp(2rem, 4vw, 3rem);
+  --fs-hero: clamp(2.5rem, 6vw, 4.25rem);
+  --lh-tight:  1.2;
+  --lh-base:   1.5;
+  --lh-loose:  1.75;
+  --tracking-tight:  -0.02em;
+  --tracking-normal: 0em;
+
+  /* Transiciones */
+  --ease:        cubic-bezier(0.4,0,0.2,1);
+  --ease-out:    cubic-bezier(0,0,0.2,1);
+  --ease-spring: cubic-bezier(0.34,1.56,0.64,1);
+  --ease-ui:     cubic-bezier(0.23,1,0.32,1);
+  --ease-inout:  cubic-bezier(0.77,0,0.175,1);
+  --ease-drawer: cubic-bezier(0.32,0.72,0,1);
+  --t-fast: 0.12s;
+  --t-base: 0.20s;
+  --t-slow: 0.32s;
+
+  /* Espaciado */
+  --sp-1: .25rem;  --sp-2: .5rem;   --sp-3: .75rem; --sp-4: 1rem;
+  --sp-5: 1.25rem; --sp-6: 1.5rem;  --sp-8: 2rem;   --sp-10: 2.5rem;
+  --sp-12: 3rem;   --sp-16: 4rem;   --sp-20: 5rem;  --sp-24: 6rem;
+
+  /* Z-index */
+  --z-sidebar: 200;
+  --z-header:  300;
+  --z-drawer:  800;
+  --z-modal:   1000;
+  --z-toast:   2000;
+
+  /* Layout */
+  --sidebar-width:      264px;
+  --sidebar-width-rail: 64px;
+  --max-input-height:   160px;
+  --scrollbar-w:        6px;
+
+  /* Timing extra (drawer) */
+  --t-drawer:      0.28s;
+  --t-drawer-fade: 0.22s;
+}
+
+/* ─────────────── Tema oscuro ─────────────── */
+[data-theme="dark"] {
+  /* Azul luminoso accesible sobre fondos oscuros */
+  --accent:        #6593DC;
+  --accent-hover:  #7BA7E8;
+  --accent-soft:   #3B82F6;
+  --accent-glow:   rgba(101,147,220,0.20);
+  --accent-subtle: rgba(101,147,220,0.10);
+  --accent-dim:    rgba(101,147,220,0.18);
+  --accent-border: rgba(101,147,220,0.30);
+
+  /* Gold: mantiene color, adapta fondos */
+  --gold:        #FBE34D;
+  --gold-hover:  #FCD34D;
+  --gold-soft:   rgba(251,227,77,0.14);
+  --gold-border: rgba(251,227,77,0.35);
+  --gold-glow:   rgba(251,227,77,0.20);
+
+  --ink:     #E5E5E7;
+  --ink-mid: #C7C7CC;
+
+  --bg:            #000000;
+  --bg-raised:     #0B0B0C;
+  --bg-subtle:     #131314;
+
+  --surface-0:     #0E0E0F;
+  --surface-1:     #161618;
+  --surface-2:     #1F1F21;
+  --surface-3:     #2A2A2C;
+  --surface-hover: #1B1B1D;
+  --surface-active:#242426;
+
+  --text-1: #F5F5F7;
+  --text-2: #A1A1A6;
+  --text-3: #6E6E73;
+  --text-4: #48484A;
+
+  --border:       rgba(255,255,255,0.09);
+  --border-soft:  rgba(255,255,255,0.05);
+  --separator:    rgba(255,255,255,0.07);
+
+  --shadow-xs: 0 1px 3px rgba(0,0,0,.40);
+  --shadow-sm: 0 2px 10px rgba(0,0,0,.45);
+  --shadow-md: 0 4px 20px rgba(0,0,0,.50);
+  --shadow-lg: 0 8px 36px rgba(0,0,0,.55);
+  --shadow-xl: 0 16px 60px rgba(0,0,0,.60);
+  --shadow-accent: 0 2px 12px rgba(101,147,220,0.25);
+  --shadow-gold:   0 2px 12px rgba(251,227,77,0.18);
+
+  --header-bg:       rgba(0,0,0,0.88);
+  --vibrancy-bg:     rgba(0,0,0,0.82);
+  --vibrancy-border: rgba(255,255,255,0.07);
+
+  --error:      #F87171;
+  --error-bg:   rgba(248,113,113,0.10);
+  --success:    #4ADE80;
+  --success-bg: rgba(74,222,128,0.10);
+  --warning:    #FCD34D;
+  --warning-bg: rgba(252,211,77,0.10);
+
+  /* Feature icon colors — más vividos en dark */
+  --feat-blue:   rgba(101,147,220,0.22);
+  --feat-indigo: rgba(79,70,229,0.20);
+  --feat-violet: rgba(124,58,237,0.20);
+  --feat-teal:   rgba(13,148,136,0.20);
+  --feat-orange: rgba(234,88,12,0.20);
+  --feat-amber:  rgba(217,119,6,0.20);
+  --feat-yellow: rgba(251,227,77,0.22);
+  --feat-green:  rgba(22,163,74,0.18);
+
+  /* Highlight colors — ajuste para fondos oscuros */
+  --hl-yellow-bg:  rgba(251,227,77,.22);
+  --hl-yellow-bdr: rgba(234,179,8,.60);
+  --hl-blue-bg:    rgba(101,147,220,.18);
+  --hl-blue-bdr:   rgba(101,147,220,.55);
+  --hl-blue-hex:   #6593DC;
+  --hl-green-bg:   rgba(46,204,113,.20);
+  --hl-pink-bg:    rgba(231,76,128,.20);
+  --hl-navy-bg:    rgba(101,147,220,.14);
+}
+
+/* ─────────────── Transición de tema ─────────────── */
+.theme-transition,
+.theme-transition * {
+  transition: background-color var(--t-slow) var(--ease),
+              color var(--t-slow) var(--ease),
+              border-color var(--t-slow) var(--ease) !important;
+}
+

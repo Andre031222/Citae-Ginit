@@ -1,0 +1,45 @@
+# Dependencias
+node_modules/
+.pnpm-store/
+
+# Builds
+frontend/build/
+dist/
+*.tsbuildinfo
+
+# Variables de entorno y secretos
+.env
+.env.*
+!.env.example
+client_secret*.json
+*.pem
+*.key
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Caché y temporales
+.cache/
+coverage/
+.nyc_output/
+*.tmp
+
+# Editores / SO
+.DS_Store
+Thumbs.db
+.idea/
+*.swp
+
+# Config local de herramientas (no se versiona)
+.claude/
+.agents/
+skills-lock.json
+
+# Respaldos manuales
+_backup_redesign/
+
+# Artefactos temporales (scripts de prueba, capturas) con prefijo _
+backend/_*
+frontend/_*

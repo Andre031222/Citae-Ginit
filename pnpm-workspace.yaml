@@ -1,0 +1,26 @@
+packages:
+  - backend
+  - frontend
+
+# Dependencias nativas que SÍ requieren ejecutar scripts de build.
+onlyBuiltDependencies:
+  - sharp
+  - tesseract.js
+  - puppeteer
+  - unrs-resolver
+
+# Dependencia opcional de jsdom no usada (la app usa el Canvas nativo del navegador).
+# Evita el error de binding nativo de canvas al correr los tests del frontend.
+ignoredOptionalDependencies:
+  - canvas
+
+# Scripts de build innecesarios (solo banners).
+ignoredBuiltDependencies:
+  - core-js
+  - core-js-pure
+
+allowBuilds:
+  canvas: false
+  core-js: false
+  core-js-pure: false
+  unrs-resolver: true

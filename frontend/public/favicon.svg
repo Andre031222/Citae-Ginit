@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="rg" x1="26" y1="8" x2="26" y2="58" gradientUnits="userSpaceOnUse">
+      <stop offset="0%"   stop-color="#4abcd8"/>
+      <stop offset="55%"  stop-color="#2563a4"/>
+      <stop offset="100%" stop-color="#1a4a7a"/>
+    </linearGradient>
+  </defs>
+  <!-- Anillo orbital grueso — legible hasta 16×16 -->
+  <circle cx="26" cy="38" r="20" stroke="url(#rg)" stroke-width="6" fill="none"/>
+  <!-- Avión de papel — grande, esquina superior derecha -->
+  <polygon points="62,3  40,19  47,22" fill="#4abcd8"/>
+  <polygon points="62,3  47,22  49,31" fill="#1a4a7a"/>
+  <polygon points="40,19 49,31  47,22" fill="#2563a4"/>
+</svg>

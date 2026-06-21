@@ -1,0 +1,25 @@
+/* ═══════════════════════════════════════════════════════════════
+   CITAE — Design System v14  ·  Academic Blue + Gold
+   Tipografía: Inter 400/500/600/700/800
+   Tema: Light (default) / Dark
+   Primario: #0056D6 (azul Elsevier)  ·  Gold: #FBE34D (Glasp)
+   ═══════════════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+@import './tokens.css';
+@import './base.css';
+@import './components/chat.css';
+@import './components/candidate.css';
+@import './components/auth.css';
+@import './components/highlights.css';
+@import './components/landing.css';
+@import './components/admin.css';
+@import './components/library.css';
+@import './components/claim.css';
+@import './components/rag.css';
+@import './components/review.css';
+@import './components/quoteshot.css';
+@import './components/public.css';
+@import './components/write.css';
+@import './components/authors.css';

@@ -1,0 +1,16 @@
+﻿# Dependencias
+node_modules/
+
+# Logs
+*.log
+
+# Entorno — ignorar todos los .env salvo el ejemplo
+.env*
+!.env.example
+
+# Uploads
+uploads/
+
+# Credenciales
+client_secret*.json
+*credentials*.json

@@ -1,0 +1,20 @@
+{
+  "name": "citae",
+  "version": "1.0.0",
+  "description": "CITAE — Plataforma académica todo-en-uno para descubrir, leer, verificar, citar y compartir literatura científica, potenciada con IA.",
+  "private": true,
+  "packageManager": "pnpm@11.6.0",
+  "engines": {
+    "node": ">=18",
+    "pnpm": ">=9"
+  },
+  "scripts": {
+    "dev": "pnpm --parallel -r run dev",
+    "dev:backend": "pnpm --filter @citae/backend run dev",
+    "dev:frontend": "pnpm --filter @citae/frontend run dev",
+    "start": "pnpm --filter @citae/backend run start",
+    "build": "pnpm --filter @citae/frontend run build",
+    "migrate": "pnpm --filter @citae/backend run migrate",
+    "test": "pnpm -r run test"
+  }
+}

@@ -1,0 +1,103 @@
+/* ═══════════════════════════════════════
+   QUOTESHOT — imagen compartible · qs-
+═══════════════════════════════════════ */
+
+.qs-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 22, 40, 0.55);
+  backdrop-filter: blur(4px);
+  z-index: var(--z-modal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--sp-4);
+}
+
+.qs-modal {
+  width: min(440px, 100%);
+  max-height: 92vh;
+  overflow-y: auto;
+  background: var(--surface-0);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  padding: var(--sp-4);
+  animation: qs-in 0.2s var(--ease-ui);
+}
+
+@keyframes qs-in {
+  from { opacity: 0; transform: translateY(8px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.qs-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.qs-title {
+  font-size: var(--fs-base);
+  font-weight: 700;
+  color: var(--text-1);
+}
+
+.qs-preview {
+  display: flex;
+  justify-content: center;
+  border-radius: var(--r-lg);
+  overflow: hidden;
+}
+
+.qs-canvas {
+  width: 100%;
+  max-width: 360px;
+  height: auto;
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-lg);
+  display: block;
+}
+
+.qs-themes {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--sp-2);
+}
+
+.qs-theme {
+  padding: var(--sp-2);
+  border: 2px solid transparent;
+  border-radius: var(--r-md);
+  font: 600 var(--fs-xs) var(--font);
+  cursor: pointer;
+  transition: transform var(--t-fast) var(--ease-ui), border-color var(--t-fast) var(--ease-ui);
+}
+
+.qs-theme:hover { transform: translateY(-1px); }
+
+.qs-theme.is-active {
+  border-color: var(--text-1);
+}
+
+.qs-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+
+.qs-actions .lib-btn-ghost,
+.qs-actions .lib-btn-primary {
+  flex: 1;
+  justify-content: center;
+}
+
+/* ── Responsive ── */
+@media (max-width: 480px) {
+  .qs-themes { grid-template-columns: repeat(2, 1fr); }
+  .qs-actions .lib-btn-ghost,
+  .qs-actions .lib-btn-primary { flex: 1 1 100%; }
+}

@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none">
+  <defs>
+    <!-- Gradiente del anillo: teal en la parte superior, navy profundo en la inferior -->
+    <linearGradient id="rg" x1="88" y1="46" x2="88" y2="178" gradientUnits="userSpaceOnUse">
+      <stop offset="0%"   stop-color="#4abcd8"/>
+      <stop offset="48%"  stop-color="#2563a4"/>
+      <stop offset="100%" stop-color="#1a4a7a"/>
+    </linearGradient>
+    <!-- Gradiente horizontal para las líneas de velocidad (fade desde la izquierda) -->
+    <linearGradient id="sw1" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%"   stop-color="#4abcd8" stop-opacity="0.25"/>
+      <stop offset="25%"  stop-color="#4abcd8" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#4abcd8"/>
+    </linearGradient>
+    <linearGradient id="sw2" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%"   stop-color="#2563a4" stop-opacity="0.2"/>
+      <stop offset="25%"  stop-color="#2563a4" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#2563a4"/>
+    </linearGradient>
+    <linearGradient id="sw3" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%"   stop-color="#1a4a7a" stop-opacity="0.15"/>
+      <stop offset="25%"  stop-color="#1a4a7a" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#1a4a7a"/>
+    </linearGradient>
+    <!-- Sombra suave para el avión -->
+    <filter id="pf" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="1" dy="1" stdDeviation="1.5" flood-color="#1a4a7a" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <!-- ─── Anillo orbital ─────────────────────────────────────── -->
+  <circle cx="88" cy="112" r="63" stroke="url(#rg)" stroke-width="14" fill="none"/>
+
+  <!-- ─── Líneas de velocidad (swoosh) ──────────────────────── -->
+  <!-- Pasan por el interior del anillo de izquierda a derecha en diagonal -->
+  <path d="M 16,97  C 58,85  100,70  157,53"
+    stroke="url(#sw1)" stroke-width="10.5" stroke-linecap="round"/>
+  <path d="M 12,115 C 54,103  96,88  152,72"
+    stroke="url(#sw2)" stroke-width="9"    stroke-linecap="round"/>
+  <path d="M 10,133 C 51,121  92,107 147,91"
+    stroke="url(#sw3)" stroke-width="7.5"  stroke-linecap="round"/>
+
+  <!-- ─── Avión de papel ─────────────────────────────────────── -->
+  <!-- Apunta hacia la parte superior-derecha (~30° sobre la horizontal) -->
+  <g filter="url(#pf)">
+    <!-- Panel superior (teal claro — cara superior del ala) -->
+    <polygon points="188,20 137,53 154,58" fill="#4abcd8"/>
+    <!-- Cuerpo principal (navy oscuro) -->
+    <polygon points="188,20 154,58 158,78" fill="#1a4a7a"/>
+    <!-- Panel trasero (azul medio — sombra del pliegue trasero) -->
+    <polygon points="137,53 158,78 154,58" fill="#2563a4"/>
+  </g>
+</svg>
