@@ -13,8 +13,19 @@ const authLimiter = rateLimit({
   message: { error: 'Demasiados intentos. Espera un minuto e inténtalo de nuevo.' },
 });
 
+// Login: límite estricto contra fuerza bruta. Solo cuentan los intentos
+// fallidos, así un usuario legítimo que acierta no se ve penalizado.
+const loginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 8,
+  skipSuccessfulRequests: true,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Demasiados intentos fallidos de inicio de sesión. Espera unos minutos e inténtalo de nuevo.' },
+});
+
 router.post('/register', authLimiter, authController.register);
-router.post('/login', authLimiter, authController.login);
+router.post('/login', loginLimiter, authController.login);
 
 router.get('/google', redirectToGoogle);
 router.get('/google/callback', googleCallback);

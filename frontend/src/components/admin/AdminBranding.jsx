@@ -251,7 +251,7 @@ export default function AdminBranding({ user, onClose, embedded = false }) {
             <span>Super Admin — Identidad visual</span>
           </div>
           {onClose && (
-            <button className="admin-branding-close" onClick={onClose} title="Cerrar">✕</button>
+            <button className="admin-branding-close" onClick={onClose} title="Cerrar" aria-label="Cerrar"><X size={16} /></button>
           )}
         </div>
       )}

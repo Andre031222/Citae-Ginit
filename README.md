@@ -16,7 +16,7 @@
 
 <p>
   <a href="https://citae.ginit.dev"><img src="https://img.shields.io/badge/Demo-citae.ginit.dev-0056D6?style=for-the-badge&logo=googlechrome&logoColor=white"></a>
-  <img src="https://img.shields.io/badge/Versión-1.0.0-1565C0?style=for-the-badge">
+  <img src="https://img.shields.io/badge/Versión-1.0.1-1565C0?style=for-the-badge">
   <img src="https://img.shields.io/badge/Estado-Producción-2E7D32?style=for-the-badge">
   <img src="https://img.shields.io/badge/Licencia-Propietaria-616161?style=for-the-badge">
 </p>
@@ -328,6 +328,7 @@ Versionado semántico (`MAJOR.MINOR.PATCH`). Esta es la **primera versión ofici
 
 | Versión | Fecha | Notas |
 |---------|-------|-------|
+| **1.0.1** | 2026-07 | Limpieza de archivos sin uso, endurecimiento del límite de intentos de inicio de sesión y correcciones menores de interfaz. |
 | **1.0.0** | 2026-06 | Versión oficial inicial: búsqueda multi-fuente, 7 formatos de cita, resaltado semántico + biblioteca, Reading Assistant IA, RAG, panel de administración (branding + usuarios), Google OAuth y despliegue en producción. |
 
 ---
