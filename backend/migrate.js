@@ -178,6 +178,22 @@ require('dotenv').config();
     await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS public_enabled BOOLEAN DEFAULT FALSE`);
     await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS bio TEXT`);
 
+    // Claves de IA por usuario (BYOK) — cifradas en reposo (AES-256-GCM)
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS user_api_keys (
+        id              SERIAL PRIMARY KEY,
+        user_id         INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        provider        VARCHAR(20) NOT NULL,
+        key_ciphertext  TEXT NOT NULL,
+        key_masked      VARCHAR(40) NOT NULL,
+        status          VARCHAR(20) NOT NULL DEFAULT 'active',
+        last_error      TEXT,
+        last_used_at    TIMESTAMP,
+        created_at      TIMESTAMP DEFAULT NOW()
+      )
+    `);
+    await pool.query(`CREATE INDEX IF NOT EXISTS idx_user_api_keys_user ON user_api_keys(user_id)`);
+
     console.log('Migraciones incrementales aplicadas.');
   } catch (err) {
     console.error('Error en la migracion:', err.message);

@@ -4,8 +4,9 @@ import api from '../services/api';
 import authService from '../services/authService';
 import {
   User, HardDrive, Settings, Info, AlertCircle, Check,
-  Upload, ChevronLeft, Loader, Library, Highlighter, Folder, Tag as TagIcon,
+  Upload, ChevronLeft, Loader, Library, Highlighter, Folder, Tag as TagIcon, Sparkles,
 } from './Icons';
+import ApiKeys from './ApiKeys';
 import { getActivity } from '../services/libraryService';
 import './Profile.css';
 
@@ -229,6 +230,7 @@ const Profile = ({ user, onUpdate, onClose }) => {
 
   const navItems = [
     { key: 'profile', icon: <User size={15} />,      label: 'Perfil' },
+    { key: 'ai',      icon: <Sparkles size={15} />,  label: 'Claves de IA' },
     { key: 'storage', icon: <HardDrive size={15} />, label: 'Almacenamiento' },
     { key: 'general', icon: <Settings size={15} />,  label: 'Preferencias' },
   ];
@@ -240,7 +242,7 @@ const Profile = ({ user, onUpdate, onClose }) => {
     { key: 'tags',        label: 'Etiquetas',   icon: <TagIcon size={18} /> },
   ];
 
-  const SECTION_TITLES = { profile: 'Perfil', storage: 'Almacenamiento', general: 'Preferencias' };
+  const SECTION_TITLES = { profile: 'Perfil', ai: 'Claves de IA', storage: 'Almacenamiento', general: 'Preferencias' };
 
   return (
     <div className="settings-container">
@@ -280,6 +282,12 @@ const Profile = ({ user, onUpdate, onClose }) => {
             </p>
           )}
         </div>
+
+        {section === 'ai' && (
+          <div className="profile-fields-section">
+            <ApiKeys />
+          </div>
+        )}
 
         {section === 'storage' && (
           <div className="profile-fields-section">
