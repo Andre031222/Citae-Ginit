@@ -25,8 +25,8 @@ export function useSearch({ user, loadHistory }) {
     setMessages(prev => [
       ...prev,
       { id: uid,     role: 'user',      content: input },
-      { id: uid + 1, role: 'assistant', loading: true,
-        loadingText: 'Buscando en bases académicas…' },
+      { id: uid + 1, role: 'assistant', loading: true, searching: true,
+        query: input, loadingText: 'Buscando en bases académicas…' },
     ]);
     setExtracting(true);
     try {

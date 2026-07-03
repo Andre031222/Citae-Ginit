@@ -1,0 +1,217 @@
+/* Panel agéntico de búsqueda — prefijo sp- */
+
+.sp-card {
+  --sp-ease: cubic-bezier(0.23, 1, 0.32, 1);
+  --sp-accent: var(--accent, #0056d6);
+  --sp-gold: var(--gold, #fbe34d);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+  max-width: 440px;
+  padding: 16px 18px;
+  border: 1px solid var(--border, rgba(0, 0, 0, 0.08));
+  border-radius: var(--radius-lg, 16px);
+  background: var(--surface, #fff);
+  box-shadow: var(--shadow-sm, 0 1px 3px rgba(0, 0, 0, 0.06));
+  opacity: 0;
+  transform: translateY(6px) scale(0.98);
+  animation: sp-enter 320ms var(--sp-ease) forwards;
+}
+@keyframes sp-enter { to { opacity: 1; transform: none; } }
+
+/* Cabecera: orbe de marca + consulta tecleada */
+.sp-head { display: flex; align-items: center; gap: 12px; }
+
+.sp-orb {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  border-radius: 50%;
+}
+.sp-orb::before {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, var(--sp-accent), var(--sp-gold), var(--sp-accent));
+  animation: sp-spin 2.4s linear infinite;
+}
+.sp-orb::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--surface, #fff);
+}
+.sp-orb img {
+  position: relative;
+  z-index: 1;
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  animation: sp-breathe 2.2s ease-in-out infinite;
+}
+@keyframes sp-spin { to { transform: rotate(360deg); } }
+@keyframes sp-breathe { 0%, 100% { transform: scale(0.92); } 50% { transform: scale(1.04); } }
+
+.sp-head-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.sp-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--sp-accent);
+}
+.sp-query {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text, #1a1a1a);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.sp-caret {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  background: var(--sp-accent);
+  animation: sp-blink 1s steps(1) infinite;
+}
+@keyframes sp-blink { 50% { opacity: 0; } }
+
+/* Lista de pasos con conector vertical */
+.sp-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.sp-step {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 0;
+  opacity: 0;
+  transform: translateY(6px);
+}
+.sp-step.sp-in {
+  animation: sp-step-in 300ms var(--sp-ease) forwards;
+}
+@keyframes sp-step-in { to { opacity: 1; transform: none; } }
+
+/* Conector entre puntos */
+.sp-step::before {
+  content: '';
+  position: absolute;
+  left: 9px;
+  top: -2px;
+  width: 2px;
+  height: 7px;
+  background: var(--border, rgba(0, 0, 0, 0.1));
+  transition: background 300ms var(--sp-ease);
+}
+.sp-step:first-child::before { display: none; }
+.sp-step.sp-done::before { background: var(--sp-accent); }
+
+.sp-dot {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  color: #fff;
+}
+.sp-dot-inner {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--border-strong, rgba(0, 0, 0, 0.18));
+  transition: background 300ms var(--sp-ease);
+}
+
+/* Pendiente: círculo tenue */
+.sp-pending .sp-label { color: var(--text-tertiary, #9a9a9a); }
+
+/* Activo: anillo giratorio + etiqueta con brillo */
+.sp-active .sp-dot::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid var(--sp-accent);
+  border-top-color: transparent;
+  animation: sp-spin 0.7s linear infinite;
+}
+.sp-active .sp-dot-inner { background: transparent; }
+.sp-active .sp-label {
+  color: var(--text, #1a1a1a);
+  font-weight: 600;
+  background: linear-gradient(100deg,
+    var(--text, #1a1a1a) 30%, var(--sp-accent) 50%, var(--text, #1a1a1a) 70%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: sp-shimmer 1.6s linear infinite;
+}
+@keyframes sp-shimmer { to { background-position: -200% 0; } }
+
+/* Hecho: punto lleno + check */
+.sp-done .sp-dot { background: var(--sp-accent); }
+.sp-done .sp-dot-inner { display: none; }
+.sp-done .sp-dot svg { animation: sp-pop 260ms var(--sp-ease); }
+@keyframes sp-pop { 0% { transform: scale(0.4); opacity: 0; } 60% { transform: scale(1.15); } 100% { transform: scale(1); opacity: 1; } }
+.sp-done .sp-label { color: var(--text-secondary, #555); }
+
+.sp-label { font-size: 13.5px; transition: color 300ms var(--sp-ease); }
+
+/* Barra indeterminada inferior */
+.sp-bar {
+  position: relative;
+  height: 3px;
+  border-radius: 999px;
+  background: var(--surface-2, rgba(0, 0, 0, 0.05));
+  overflow: hidden;
+}
+.sp-bar span {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 40%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--sp-accent), var(--sp-gold));
+  animation: sp-slide 1.4s var(--sp-ease) infinite;
+}
+@keyframes sp-slide {
+  0%   { transform: translateX(-100%); }
+  60%  { transform: translateX(180%); }
+  100% { transform: translateX(180%); }
+}
+
+/* Dark theme: el centro del orbe usa la superficie oscura */
+[data-theme="dark"] .sp-orb::after { background: var(--surface, #101010); }
+
+@media (prefers-reduced-motion: reduce) {
+  .sp-card,
+  .sp-step { animation: none; opacity: 1; transform: none; }
+  .sp-orb::before,
+  .sp-orb img,
+  .sp-caret,
+  .sp-active .sp-dot::after,
+  .sp-active .sp-label,
+  .sp-bar span { animation: none; }
+  .sp-active .sp-label { -webkit-text-fill-color: var(--text, #1a1a1a); }
+  .sp-bar span { width: 100%; background: var(--sp-accent); }
+}

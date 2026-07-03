@@ -3,6 +3,7 @@ import notify from '../../services/swal';
 import CandidateComparison from '../CandidateComparison';
 import CitationDisplay from '../CitationDisplay';
 import MetaEditForm from './MetaEditForm';
+import SearchProgress from './SearchProgress';
 import { AlertCircle, Check, Plus, Edit, Star, ExternalLink, Search, Filter } from '../Icons';
 import citoLogo from '../../assets/citae-logo-v2.png';
 
@@ -81,10 +82,14 @@ const AssistantMsg = ({
   if (msg.loading) {
     return (
       <div className="chat-loading-row">
-        <div className="chat-thinking">
-          <span /><span /><span />
-          {msg.loadingText && <span className="chat-loading-text">{msg.loadingText}</span>}
-        </div>
+        {msg.searching ? (
+          <SearchProgress query={msg.query} />
+        ) : (
+          <div className="chat-thinking">
+            <span /><span /><span />
+            {msg.loadingText && <span className="chat-loading-text">{msg.loadingText}</span>}
+          </div>
+        )}
       </div>
     );
   }
