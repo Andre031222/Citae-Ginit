@@ -1,13 +1,22 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Sparkles, Plus, Trash2, Check, AlertCircle, Loader, Zap } from './Icons';
+import { Sparkles, Plus, Trash2, Check, AlertCircle, Loader, Zap, ExternalLink } from './Icons';
 import { listApiKeys, addApiKey, testApiKey, removeApiKey } from '../services/apiKeyService';
 import notify from '../services/swal';
 
-// Metadatos por proveedor: etiqueta, pista del formato y dónde crear la clave.
+// Metadatos por proveedor: etiqueta, formato, dónde crear la clave y los pasos.
 const PROVIDER_META = {
-  groq:       { label: 'Groq',          hint: 'Empieza por gsk_…',  url: 'https://console.groq.com/keys' },
-  google:     { label: 'Google Gemini', hint: 'Empieza por AIza…',  url: 'https://aistudio.google.com/api-keys' },
-  openrouter: { label: 'OpenRouter',    hint: 'Empieza por sk-or-…', url: 'https://openrouter.ai/keys' },
+  groq: {
+    label: 'Groq', hint: 'Empieza por gsk_…', url: 'https://console.groq.com/keys',
+    steps: ['Crea una cuenta gratis en Groq', 'Pulsa «Create API Key»', 'Copia la clave (gsk_…) y pégala aquí'],
+  },
+  google: {
+    label: 'Google Gemini', hint: 'Empieza por AIza…', url: 'https://aistudio.google.com/api-keys',
+    steps: ['Entra con tu cuenta de Google', 'Pulsa «Create API key»', 'Copia la clave (AIza…) y pégala aquí'],
+  },
+  openrouter: {
+    label: 'OpenRouter', hint: 'Empieza por sk-or-…', url: 'https://openrouter.ai/keys',
+    steps: ['Crea una cuenta gratis en OpenRouter', 'Pulsa «Create Key»', 'Copia la clave (sk-or-…) y pégala aquí'],
+  },
 };
 
 const STATUS_META = {
@@ -99,7 +108,8 @@ function ApiKeys() {
         <p>
           Usa tu propia clave de IA. Se usará <strong>primero la tuya</strong> y, si se agota,
           Citae seguirá funcionando con el servicio por defecto. Tus claves se guardan cifradas
-          y nunca se muestran completas.
+          y nunca se muestran completas. <strong>Con una sola clave de cualquiera de los tres
+          proveedores es suficiente</strong> — y crearla es gratis.
         </p>
       </div>
 
@@ -136,12 +146,20 @@ function ApiKeys() {
             Añadir
           </button>
         </div>
-        <p className="ak-hint">
-          {meta.hint}{' · '}
-          {meta.url && (
-            <a href={meta.url} target="_blank" rel="noopener noreferrer">Obtener clave de {meta.label}</a>
-          )}
-        </p>
+        <div className="ak-howto">
+          <div className="ak-howto-head">
+            <span className="ak-howto-title">Cómo obtener tu clave de {meta.label}</span>
+            {meta.url && (
+              <a className="ak-howto-link" href={meta.url} target="_blank" rel="noopener noreferrer">
+                Abrir {meta.label} <ExternalLink size={12} />
+              </a>
+            )}
+          </div>
+          <ol className="ak-howto-steps">
+            {(meta.steps || []).map((s, i) => <li key={i}>{s}</li>)}
+          </ol>
+          <p className="ak-howto-note">{meta.hint} · es gratis crear la clave.</p>
+        </div>
       </form>
 
       <div className="ak-list">
