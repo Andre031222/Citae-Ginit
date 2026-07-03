@@ -312,6 +312,8 @@ function App() {
                   currentPaper={currentPaper}
                   incognito={chat.incognito}
                   onToggleIncognito={() => chat.setIncognito(v => !v)}
+                  activeView={appView}
+                  onOpenView={openView}
                 />
 
                 {appView === 'chat' ? (

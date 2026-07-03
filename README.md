@@ -16,7 +16,7 @@
 
 <p>
   <a href="https://citae.ginit.dev"><img src="https://img.shields.io/badge/Demo-citae.ginit.dev-0056D6?style=for-the-badge&logo=googlechrome&logoColor=white"></a>
-  <img src="https://img.shields.io/badge/Versión-1.2.2-1565C0?style=for-the-badge">
+  <img src="https://img.shields.io/badge/Versión-1.2.3-1565C0?style=for-the-badge">
   <img src="https://img.shields.io/badge/Estado-Producción-2E7D32?style=for-the-badge">
   <img src="https://img.shields.io/badge/Licencia-Propietaria-616161?style=for-the-badge">
 </p>
@@ -328,6 +328,7 @@ Versionado semántico (`MAJOR.MINOR.PATCH`). Esta es la **primera versión ofici
 
 | Versión | Fecha | Notas |
 |---------|-------|-------|
+| **1.2.3** | 2026-07 | Herramientas (Biblioteca, Radar, Preguntar, Autores, Redactar, Repaso) movidas del panel lateral a la barra superior; el panel lateral queda dedicado al historial. |
 | **1.2.2** | 2026-07 | Tarjeta de previsualización social (Open Graph 1200×630) con la marca al compartir el enlace, más etiquetas og/twitter completas (imagen, título, descripción, url). |
 | **1.2.1** | 2026-07 | Panel "Claves de IA": guía paso a paso de dónde y cómo obtener la clave de cada proveedor, con enlace directo, y aviso de que basta con una sola clave. |
 | **1.2.0** | 2026-07 | Búsqueda con panel de progreso animado estilo agéntico: teclea la consulta y muestra en vivo las fuentes que se consultan (CrossRef, Semantic Scholar, OpenAlex, arXiv) y el ordenado por relevancia. |

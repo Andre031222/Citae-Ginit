@@ -1,6 +1,6 @@
 {
   "name": "citae",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "CITAE — Plataforma académica todo-en-uno para descubrir, leer, verificar, citar y compartir literatura científica, potenciada con IA.",
   "private": true,
   "packageManager": "pnpm@11.6.0",

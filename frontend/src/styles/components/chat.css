@@ -823,6 +823,53 @@
   max-width: 220px;
 }
 
+/* Herramientas — centro de la barra superior (antes en el sidebar) */
+.chat-topbar-tools {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex: 0 1 auto;
+  justify-content: center;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.chat-topbar-tools::-webkit-scrollbar { display: none; }
+
+.chat-tool-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 34px;
+  padding: 0 12px;
+  border: none;
+  border-radius: var(--r-md, 10px);
+  background: transparent;
+  color: var(--text-2, var(--text-secondary));
+  font-size: 13.5px;
+  font-weight: 600;
+  font-family: inherit;
+  white-space: nowrap;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background var(--ease-ui, 0.15s ease), color var(--ease-ui, 0.15s ease);
+}
+.chat-tool-btn:hover {
+  background: var(--surface-2, rgba(0, 0, 0, 0.05));
+  color: var(--text-1, var(--text));
+}
+.chat-tool-btn.is-active {
+  background: var(--accent-soft, rgba(0, 86, 214, 0.12));
+  color: var(--accent);
+}
+.chat-tool-btn svg { flex-shrink: 0; }
+
+/* En pantallas medianas/estrechas: solo iconos, para que quepan */
+@media (max-width: 960px) {
+  .chat-tool-btn span { display: none; }
+  .chat-tool-btn { padding: 0 9px; }
+}
+
 /* Actions — lado derecho */
 .chat-topbar-actions {
   display: flex;

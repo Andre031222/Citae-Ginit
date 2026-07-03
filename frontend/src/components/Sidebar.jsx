@@ -536,57 +536,6 @@ const Sidebar = ({
 
       {/* FOOTER */}
       <div className="cs-footer">
-        {user && (
-          <div className="cs-footer-group">
-            <span className="cs-footer-heading">Herramientas</span>
-            <a href="/library" className="cs-footer-btn" title="Biblioteca — colecciones, etiquetas y exportación">
-              <span className="cs-footer-ic"><Library size={15} /></span>
-              <span>Biblioteca</span>
-            </a>
-            <button
-              className={`cs-footer-btn ${activeView === 'radar' ? 'cs-footer-btn-active' : ''}`}
-              onClick={() => onOpenView?.('radar')}
-              title="Radar de Afirmaciones — verifica evidencia académica"
-            >
-              <span className="cs-footer-ic"><Radar size={15} /></span>
-              <span>Radar</span>
-            </button>
-            <button
-              className={`cs-footer-btn ${activeView === 'ask' ? 'cs-footer-btn-active' : ''}`}
-              onClick={() => onOpenView?.('ask')}
-              title="Pregunta a tu biblioteca — chat con IA sobre tus papers y resaltados"
-            >
-              <span className="cs-footer-ic"><Sparkles size={15} /></span>
-              <span>Preguntar</span>
-            </button>
-            <button
-              className={`cs-footer-btn ${activeView === 'authors' ? 'cs-footer-btn-active' : ''}`}
-              onClick={() => onOpenView?.('authors')}
-              title="Descubrir autores — busca investigadores y sus publicaciones"
-            >
-              <span className="cs-footer-ic"><Users size={15} /></span>
-              <span>Autores</span>
-            </button>
-            <button
-              className={`cs-footer-btn ${activeView === 'write' ? 'cs-footer-btn-active' : ''}`}
-              onClick={() => onOpenView?.('write')}
-              title="Redactar — escribe e inserta citas de tu biblioteca"
-            >
-              <span className="cs-footer-ic"><PenLine size={15} /></span>
-              <span>Redactar</span>
-            </button>
-            <button
-              className={`cs-footer-btn ${activeView === 'review' ? 'cs-footer-btn-active' : ''}`}
-              onClick={() => onOpenView?.('review')}
-              title="Repaso del día — refuerza tus resaltados con repaso espaciado"
-            >
-              <span className="cs-footer-ic"><BookOpen size={15} /></span>
-              <span>Repaso</span>
-            </button>
-          </div>
-        )}
-
-        <div className="cs-footer-divider" aria-hidden="true" />
 
         <div className="cs-footer-group">
           <button className="cs-footer-btn" onClick={onToggleTheme}>

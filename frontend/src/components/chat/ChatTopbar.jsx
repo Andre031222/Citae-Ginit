@@ -1,7 +1,19 @@
 import React from 'react';
-import { Plus, ChevronDown, ChevronLeft, ChevronRight, Eye, EyeOff } from '../Icons';
+import {
+  Plus, ChevronDown, ChevronLeft, ChevronRight, Eye, EyeOff,
+  Library, Radar, Sparkles, Users, PenLine, BookOpen,
+} from '../Icons';
 import ThemeBtn from './ThemeBtn';
 import { useBranding } from '../../context/BrandingContext';
+
+// Herramientas mostradas en la barra superior (antes en el sidebar).
+const TOOLS = [
+  { view: 'radar',   label: 'Radar',      Icon: Radar,    title: 'Radar de Afirmaciones — verifica evidencia académica' },
+  { view: 'ask',     label: 'Preguntar',  Icon: Sparkles, title: 'Pregunta a tu biblioteca — chat con IA sobre tus papers y resaltados' },
+  { view: 'authors', label: 'Autores',    Icon: Users,    title: 'Descubrir autores — busca investigadores y sus publicaciones' },
+  { view: 'write',   label: 'Redactar',   Icon: PenLine,  title: 'Redactar — escribe e inserta citas de tu biblioteca' },
+  { view: 'review',  label: 'Repaso',     Icon: BookOpen, title: 'Repaso del día — refuerza tus resaltados con repaso espaciado' },
+];
 
 const CitaeMark = () => (
   <svg className="chat-brand-mark" width="40" height="40" viewBox="0 0 40 40" fill="none" aria-hidden="true">
@@ -18,6 +30,7 @@ const ChatTopbar = ({
   user, onOpenProfile, onNewChat,
   currentPaper,
   incognito, onToggleIncognito,
+  activeView, onOpenView,
 }) => {
   const { branding } = useBranding();
   const siteName = branding.site_name || 'Citae';
@@ -63,6 +76,30 @@ const ChatTopbar = ({
           </div>
         )}
       </div>
+
+      {user && (
+        <nav className="chat-topbar-tools" aria-label="Herramientas">
+          <a
+            href="/library"
+            className={`chat-tool-btn ${activeView === 'library' ? 'is-active' : ''}`}
+            title="Biblioteca — colecciones, etiquetas y exportación"
+          >
+            <Library size={16} />
+            <span>Biblioteca</span>
+          </a>
+          {TOOLS.map(({ view, label, Icon, title }) => (
+            <button
+              key={view}
+              className={`chat-tool-btn ${activeView === view ? 'is-active' : ''}`}
+              onClick={() => onOpenView?.(view)}
+              title={title}
+            >
+              <Icon size={16} />
+              <span>{label}</span>
+            </button>
+          ))}
+        </nav>
+      )}
 
       <div className="chat-topbar-actions">
         <button className="chat-topbar-new" onClick={onNewChat} title="Nueva búsqueda">
