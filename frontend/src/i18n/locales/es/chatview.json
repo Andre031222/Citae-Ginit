@@ -1,0 +1,92 @@
+{
+  "transparency": {
+    "searchLabel": "Búsqueda:",
+    "from": "desde {{year}}",
+    "to": "hasta {{year}}",
+    "minCitations": "≥ {{count}} citas",
+    "preprints": "preprints",
+    "articles": "artículos",
+    "hidden_one": "{{count}} resultado ocultos por los filtros",
+    "hidden_other": "{{count}} resultados ocultos por los filtros"
+  },
+  "assistant": {
+    "metaUpdateError": "Error al actualizar los metadatos",
+    "viewPaper": "Ver paper",
+    "doiVerified": "DOI verificado",
+    "removeFromBiblio": "Quitar de bibliografía",
+    "addToBiblio": "Añadir a bibliografía",
+    "editMeta": "Editar metadatos",
+    "saveToFavorites": "Guardar en favoritos"
+  },
+  "biblio": {
+    "title": "Bibliografía ({{count}})",
+    "remove": "Quitar",
+    "copied": "Copiado",
+    "copy_one": "Copiar {{count}} cita",
+    "copy_other": "Copiar {{count}} citas",
+    "clearTitle": "Vaciar bibliografía",
+    "clear": "Limpiar"
+  },
+  "input": {
+    "yearFrom": "Año desde",
+    "yearTo": "Año hasta",
+    "minCites": "Mín. citas",
+    "type": "Tipo",
+    "typeAll": "Todos",
+    "typeArticle": "Artículo",
+    "typePreprint": "Preprint",
+    "clearFilters": "Limpiar filtros",
+    "clear": "Limpiar",
+    "attach": "Subir PDF o imagen",
+    "filtersToggle": "Filtros de búsqueda (años, citas, tipo)",
+    "placeholder": "DOI, URL o título — o describe lo que buscas…",
+    "hint": "DOI · URL · título · PDF · imagen · ej: «redes neuronales desde 2020 con más de 100 citas»"
+  },
+  "welcome": {
+    "badgeDoi": "DOI",
+    "badgeTitle": "Título",
+    "badgeUrl": "URL",
+    "featSearch": "DOI, URL o título",
+    "featUpload": "Sube un PDF",
+    "featFormats": "7 formatos de cita",
+    "featFavorites": "Guarda favoritos",
+    "hello": "Hola",
+    "title": "¿Qué quieres investigar hoy?",
+    "sub": "Pega un DOI, una URL o un título para obtener la cita al instante. También puedes subir el PDF directamente.",
+    "tryExample": "Prueba con un ejemplo",
+    "loginLink": "Inicia sesión",
+    "loginHint": "para guardar historial y favoritos"
+  },
+  "meta": {
+    "title": "Título",
+    "authors": "Autores",
+    "authorsHint": "(separados por coma)",
+    "year": "Año",
+    "journal": "Revista / Journal",
+    "volume": "Volumen",
+    "issue": "Número",
+    "pages": "Páginas",
+    "doi": "DOI",
+    "saving": "Guardando…",
+    "save": "Guardar y regenerar citas",
+    "cancel": "Cancelar"
+  },
+  "search": {
+    "defaultQuery": "tu consulta",
+    "searching": "Buscando {{query}}",
+    "title": "Investigando",
+    "steps": {
+      "analyzing": "Analizando tu consulta",
+      "crossref": "Consultando CrossRef",
+      "semanticScholar": "Consultando Semantic Scholar",
+      "openalex": "Consultando OpenAlex",
+      "arxiv": "Consultando arXiv",
+      "ranking": "Ordenando por relevancia"
+    }
+  },
+  "theme": {
+    "toggle": "Cambiar tema",
+    "toLight": "Cambiar a tema claro",
+    "toDark": "Cambiar a tema oscuro"
+  }
+}

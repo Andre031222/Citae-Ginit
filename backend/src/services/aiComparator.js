@@ -2,6 +2,7 @@
 // Las llamadas pasan por groqClient (rotación de múltiples keys + failover en 429).
 
 const { groqChat, hasKeys } = require('./groqClient');
+const llm = require('./llmContext');
 
 const MODEL_SMART   = process.env.GROQ_MODEL      || 'llama-3.3-70b-versatile';
 const MODEL_FAST    = process.env.GROQ_MODEL_FAST || 'llama-3.1-8b-instant';
@@ -9,7 +10,7 @@ const TIMEOUT       = 12000;
 
 /**
  * Genera un análisis de la relación entre la query y los candidatos encontrados.
- * Responde en español, explicando qué aporta cada resultado y cómo se relacionan.
+ * Responde en el idioma de la interfaz, explicando qué aporta cada resultado y cómo se relacionan.
  *
  * @param {string} query         - Título/término buscado por el usuario
  * @param {Array}  candidates    - Candidatos rankeados (con .title, .score, .authors, .year)
@@ -34,7 +35,7 @@ async function summarizeCandidates(query, candidates) {
     const prompt =
       `El usuario buscó: "${query}"\n\n` +
       `Papers encontrados:\n${paperList}\n\n` +
-      `Escribe un resumen en español (3 oraciones cortas y directas). Sé natural, como si le explicaras a un colega:\n` +
+      `Escribe un resumen en ${llm.outputLanguage()} (3 oraciones cortas y directas). Sé natural, como si le explicaras a un colega:\n` +
       `1. Qué área o tema cubren estos papers en relación a la búsqueda.\n` +
       `2. Qué hace especialmente relevante al resultado principal.\n` +
       `3. Qué variaciones de enfoque o aplicación hay entre los demás.\n\n` +
@@ -77,7 +78,7 @@ async function generateAbstractFallback({ title, authors, year, journal }) {
     const prompt =
       `Eres un asistente académico. Basándote SOLO en el título y metadatos del paper, ` +
       `genera un resumen académico breve (2-3 oraciones) que explique de qué trata, ` +
-      `su aporte principal y área de estudio. No inventes datos específicos. Responde en español.\n\n` +
+      `su aporte principal y área de estudio. No inventes datos específicos. Responde en ${llm.outputLanguage()}.\n\n` +
       `${metaStr}\n\nResumen:`;
 
     return await groqChat({
@@ -156,7 +157,7 @@ async function askAboutText({ question, quote, abstract, field = 'abstract', tit
     const systemContent =
       `Eres un asistente de lectura académica. Responde SOLO en base al contexto dado.\n\n` +
       `${contextParts.join('\n\n')}\n\n` +
-      `Reglas: responde en español, conciso (máx. 4 oraciones). Si no puedes responder con este contexto, dilo.\n` +
+      `Reglas: responde en ${llm.outputLanguage()}, conciso (máx. 4 oraciones). Si no puedes responder con este contexto, dilo.\n` +
       `Después de tu respuesta añade DOS líneas nuevas con este formato exacto:\n` +
       `FUENTES: [frase copiada TEXTUALMENTE del texto fuente que respalda tu respuesta] ||| [otra frase textual, opcional]\n` +
       `SUGERENCIAS: [primera pregunta corta] | [segunda pregunta corta]\n` +
@@ -211,7 +212,7 @@ async function suggestTags({ title, abstract, journal }) {
     const prompt =
       `Genera entre 3 y 5 etiquetas temáticas para clasificar este paper académico.\n\n` +
       `${metaStr}\n\n` +
-      `Reglas: etiquetas en español, en minúsculas, de 1 a 3 palabras, específicas del tema ` +
+      `Reglas: etiquetas en ${llm.outputLanguage()}, en minúsculas, de 1 a 3 palabras, específicas del tema ` +
       `(disciplina, método, objeto de estudio). Responde SOLO con las etiquetas separadas por coma, ` +
       `sin numeración ni texto adicional.`;
 
@@ -249,7 +250,7 @@ async function classifyEvidence(claim, papers) {
       `AFIRMACIÓN: "${claim}"\n\n` +
       `Para cada paper asigna un veredicto: APOYA, CONTRADICE, MIXTO o NEUTRO.\n` +
       `Responde ÚNICAMENTE con JSON válido, sin texto adicional:\n` +
-      `[{"idx":0,"verdict":"APOYA","evidence":"fragmento clave en español (máx 100 chars)"},{"idx":1,...}]\n\n` +
+      `[{"idx":0,"verdict":"APOYA","evidence":"fragmento clave en ${llm.outputLanguage()} (máx 100 chars)"},{"idx":1,...}]\n\n` +
       `Papers:\n${list}`;
 
     const raw = await groqChat({
@@ -279,7 +280,7 @@ async function comparePapers(papers) {
       `{"dimensions":[{"label":"Objetivo","values":["resumen paper 1 (máx 80 chars)","resumen paper 2",...]}` +
       `,{"label":"Metodología","values":[...]},{"label":"Resultados clave","values":[...]}` +
       `,{"label":"Limitaciones","values":[...]},{"label":"Área temática","values":[...]}]}\n\n` +
-      `Sé conciso y responde en español.`;
+      `Sé conciso y responde en ${llm.outputLanguage()}.`;
 
     const raw = await groqChat({
       model: MODEL_SMART, messages: [{ role: 'user', content: prompt }], max_tokens: 1800, temperature: 0.2, timeout: 25000,
@@ -326,7 +327,7 @@ async function answerFromLibrary({ question, chunks, history = [] }) {
     const systemContent =
       `Eres el asistente de la biblioteca académica del usuario. Responde su pregunta usando SOLO las fuentes numeradas de su biblioteca.\n\n` +
       `FUENTES:\n${context}\n\n` +
-      `Reglas: responde en español, claro y conciso (máx. 6 oraciones). Sintetiza entre fuentes cuando aplique. ` +
+      `Reglas: responde en ${llm.outputLanguage()}, claro y conciso (máx. 6 oraciones). Sintetiza entre fuentes cuando aplique. ` +
       `Cita SIEMPRE el número de la fuente entre corchetes [n] justo después de cada afirmación que provenga de ella. ` +
       `Si las fuentes no bastan para responder, dilo con honestidad. No inventes datos fuera de las fuentes.`;
 
@@ -371,4 +372,6 @@ async function answerFromLibrary({ question, chunks, history = [] }) {
   }
 }
 
-module.exports = { summarizeCandidates, generateAbstractFallback, askAboutText, suggestTags, classifyEvidence, comparePapers, answerFromLibrary, expandQuery };
+// verifyPassages y normalizeForMatch se exponen para pruebas/benchmark del
+// guard de verificación de pasajes (no se usan directamente desde controllers).
+module.exports = { summarizeCandidates, generateAbstractFallback, askAboutText, suggestTags, classifyEvidence, comparePapers, answerFromLibrary, expandQuery, verifyPassages, normalizeForMatch };

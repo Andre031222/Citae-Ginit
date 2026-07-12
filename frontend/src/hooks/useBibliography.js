@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react';
 import api from '../services/api';
 import notify from '../services/swal';
+import i18n from '../i18n';
 
 export function useBibliography({ loadFavorites, setMessages }) {
   const [biblioItems, setBiblioItems] = useState([]);
@@ -9,9 +10,9 @@ export function useBibliography({ loadFavorites, setMessages }) {
     if (!paperId) return;
     try {
       const { data } = await api.post('/auth/favorites', { paperId });
-      if (data.success) { notify.success('Guardado en favoritos'); loadFavorites(); }
-      else notify.info('Favoritos', data.message || 'Ya está en favoritos');
-    } catch { notify.error('Error al guardar'); }
+      if (data.success) { notify.success(i18n.t('shell.notify.savedFavorite')); loadFavorites(); }
+      else notify.info(i18n.t('shell.notify.favoritesTitle'), data.message || i18n.t('shell.notify.alreadyFavorite'));
+    } catch { notify.error(i18n.t('shell.errors.saveFavorite')); }
   }, [loadFavorites]);
 
   const handleExport = useCallback(async (paper, citations) => {
@@ -25,8 +26,8 @@ export function useBibliography({ loadFavorites, setMessages }) {
       const a   = document.createElement('a');
       a.href = url; a.setAttribute('download', `citas-${paper.id}.txt`);
       document.body.appendChild(a); a.click(); a.remove();
-      notify.success('Exportado correctamente');
-    } catch { notify.error('Error al exportar'); }
+      notify.success(i18n.t('shell.notify.exported'));
+    } catch { notify.error(i18n.t('shell.errors.export')); }
   }, []);
 
   const handleMetaUpdate = useCallback(async (msgId, paper, draft) => {
@@ -52,9 +53,9 @@ export function useBibliography({ loadFavorites, setMessages }) {
       setBiblioItems(prev => prev.map(b =>
         b.msgId === msgId ? { ...b, paper: updatedPaper, citations: citationsMap } : b
       ));
-      notify.success('Metadatos actualizados y citas regeneradas');
+      notify.success(i18n.t('shell.notify.metaUpdated'));
     } catch {
-      throw new Error('Error al actualizar metadatos');
+      throw new Error(i18n.t('shell.errors.updateMeta'));
     }
   }, [setMessages]);
 

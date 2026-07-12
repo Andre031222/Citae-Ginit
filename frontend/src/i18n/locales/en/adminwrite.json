@@ -1,0 +1,121 @@
+{
+  "admin": {
+    "back": "Back to app",
+    "headerTitle": "Super Admin — Visual identity",
+    "close": "Close",
+    "saving": "Saving…",
+    "uploading": "Uploading…",
+    "colors": {
+      "title": "Site colors",
+      "siteName": "Site name",
+      "primary": "Primary color",
+      "accent": "Accent color (gold)",
+      "save": "Save colors"
+    },
+    "hero": {
+      "title": "Hero content",
+      "typography": "Typography",
+      "preview": "Preview",
+      "line1": "Title line 1",
+      "line1Ph": "Cite, highlight and",
+      "emWord": "Highlighted word",
+      "emWordPh": "understand",
+      "after": "Text after",
+      "afterPh": "your papers",
+      "subtitle": "Subtitle",
+      "save": "Save hero",
+      "fontGroups": {
+        "sans": "Modern sans-serif",
+        "serifEditorial": "Editorial serif (magazine style)",
+        "serifClassic": "Classic academic serif",
+        "script": "Script / calligraphic",
+        "display": "Display / decorative"
+      }
+    },
+    "assets": {
+      "title": "Site images",
+      "upload": "Upload",
+      "hints": {
+        "logo": "PNG, SVG recommended",
+        "favicon": "ICO or PNG 32×32",
+        "hero": "JPG or PNG, 1280px+"
+      }
+    },
+    "features": {
+      "title": "Features",
+      "hint": "Customize the title, description and image of each feature. Formats: JPG, PNG, WebP, AVIF, GIF, SVG — automatically optimized to WebP.",
+      "itemNum": "Feature {{n}}",
+      "uploadImage": "Upload image",
+      "removeImage": "Remove image",
+      "fieldTitle": "Title",
+      "fieldDesc": "Description",
+      "save": "Save features",
+      "defaults": [
+        { "title": "Multi-source search", "desc": "CrossRef, Semantic Scholar, OpenAlex and arXiv simultaneously with relevance scoring." },
+        { "title": "7 citation formats", "desc": "APA, MLA, Chicago, Harvard, IEEE, Vancouver and BibTeX generated instantly." },
+        { "title": "Semantic highlighting", "desc": "5 colors with academic meaning: key citations, evidence, insights, doubts and more." },
+        { "title": "AI Reading Assistant", "desc": "Multi-turn conversation about the paper. Suggested questions, history and Trust Cards." },
+        { "title": "Full PDF", "desc": "Upload the PDF and highlight any section of the full text, not just the abstract." },
+        { "title": "Flexible export", "desc": "Export your notes in Markdown, structured JSON or a table for Notion." }
+      ]
+    },
+    "users": {
+      "title": "Registered users",
+      "hint": "Manage the users who have registered: grant or revoke administrator permissions and activate or deactivate accounts. Role changes take effect when the user reloads their session.",
+      "searchPh": "Search by name, username or email…",
+      "loading": "Loading users…",
+      "empty": "No matching users.",
+      "tagSelf": "you",
+      "tagAdmin": "Admin",
+      "tagOff": "Inactive",
+      "cantChangeOwnRole": "You can't change your own role",
+      "removeAdmin": "Remove admin",
+      "makeAdmin": "Make admin",
+      "cantDeactivateSelf": "You can't deactivate your own account",
+      "deactivate": "Deactivate",
+      "activate": "Activate"
+    },
+    "toast": {
+      "loadUsersError": "Error loading users",
+      "nowAdmin": "Now an administrator",
+      "adminRemoved": "Administrator permission removed",
+      "roleChangeError": "Could not change the role",
+      "accountActivated": "Account activated",
+      "accountDeactivated": "Account deactivated",
+      "stateChangeError": "Could not change the status",
+      "colorsSaved": "Colors updated",
+      "saveError": "Error saving",
+      "heroSaved": "Hero updated",
+      "assetUpdated": "{{slot}} updated",
+      "uploadError": "Error uploading the file",
+      "featuresSaved": "Features updated",
+      "imageUpdated": "Image updated",
+      "imageUploadError": "Error uploading image",
+      "imageDeleted": "Image deleted",
+      "imageDeleteError": "Error deleting"
+    }
+  },
+  "write": {
+    "back": "Library",
+    "title": "Write",
+    "formatTitle": "Citation format",
+    "stats": "{{words}} words · {{count}} citations",
+    "clear": "Clear",
+    "copied": "Copied",
+    "copy": "Copy",
+    "download": "Download",
+    "titlePh": "Document title",
+    "bodyPh": "Start writing… Place the cursor where you want to cite and click a paper on the right to insert the citation.",
+    "references": "References",
+    "insertCite": "Insert citation",
+    "searchPh": "Search your library…",
+    "emptyLib": "Your library is empty. Add papers so you can cite them.",
+    "noResults": "No results.",
+    "insertAtCursor": "Insert citation at the cursor",
+    "cited": "Cited ({{count}})",
+    "removeFromRefs": "Remove from references",
+    "confirmClearTitle": "Clear the document?",
+    "confirmClearText": "The text and citations will be deleted.",
+    "defaultFilename": "document"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "loading": "Cargando…",
+  "goToCitae": "Ir a Citae",
+  "papersCount": "{{count}} papers",
+  "viewPaper": "Ver paper",
+  "badgeCollection": "Colección pública",
+  "badgeProfile": "Perfil público",
+  "statCollections": "Colecciones",
+  "statPapers": "Papers",
+  "sectionCollections": "Colecciones públicas",
+  "emptyCollections": "Este usuario aún no ha publicado colecciones.",
+  "collectionNotFound": {
+    "title": "Colección no encontrada",
+    "desc": "El enlace no existe o la colección dejó de ser pública."
+  },
+  "profileNotFound": {
+    "title": "Perfil no encontrado",
+    "desc": "Este usuario no existe o su perfil no es público."
+  },
+  "footer": {
+    "prefix": "Creado con ",
+    "suffix": " — cita, resalta y comprende tus papers."
+  }
+}

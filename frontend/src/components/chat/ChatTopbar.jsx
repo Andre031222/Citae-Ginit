@@ -1,18 +1,21 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Plus, ChevronDown, ChevronLeft, ChevronRight, Eye, EyeOff,
   Library, Radar, Sparkles, Users, PenLine, BookOpen,
 } from '../Icons';
 import ThemeBtn from './ThemeBtn';
+import LanguageSwitcher from '../common/LanguageSwitcher';
 import { useBranding } from '../../context/BrandingContext';
 
 // Herramientas mostradas en la barra superior (antes en el sidebar).
+// El texto (label/title) se resuelve por i18n con la clave chat.tools.<key>.
 const TOOLS = [
-  { view: 'radar',   label: 'Radar',      Icon: Radar,    title: 'Radar de Afirmaciones — verifica evidencia académica' },
-  { view: 'ask',     label: 'Preguntar',  Icon: Sparkles, title: 'Pregunta a tu biblioteca — chat con IA sobre tus papers y resaltados' },
-  { view: 'authors', label: 'Autores',    Icon: Users,    title: 'Descubrir autores — busca investigadores y sus publicaciones' },
-  { view: 'write',   label: 'Redactar',   Icon: PenLine,  title: 'Redactar — escribe e inserta citas de tu biblioteca' },
-  { view: 'review',  label: 'Repaso',     Icon: BookOpen, title: 'Repaso del día — refuerza tus resaltados con repaso espaciado' },
+  { view: 'radar',   key: 'radar',   Icon: Radar },
+  { view: 'ask',     key: 'ask',     Icon: Sparkles },
+  { view: 'authors', key: 'authors', Icon: Users },
+  { view: 'write',   key: 'write',   Icon: PenLine },
+  { view: 'review',  key: 'review',  Icon: BookOpen },
 ];
 
 const CitaeMark = () => (
@@ -32,6 +35,7 @@ const ChatTopbar = ({
   incognito, onToggleIncognito,
   activeView, onOpenView,
 }) => {
+  const { t } = useTranslation();
   const { branding } = useBranding();
   const siteName = branding.site_name || 'Citae';
 
@@ -48,7 +52,7 @@ const ChatTopbar = ({
         <button
           className="chat-sidebar-toggle"
           onClick={onToggleSidebar}
-          title={isSidebarOpen ? 'Ocultar panel' : 'Mostrar panel'}
+          title={isSidebarOpen ? t('chat.hidePanel') : t('chat.showPanel')}
         >
           {isSidebarOpen ? <ChevronLeft size={18} /> : <ChevronRight size={18} />}
         </button>
@@ -78,33 +82,33 @@ const ChatTopbar = ({
       </div>
 
       {user && (
-        <nav className="chat-topbar-tools" aria-label="Herramientas">
+        <nav className="chat-topbar-tools" aria-label={t('chat.toolsAria')}>
           <a
             href="/library"
             className={`chat-tool-btn ${activeView === 'library' ? 'is-active' : ''}`}
-            title="Biblioteca — colecciones, etiquetas y exportación"
+            title={t('chat.libraryTitle')}
           >
             <Library size={16} />
-            <span>Biblioteca</span>
+            <span>{t('chat.library')}</span>
           </a>
-          {TOOLS.map(({ view, label, Icon, title }) => (
+          {TOOLS.map(({ view, key, Icon }) => (
             <button
               key={view}
               className={`chat-tool-btn ${activeView === view ? 'is-active' : ''}`}
               onClick={() => onOpenView?.(view)}
-              title={title}
+              title={t(`chat.tools.${key}Title`)}
             >
               <Icon size={16} />
-              <span>{label}</span>
+              <span>{t(`chat.tools.${key}`)}</span>
             </button>
           ))}
         </nav>
       )}
 
       <div className="chat-topbar-actions">
-        <button className="chat-topbar-new" onClick={onNewChat} title="Nueva búsqueda">
+        <button className="chat-topbar-new" onClick={onNewChat} title={t('chat.newTitle')}>
           <Plus size={14} />
-          <span>Nueva</span>
+          <span>{t('chat.newLabel')}</span>
         </button>
 
         <div className="chat-topbar-cluster">
@@ -112,15 +116,15 @@ const ChatTopbar = ({
             <button
               className={`chat-incognito-btn ${incognito ? 'is-on' : ''}`}
               onClick={onToggleIncognito}
-              title={incognito
-                ? 'Modo incógnito activo — esta conversación no se guarda en el historial'
-                : 'Activar modo incógnito (no guardar en el historial)'}
+              title={incognito ? t('chat.incognitoOn') : t('chat.incognitoOff')}
               aria-pressed={incognito}
             >
               {incognito ? <EyeOff size={16} /> : <Eye size={16} />}
-              {incognito && <span className="chat-incognito-label">Incógnito</span>}
+              {incognito && <span className="chat-incognito-label">{t('chat.incognitoLabel')}</span>}
             </button>
           )}
+
+          <LanguageSwitcher />
 
           <ThemeBtn theme={theme} onToggle={onToggleTheme} />
 
@@ -130,7 +134,7 @@ const ChatTopbar = ({
             <button
               className="chat-user-btn"
               onClick={onOpenProfile}
-              title="Perfil y ajustes"
+              title={t('chat.profileTitle')}
             >
               <div className="chat-user-avatar">
                 {user.avatar_url
@@ -142,7 +146,7 @@ const ChatTopbar = ({
               <ChevronDown size={11} className="chat-user-chevron" />
             </button>
           ) : (
-            <a href="/login" className="btn-primary-small">Iniciar sesión</a>
+            <a href="/login" className="btn-primary-small">{t('chat.login')}</a>
           )}
         </div>
       </div>

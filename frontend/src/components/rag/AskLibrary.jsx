@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import {
   Sparkles, ChevronLeft, ArrowRight, Loader, Library,
@@ -8,14 +9,8 @@ import { askLibrary } from '../../services/libraryService';
 import { renderCited } from '../common/CiteText';
 import notify from '../../services/swal';
 
-const EXAMPLES = [
-  '¿Qué temas principales cubre mi biblioteca?',
-  '¿Qué métodos de investigación aparecen en mis papers?',
-  'Resume lo que sé sobre transformers',
-  '¿Hay contradicciones entre mis fuentes?',
-];
-
 function CitationCard({ cite }) {
+  const { t } = useTranslation();
   const isHighlight = cite.kind === 'highlight';
   const meta = [cite.meta?.authors?.split(',')[0], cite.meta?.year].filter(Boolean).join(', ');
   const url = cite.meta?.url || (cite.meta?.doi ? `https://doi.org/${cite.meta.doi}` : null);
@@ -25,11 +20,11 @@ function CitationCard({ cite }) {
       <div className="ask-source-head">
         <span className={`ask-source-kind ask-kind-${cite.kind}`}>
           {isHighlight ? <Highlighter size={11} /> : <FileText size={11} />}
-          {isHighlight ? 'Resaltado' : 'Paper'}
+          {isHighlight ? t('rag.ask.kindHighlight') : t('rag.ask.kindPaper')}
         </span>
         <span className="ask-source-n">[{cite.n}]</span>
         {url && (
-          <a href={url} target="_blank" rel="noopener noreferrer" className="ask-source-link" title="Abrir fuente">
+          <a href={url} target="_blank" rel="noopener noreferrer" className="ask-source-link" title={t('rag.ask.openSource')}>
             <ExternalLink size={12} />
           </a>
         )}
@@ -42,7 +37,9 @@ function CitationCard({ cite }) {
 }
 
 const AskLibrary = ({ embedded = false }) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
+  const EXAMPLES = t('rag.ask.examples', { returnObjects: true });
   const [messages, setMessages] = useState([]);
   const [input,    setInput]    = useState('');
   const [loading,  setLoading]  = useState(false);
@@ -65,16 +62,16 @@ const AskLibrary = ({ embedded = false }) => {
       if (typeof res.corpusSize === 'number') setCorpusSize(res.corpusSize);
       setMessages(prev => [...prev, {
         role: 'assistant',
-        content: res.available ? res.answer : '⚠ La IA no está disponible. Configura GROQ_API_KEY en el servidor.',
+        content: res.available ? res.answer : t('rag.ask.unavailable'),
         citations: res.citations || [],
       }]);
     } catch {
-      notify.error('No se pudo consultar tu biblioteca');
-      setMessages(prev => [...prev, { role: 'assistant', content: '⚠ Ocurrió un error al consultar tu biblioteca.', citations: [] }]);
+      notify.error(t('rag.ask.errorToast'));
+      setMessages(prev => [...prev, { role: 'assistant', content: t('rag.ask.error'), citations: [] }]);
     } finally {
       setLoading(false);
     }
-  }, [input, loading, messages]);
+  }, [input, loading, messages, t]);
 
   const empty = messages.length === 0;
 
@@ -82,16 +79,16 @@ const AskLibrary = ({ embedded = false }) => {
     <div className={`ask-page ${embedded ? 'is-embedded' : ''}`}>
       {!embedded && (
         <header className="ask-topbar">
-          <button className="lib-back" onClick={() => navigate('/library')} title="Volver a la biblioteca">
+          <button className="lib-back" onClick={() => navigate('/library')} title={t('rag.backTitle')}>
             <ChevronLeft size={16} />
-            Biblioteca
+            {t('rag.back')}
           </button>
           <div className="ask-brand">
             <Sparkles size={18} />
-            <h1 className="ask-title">Pregunta a tu biblioteca</h1>
+            <h1 className="ask-title">{t('rag.ask.title')}</h1>
           </div>
           {corpusSize !== null && (
-            <span className="ask-corpus" title="Fuentes indexadas (papers + resaltados)">
+            <span className="ask-corpus" title={t('rag.ask.corpusTitle')}>
               <Library size={13} /> {corpusSize}
             </span>
           )}
@@ -102,8 +99,8 @@ const AskLibrary = ({ embedded = false }) => {
         {empty && !loading && (
           <div className="ask-welcome">
             <div className="ask-welcome-icon"><Bot size={32} /></div>
-            <h2>Conversa con todo lo que has guardado</h2>
-            <p>Pregunto sobre tus papers y resaltados a la vez, sintetizo entre ellos y cito de dónde sale cada dato.</p>
+            <h2>{t('rag.ask.welcomeTitle')}</h2>
+            <p>{t('rag.ask.welcomeText')}</p>
             <div className="ask-examples">
               {EXAMPLES.map(ex => (
                 <button key={ex} className="ask-example" onClick={() => send(ex)}>{ex}</button>
@@ -115,7 +112,7 @@ const AskLibrary = ({ embedded = false }) => {
         {messages.map((m, i) => (
           <div key={i} className={`ask-msg ask-msg-${m.role}`}>
             {m.role === 'assistant' && (
-              <span className="ask-ai-badge"><Sparkles size={11} /> IA</span>
+              <span className="ask-ai-badge"><Sparkles size={11} /> {t('rag.ask.aiBadge')}</span>
             )}
             <div className="ask-msg-body">
               <p className="ask-msg-text">
@@ -136,7 +133,7 @@ const AskLibrary = ({ embedded = false }) => {
             <div className="ask-msg-body">
               <div className="ask-loading">
                 <Loader size={15} className="lib-spin" />
-                Buscando en tu biblioteca…
+                {t('rag.ask.searching')}
               </div>
             </div>
           </div>
@@ -151,7 +148,7 @@ const AskLibrary = ({ embedded = false }) => {
             value={input}
             onChange={e => setInput(e.target.value)}
             onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) send(); }}
-            placeholder="Pregunta sobre tus papers y resaltados…"
+            placeholder={t('rag.ask.placeholder')}
             disabled={loading}
           />
           <button className="ask-send" onClick={() => send()} disabled={loading || !input.trim()}>

@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Star, Sparkles, Plus, X, ExternalLink, Folder, Check, Loader } from '../Icons';
 import { colorHex } from '../../constants/highlightColors';
 
@@ -12,6 +13,7 @@ const LibraryCard = ({
   onFilterTag,
   autoTagging,
 }) => {
+  const { t } = useTranslation();
   const [tagInputOpen, setTagInputOpen] = useState(false);
   const [tagValue, setTagValue]         = useState('');
   const [folderOpen, setFolderOpen]     = useState(false);
@@ -44,7 +46,7 @@ const LibraryCard = ({
       <div className="lib-card-head">
         <h3 className="lib-card-title">{paper.title}</h3>
         {paper.is_favorite && (
-          <span className="lib-card-fav" title="En favoritos">
+          <span className="lib-card-fav" title={t('library.card.inFavorites')}>
             <Star size={13} />
           </span>
         )}
@@ -66,10 +68,10 @@ const LibraryCard = ({
       <div className="lib-card-tags">
         {(paper.tags || []).map(tag => (
           <span key={tag.id} className="lib-tag">
-            <button className="lib-tag-name" onClick={() => onFilterTag(tag.name)} title={`Filtrar por #${tag.name}`}>
+            <button className="lib-tag-name" onClick={() => onFilterTag(tag.name)} title={t('library.card.filterByTag', { tag: tag.name })}>
               #{tag.name}
             </button>
-            <button className="lib-tag-remove" onClick={() => onRemoveTag(paper, tag)} title="Quitar etiqueta">
+            <button className="lib-tag-remove" onClick={() => onRemoveTag(paper, tag)} title={t('library.card.removeTag')}>
               <X size={10} />
             </button>
           </span>
@@ -82,14 +84,14 @@ const LibraryCard = ({
               value={tagValue}
               onChange={(e) => setTagValue(e.target.value)}
               onBlur={() => { if (!tagValue.trim()) setTagInputOpen(false); }}
-              placeholder="etiqueta"
+              placeholder={t('library.card.tagPlaceholder')}
               maxLength={60}
               autoFocus
             />
           </form>
         ) : (
-          <button className="lib-tag-add" onClick={() => setTagInputOpen(true)} title="Añadir etiqueta">
-            <Plus size={11} /> tag
+          <button className="lib-tag-add" onClick={() => setTagInputOpen(true)} title={t('library.card.addTag')}>
+            <Plus size={11} /> {t('library.card.tagBtn')}
           </button>
         )}
       </div>
@@ -99,26 +101,26 @@ const LibraryCard = ({
           className="lib-action-btn"
           onClick={() => onAutoTag(paper)}
           disabled={autoTagging}
-          title="Sugerir etiquetas con IA"
+          title={t('library.card.suggestTagsAi')}
         >
           {autoTagging ? <Loader size={13} className="lib-spin" /> : <Sparkles size={13} />}
-          IA
+          {t('library.card.aiShort')}
         </button>
 
         <div className="lib-folder-wrap" ref={folderRef}>
           <button
             className="lib-action-btn"
             onClick={() => setFolderOpen(o => !o)}
-            title="Colecciones"
+            title={t('library.card.collections')}
           >
             <Folder size={13} />
-            Colección
+            {t('library.card.collection')}
           </button>
 
           {folderOpen && (
             <div className="lib-folder-menu">
               {collections.length === 0 && (
-                <span className="lib-folder-empty">Crea una colección primero</span>
+                <span className="lib-folder-empty">{t('library.card.folderEmpty')}</span>
               )}
               {collections.map(c => (
                 <button
@@ -136,9 +138,9 @@ const LibraryCard = ({
         </div>
 
         {link && (
-          <a className="lib-action-btn" href={link} target="_blank" rel="noopener noreferrer" title="Abrir fuente">
+          <a className="lib-action-btn" href={link} target="_blank" rel="noopener noreferrer" title={t('library.card.openSource')}>
             <ExternalLink size={13} />
-            Fuente
+            {t('library.card.source')}
           </a>
         )}
       </div>

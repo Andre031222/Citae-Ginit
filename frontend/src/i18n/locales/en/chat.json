@@ -1,0 +1,26 @@
+{
+  "hidePanel": "Hide panel",
+  "showPanel": "Show panel",
+  "toolsAria": "Tools",
+  "library": "Library",
+  "libraryTitle": "Library — collections, tags and export",
+  "newLabel": "New",
+  "newTitle": "New search",
+  "profileTitle": "Profile and settings",
+  "login": "Sign in",
+  "incognitoOn": "Incognito mode on — this conversation is not saved to your history",
+  "incognitoOff": "Turn on incognito mode (do not save to history)",
+  "incognitoLabel": "Incognito",
+  "tools": {
+    "radar": "Radar",
+    "radarTitle": "Claim Radar — check academic evidence",
+    "ask": "Ask",
+    "askTitle": "Ask your library — chat with AI about your papers and highlights",
+    "authors": "Authors",
+    "authorsTitle": "Discover authors — find researchers and their publications",
+    "write": "Write",
+    "writeTitle": "Write — draft and insert citations from your library",
+    "review": "Review",
+    "reviewTitle": "Daily review — reinforce your highlights with spaced review"
+  }
+}

@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { askAssistant } from './services/highlightService';
 
 import { useTheme }      from './hooks/useTheme';
@@ -36,6 +37,7 @@ const PublicCollection = React.lazy(() => import('./components/public/PublicColl
 const PublicProfile    = React.lazy(() => import('./components/public/PublicProfile'));
 
 function App() {
+  const { t } = useTranslation();
   const { theme, toggleTheme }                          = useTheme();
   const { user, setUser, loading, handleLogin,
           handleUserUpdate }                            = useAuth();
@@ -321,7 +323,7 @@ function App() {
                     {chat.incognito && (
                       <div className="chat-incognito-bar">
                         <EyeOff size={13} />
-                        Modo incógnito — esta conversación no se guardará en tu historial.
+                        {t('shell.incognitoBar')}
                       </div>
                     )}
                     <div className="chat-messages-area">
@@ -413,11 +415,11 @@ function App() {
                   />
                   <div className="profile-overlay-panel">
                     <div className="profile-overlay-header">
-                      <span className="profile-overlay-header-title">Configuración</span>
+                      <span className="profile-overlay-header-title">{t('shell.settings')}</span>
                       <button
                         className="profile-overlay-close"
                         onClick={() => setProfileOpen(false)}
-                        title="Cerrar"
+                        title={t('shell.close')}
                       >
                         <X size={14} />
                       </button>

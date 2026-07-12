@@ -1,5 +1,6 @@
-const Library   = require('../models/Library');
-const Highlight = require('../models/Highlight');
+// Los modelos (capa con SQL) se cargan de forma perezosa dentro de buildCorpus
+// para que retrieve/tokenize/buildIndex —funciones puras— puedan usarse en
+// pruebas y benchmarks sin abrir conexión a la base de datos.
 
 const STOPWORDS = new Set([
   'el','la','los','las','un','una','unos','unas','de','del','al','a','ante','con','en','para','por',
@@ -20,6 +21,8 @@ function tokenize(text) {
 }
 
 async function buildCorpus(userId) {
+  const Library   = require('../models/Library');
+  const Highlight = require('../models/Highlight');
   const [papers, highlights] = await Promise.all([
     Library.listPapers(userId, {}),
     Highlight.listByUser(userId, {}),

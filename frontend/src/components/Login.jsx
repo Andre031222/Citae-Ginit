@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate, Link } from 'react-router-dom';
 import {
   Loader, AlertCircle, Eye, EyeOff,
@@ -21,6 +22,7 @@ const GoogleIcon = () => (
 );
 
 const Login = ({ onLogin }) => {
+  const { t }         = useTranslation();
   const navigate      = useNavigate();
   const { branding }  = useBranding();
   const [identifier, setIdentifier] = useState('');
@@ -38,7 +40,7 @@ const Login = ({ onLogin }) => {
       onLogin(res.user);
       navigate('/app');
     } catch (err) {
-      setError(err.response?.data?.error || 'Credenciales incorrectas. Intenta de nuevo.');
+      setError(err.response?.data?.error || t('auth.errorInvalidCredentials'));
     } finally {
       setLoading(false);
     }
@@ -48,8 +50,8 @@ const Login = ({ onLogin }) => {
     <div className="auth-page">
       <div className="auth-card">
         <div className="auth-right-toplinks">
-          <Link to="/" className="auth-back"><ChevronLeft size={13} /> Inicio</Link>
-          <Link to="/register" className="auth-switch">Crear cuenta gratis</Link>
+          <Link to="/" className="auth-back"><ChevronLeft size={13} /> {t('auth.home')}</Link>
+          <Link to="/register" className="auth-switch">{t('auth.createFreeAccount')}</Link>
         </div>
 
         <div className="auth-brand-logo-wrap">
@@ -57,18 +59,18 @@ const Login = ({ onLogin }) => {
         </div>
 
         <div className="auth-form-head">
-          <h2>Bienvenido de nuevo</h2>
-          <p>Accede a tu espacio de investigación</p>
+          <h2>{t('auth.welcomeBack')}</h2>
+          <p>{t('auth.welcomeSubtitle')}</p>
         </div>
 
         <a className="auth-google" href={GOOGLE_AUTH_URL}>
           <GoogleIcon />
-          <span>Continuar con Google</span>
+          <span>{t('auth.continueGoogle')}</span>
         </a>
 
         <div className="auth-or">
           <span />
-          <span>o con email</span>
+          <span>{t('auth.orWithEmail')}</span>
           <span />
         </div>
 
@@ -81,12 +83,12 @@ const Login = ({ onLogin }) => {
 
         <form onSubmit={handleSubmit} className="auth-form" autoComplete="off">
           <div className="auth-field">
-            <label>Email o usuario</label>
+            <label>{t('auth.emailOrUsername')}</label>
             <input
               type="text"
               value={identifier}
               onChange={e => { setIdentifier(e.target.value); setError(''); }}
-              placeholder="correo@ejemplo.com"
+              placeholder={t('auth.emailPlaceholder')}
               required
               autoComplete="off"
               name="citae-id"
@@ -94,7 +96,7 @@ const Login = ({ onLogin }) => {
           </div>
 
           <div className="auth-field">
-            <label>Contraseña</label>
+            <label>{t('auth.password')}</label>
             <div className="auth-input-wrap">
               <input
                 type={showPass ? 'text' : 'password'}
@@ -112,17 +114,17 @@ const Login = ({ onLogin }) => {
 
           <button type="submit" className="auth-submit" disabled={loading}>
             {loading
-              ? <><Loader size={15} className="spinning" /> Ingresando…</>
-              : <>Iniciar sesión <ArrowRight size={14} /></>
+              ? <><Loader size={15} className="spinning" /> {t('auth.signingIn')}</>
+              : <>{t('auth.signIn')} <ArrowRight size={14} /></>
             }
           </button>
         </form>
 
         <p className="auth-footer-note">
-          ¿No tienes cuenta? <Link to="/register">Regístrate gratis</Link>
+          {t('auth.noAccount')} <Link to="/register">{t('auth.registerFree')}</Link>
         </p>
         <p className="auth-footer-note">
-          <Link to="/app" className="auth-muted">Continuar sin cuenta <ArrowRight size={12} /></Link>
+          <Link to="/app" className="auth-muted">{t('auth.continueWithoutAccount')} <ArrowRight size={12} /></Link>
         </p>
       </div>
     </div>

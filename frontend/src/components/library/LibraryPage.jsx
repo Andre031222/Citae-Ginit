@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import {
   Library, ChevronLeft, Search, X, Plus, Download,
@@ -28,6 +29,7 @@ const EXPORT_OPTIONS = [
 ];
 
 const ExportMenu = ({ onExport, disabled }) => {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
 
@@ -42,7 +44,7 @@ const ExportMenu = ({ onExport, disabled }) => {
     <div className="lib-export-wrap" ref={ref}>
       <button className="lib-btn-primary lib-export-btn" onClick={() => setOpen(o => !o)} disabled={disabled}>
         <Download size={14} />
-        Exportar
+        {t('library.page.export')}
       </button>
       {open && (
         <div className="lib-folder-menu lib-export-menu">
@@ -58,6 +60,7 @@ const ExportMenu = ({ onExport, disabled }) => {
 };
 
 const LibraryPage = ({ user }) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const [papers,      setPapers]      = useState([]);
@@ -100,7 +103,7 @@ const LibraryPage = ({ user }) => {
       const result = await getLibraryPapers({ collection: activeCollection?.id, tag: activeTag, search });
       setPapers(result);
     } catch {
-      notify.error('No se pudo cargar la biblioteca');
+      notify.error(t('library.page.errorLoad'));
     } finally {
       setLoading(false);
     }
@@ -123,15 +126,15 @@ const LibraryPage = ({ user }) => {
     try {
       if (modal?.collection) {
         await updateCollection(modal.collection.id, payload);
-        notify.success('Colección actualizada');
+        notify.success(t('library.page.collectionUpdated'));
       } else {
         await createCollection(payload);
-        notify.success('Colección creada');
+        notify.success(t('library.page.collectionCreated'));
       }
       setModal(null);
       await loadSidebar();
     } catch (err) {
-      notify.error(err.response?.data?.error || 'No se pudo guardar la colección');
+      notify.error(err.response?.data?.error || t('library.page.errorSaveCollection'));
     } finally {
       setSaving(false);
     }
@@ -139,18 +142,18 @@ const LibraryPage = ({ user }) => {
 
   const handleDeleteCollection = async (collection) => {
     const result = await notify.confirm({
-      title: `¿Eliminar "${collection.name}"?`,
-      text: 'Los papers no se borran, solo la colección.',
-      confirmText: 'Eliminar',
+      title: t('library.page.confirmDeleteCollectionTitle', { name: collection.name }),
+      text: t('library.page.confirmDeleteCollectionText'),
+      confirmText: t('library.page.deleteConfirm'),
     });
     if (!result.isConfirmed) return;
     try {
       await deleteCollection(collection.id);
       if (activeCollection?.id === collection.id) setActiveCollection(null);
-      notify.success('Colección eliminada');
+      notify.success(t('library.page.collectionDeleted'));
       await refreshAll();
     } catch {
-      notify.error('No se pudo eliminar la colección');
+      notify.error(t('library.page.errorDeleteCollection'));
     }
   };
 
@@ -161,12 +164,12 @@ const LibraryPage = ({ user }) => {
       if (result.is_public) {
         const url = `${window.location.origin}/c/${result.public_slug}`;
         try { await navigator.clipboard.writeText(url); } catch {}
-        notify.success('Enlace público copiado', url);
+        notify.success(t('library.page.publicLinkCopied'), url);
       } else {
-        notify.info('Colección hecha privada', 'El enlace dejó de funcionar');
+        notify.info(t('library.page.collectionMadePrivate'), t('library.page.linkStoppedWorking'));
       }
     } catch {
-      notify.error('No se pudo cambiar la visibilidad');
+      notify.error(t('library.page.errorVisibility'));
     }
   };
 
@@ -176,7 +179,7 @@ const LibraryPage = ({ user }) => {
       else     await removePaperFromCollection(collection.id, paper.id);
       await refreshAll();
     } catch {
-      notify.error('No se pudo actualizar la colección');
+      notify.error(t('library.page.errorUpdateCollection'));
     }
   };
 
@@ -185,7 +188,7 @@ const LibraryPage = ({ user }) => {
       await addPaperTags(paper.id, [name]);
       await refreshAll();
     } catch {
-      notify.error('No se pudo añadir la etiqueta');
+      notify.error(t('library.page.errorAddTag'));
     }
   };
 
@@ -195,7 +198,7 @@ const LibraryPage = ({ user }) => {
       if (activeTag === tag.name) setActiveTag(null);
       await refreshAll();
     } catch {
-      notify.error('No se pudo quitar la etiqueta');
+      notify.error(t('library.page.errorRemoveTag'));
     }
   };
 
@@ -203,10 +206,10 @@ const LibraryPage = ({ user }) => {
     setAutoTaggingId(paper.id);
     try {
       const result = await autoTagPaper(paper.id);
-      if (!result.available) notify.info('IA no disponible', 'Configura GROQ_API_KEY en el servidor');
-      else { notify.success(`${result.tags.length} etiqueta(s) aplicadas`); await refreshAll(); }
+      if (!result.available) notify.info(t('library.page.aiUnavailable'), t('library.page.aiConfigHint'));
+      else { notify.success(t('library.page.tagsApplied', { count: result.tags.length })); await refreshAll(); }
     } catch {
-      notify.error('No se pudieron sugerir etiquetas');
+      notify.error(t('library.page.errorSuggestTags'));
     } finally {
       setAutoTaggingId(null);
     }
@@ -214,9 +217,9 @@ const LibraryPage = ({ user }) => {
 
   const handleDeleteTag = async (tag) => {
     const result = await notify.confirm({
-      title: `¿Eliminar #${tag.name}?`,
-      text: 'Se quitará de todos los papers.',
-      confirmText: 'Eliminar',
+      title: t('library.page.confirmDeleteTagTitle', { name: tag.name }),
+      text: t('library.page.confirmDeleteTagText'),
+      confirmText: t('library.page.deleteConfirm'),
     });
     if (!result.isConfirmed) return;
     try {
@@ -224,7 +227,7 @@ const LibraryPage = ({ user }) => {
       if (activeTag === tag.name) setActiveTag(null);
       await refreshAll();
     } catch {
-      notify.error('No se pudo eliminar la etiqueta');
+      notify.error(t('library.page.errorDeleteTag'));
     }
   };
 
@@ -232,22 +235,22 @@ const LibraryPage = ({ user }) => {
     try {
       if (activeCollection) await exportCollection(activeCollection.id, format);
       else                  await exportLibrary(format, { tag: activeTag, search });
-      notify.success('Exportación descargada');
+      notify.success(t('library.page.exportDownloaded'));
     } catch (err) {
-      if (err.response?.status === 404) notify.warning('No hay papers para exportar');
-      else notify.error('No se pudo exportar');
+      if (err.response?.status === 404) notify.warning(t('library.page.noExportPapers'));
+      else notify.error(t('library.page.errorExport'));
     }
   };
 
   const handleCompare = async () => {
     const ids = Array.from(selectedIds);
-    if (ids.length < 2) { notify.info('Selecciona al menos 2 papers'); return; }
+    if (ids.length < 2) { notify.info(t('library.page.selectMin2')); return; }
     setComparing(true);
     try {
       const result = await comparePapersFromLibrary(ids);
       setCompareResult(result);
     } catch {
-      notify.error('No se pudo comparar los papers');
+      notify.error(t('library.page.errorCompare'));
     } finally {
       setComparing(false);
     }
@@ -258,7 +261,7 @@ const LibraryPage = ({ user }) => {
       const next = new Set(prev);
       if (next.has(id)) next.delete(id);
       else if (next.size < 4) next.add(id);
-      else notify.info('Máximo 4 papers para comparar');
+      else notify.info(t('library.page.max4'));
       return next;
     });
   };
@@ -283,14 +286,14 @@ const LibraryPage = ({ user }) => {
   return (
     <div className="lib-page">
       <header className="lib-topbar">
-        <button className="lib-back" onClick={() => navigate('/app')} title="Volver al chat">
+        <button className="lib-back" onClick={() => navigate('/app')} title={t('library.page.backToChat')}>
           <ChevronLeft size={16} />
-          Chat
+          {t('library.page.chat')}
         </button>
 
         <div className="lib-brand">
           <Library size={18} />
-          <h1 className="lib-title">Biblioteca</h1>
+          <h1 className="lib-title">{t('library.page.title')}</h1>
           <span className="lib-count">{papers.length}</span>
         </div>
 
@@ -299,10 +302,10 @@ const LibraryPage = ({ user }) => {
           <input
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
-            placeholder="Buscar por título, autor o revista…"
+            placeholder={t('library.page.searchPlaceholder')}
           />
           {searchInput && (
-            <button className="lib-icon-btn" onClick={() => setSearchInput('')} title="Limpiar">
+            <button className="lib-icon-btn" onClick={() => setSearchInput('')} title={t('library.page.clear')}>
               <X size={12} />
             </button>
           )}
@@ -312,35 +315,35 @@ const LibraryPage = ({ user }) => {
           <button
             className={`lib-btn-ghost ${compareMode ? 'is-active' : ''}`}
             onClick={() => compareMode ? exitCompareMode() : setCompareMode(true)}
-            title="Comparar papers"
+            title={t('library.page.comparePapers')}
             disabled={papers.length < 2}
           >
             <GitCompare size={14} />
-            {compareMode ? 'Cancelar' : 'Comparar'}
+            {compareMode ? t('library.cancel') : t('library.page.compare')}
           </button>
           <button
             className="lib-btn-ghost"
             onClick={() => navigate(activeCollection ? `/research?collection=${activeCollection.id}` : '/research')}
-            title="Deep Research — análisis de una colección"
+            title={t('library.page.researchTitle')}
           >
             <FileText size={14} />
-            Research
+            {t('library.page.research')}
           </button>
           <button
             className="lib-btn-ghost"
             onClick={() => navigate('/ask')}
-            title="Pregunta a tu biblioteca"
+            title={t('library.page.askTitle')}
           >
             <Sparkles size={14} />
-            Preguntar
+            {t('library.page.ask')}
           </button>
           <button
             className="lib-btn-ghost"
             onClick={() => navigate('/radar')}
-            title="Radar de afirmaciones"
+            title={t('library.page.radarTitle')}
           >
             <Radar size={14} />
-            Radar
+            {t('library.page.radar')}
           </button>
           <ExportMenu onExport={handleExport} disabled={loading || papers.length === 0} />
         </div>
@@ -367,12 +370,12 @@ const LibraryPage = ({ user }) => {
             onClick={() => { setActiveCollection(null); setActiveTag(null); }}
           >
             <Library size={14} />
-            <span className="lib-rail-name">Todos los papers</span>
+            <span className="lib-rail-name">{t('library.page.allPapers')}</span>
           </button>
 
           <div className="lib-rail-section">
-            <span className="lib-rail-heading">Colecciones</span>
-            <button className="lib-icon-btn" onClick={() => setModal({})} title="Nueva colección">
+            <span className="lib-rail-heading">{t('library.page.collectionsHeading')}</span>
+            <button className="lib-icon-btn" onClick={() => setModal({})} title={t('library.page.newCollection')}>
               <Plus size={13} />
             </button>
           </div>
@@ -380,7 +383,7 @@ const LibraryPage = ({ user }) => {
           {collections.length === 0 && (
             <button className="lib-rail-empty" onClick={() => setModal({})}>
               <FolderPlus size={14} />
-              Crea tu primera colección
+              {t('library.page.createFirstCollection')}
             </button>
           )}
 
@@ -399,14 +402,14 @@ const LibraryPage = ({ user }) => {
                 <button
                   className={`lib-icon-btn ${c.is_public ? 'is-public' : ''}`}
                   onClick={() => handleShareCollection(c)}
-                  title={c.is_public ? 'Pública — clic para copiar enlace o hacer privada' : 'Compartir — hacer pública y copiar enlace'}
+                  title={c.is_public ? t('library.page.publicShareTitle') : t('library.page.shareTitle')}
                 >
                   <Globe size={12} />
                 </button>
-                <button className="lib-icon-btn" onClick={() => setModal({ collection: c })} title="Editar">
+                <button className="lib-icon-btn" onClick={() => setModal({ collection: c })} title={t('library.page.edit')}>
                   <Edit size={12} />
                 </button>
-                <button className="lib-icon-btn" onClick={() => handleDeleteCollection(c)} title="Eliminar">
+                <button className="lib-icon-btn" onClick={() => handleDeleteCollection(c)} title={t('library.page.delete')}>
                   <Trash2 size={12} />
                 </button>
               </span>
@@ -417,13 +420,13 @@ const LibraryPage = ({ user }) => {
           <ActivityHeatmap />
 
           <div className="lib-rail-section">
-            <span className="lib-rail-heading">Etiquetas</span>
+            <span className="lib-rail-heading">{t('library.page.tagsHeading')}</span>
           </div>
 
           {tags.length === 0 && (
             <span className="lib-rail-hint">
               <TagIcon size={13} />
-              Etiqueta papers desde sus tarjetas
+              {t('library.page.tagsHint')}
             </span>
           )}
 
@@ -433,7 +436,7 @@ const LibraryPage = ({ user }) => {
                 <button className="lib-tag-name" onClick={() => selectTag(tag.name)}>
                   #{tag.name} <em>{tag.paper_count}</em>
                 </button>
-                <button className="lib-tag-remove" onClick={() => handleDeleteTag(tag)} title="Eliminar etiqueta">
+                <button className="lib-tag-remove" onClick={() => handleDeleteTag(tag)} title={t('library.page.deleteTag')}>
                   <X size={10} />
                 </button>
               </span>
@@ -444,7 +447,7 @@ const LibraryPage = ({ user }) => {
         <main className="lib-main">
           {(activeCollection || activeTag || search) && (
             <div className="lib-filterbar">
-              <span className="lib-filterbar-label">Filtrando por:</span>
+              <span className="lib-filterbar-label">{t('library.page.filteringBy')}</span>
               {activeCollection && (
                 <span className="lib-filter-chip">
                   <span className="lib-dot" style={{ background: colorHex(activeCollection.color) }} />
@@ -471,11 +474,11 @@ const LibraryPage = ({ user }) => {
             <div className="lib-filterbar">
               <GitCompare size={13} />
               <span className="lib-filterbar-label">
-                Modo comparación — selecciona 2 a 4 papers
+                {t('library.page.compareModeLabel')}
               </span>
               {selectedIds.size > 0 && (
                 <span className="lib-filter-chip">
-                  {selectedIds.size} seleccionado(s)
+                  {t('library.page.selectedCount', { count: selectedIds.size })}
                   <button className="lib-tag-remove" onClick={() => setSelectedIds(new Set())}><X size={10} /></button>
                 </span>
               )}
@@ -485,18 +488,17 @@ const LibraryPage = ({ user }) => {
           {loading ? (
             <div className="lib-loading">
               <Loader size={22} className="lib-spin" />
-              Cargando biblioteca…
+              {t('library.page.loadingLibrary')}
             </div>
           ) : papers.length === 0 ? (
             <div className="lib-empty">
               <Library size={36} />
-              <h2>Tu biblioteca está vacía</h2>
+              <h2>{t('library.page.emptyTitle')}</h2>
               <p>
-                Los papers llegan aquí cuando los marcas como favoritos en el chat,
-                los añades a una colección o les pones etiquetas.
+                {t('library.page.emptyText')}
               </p>
               <button className="lib-btn-primary" onClick={() => navigate('/app')}>
-                Buscar papers en el chat
+                {t('library.page.searchInChat')}
               </button>
             </div>
           ) : (
@@ -534,7 +536,7 @@ const LibraryPage = ({ user }) => {
                           <span key={c.id} className="lib-li-dot" style={{ background: colorHex(c.color) }} title={c.name} />
                         ))}
                         {(paper.tags || []).length > 0 && (
-                          <span className="lib-li-tagcount">{paper.tags.length} etiq.</span>
+                          <span className="lib-li-tagcount">{t('library.page.tagCount', { count: paper.tags.length })}</span>
                         )}
                       </div>
                     </div>
@@ -547,7 +549,7 @@ const LibraryPage = ({ user }) => {
 
         {selected && !compareMode && (
           <aside className="lib-detail-drawer">
-            <button className="lib-detail-close" onClick={() => setSelectedId(null)} title="Cerrar">
+            <button className="lib-detail-close" onClick={() => setSelectedId(null)} title={t('library.close')}>
               <X size={16} />
             </button>
             <LibraryDetail
@@ -566,17 +568,17 @@ const LibraryPage = ({ user }) => {
 
       {compareMode && selectedIds.size >= 2 && !compareResult && (
         <div className="cmp-bar">
-          <span className="cmp-bar-count">{selectedIds.size} papers seleccionados</span>
+          <span className="cmp-bar-count">{t('library.page.selectedPapers', { count: selectedIds.size })}</span>
           <div className="cmp-bar-actions">
             <button className="cmp-bar-btn cmp-bar-btn-ghost" onClick={exitCompareMode}>
-              Cancelar
+              {t('library.cancel')}
             </button>
             <button
               className="cmp-bar-btn cmp-bar-btn-primary"
               onClick={handleCompare}
               disabled={comparing}
             >
-              {comparing ? <><Loader size={12} className="lib-spin" /> Comparando…</> : 'Comparar con IA'}
+              {comparing ? <><Loader size={12} className="lib-spin" /> {t('library.page.comparing')}</> : t('library.page.compareWithAi')}
             </button>
           </div>
         </div>

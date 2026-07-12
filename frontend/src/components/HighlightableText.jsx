@@ -1,4 +1,5 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { HIGHLIGHT_COLORS } from '../constants/highlightColors';
 import CopyButton from './common/CopyButton';
 import { Edit, Sparkles, Trash2, X, Copy, ArrowRight, Shield, ChevronDown } from './Icons';
@@ -7,6 +8,7 @@ export { HIGHLIGHT_COLORS };
 
 /* TRUST CARDS — pasajes literales del paper que respaldan la respuesta */
 function TrustSources({ sources }) {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   if (!sources?.length) return null;
 
@@ -14,7 +16,7 @@ function TrustSources({ sources }) {
     <div className={`cc-trust ${open ? 'is-open' : ''}`}>
       <button className="cc-trust-toggle" onClick={() => setOpen(o => !o)}>
         <Shield size={12} />
-        <span>{sources.length} {sources.length === 1 ? 'fuente verificada' : 'fuentes verificadas'}</span>
+        <span>{t('paperui.highlight.trustSources', { count: sources.length })}</span>
         <ChevronDown size={13} className="cc-trust-caret" />
       </button>
       {open && (
@@ -40,6 +42,7 @@ function HighlightToolbar({
   onAskIA,      // () → abrir assistant
   onClose,
 }) {
+  const { t } = useTranslation();
   if (!pos) return null;
   const text = selectedText || highlight?.quote || '';
 
@@ -55,20 +58,20 @@ function HighlightToolbar({
           <button
             key={c.key}
             className={`hl-swatch hl-swatch-${c.key} ${highlight?.color === c.key ? 'hl-swatch-active' : ''}`}
-            title={c.label}
+            title={t(`paperui.colors.${c.key}`)}
             onClick={() => onColor(c.key)}
           />
         ))}
       </div>
       <div className="hl-toolbar-divider" />
       {/* Acciones */}
-      <button className="hl-toolbar-btn" title="Añadir nota" onClick={onNote}><Edit size={13} /></button>
+      <button className="hl-toolbar-btn" title={t('paperui.highlight.addNote')} onClick={onNote}><Edit size={13} /></button>
       <CopyButton text={text} className="hl-toolbar-btn" iconOnly size={14} resetMs={1800} />
-      <button className="hl-toolbar-btn hl-toolbar-ai" title="Preguntar a la IA" onClick={onAskIA}><Sparkles size={13} /></button>
+      <button className="hl-toolbar-btn hl-toolbar-ai" title={t('paperui.highlight.askAi')} onClick={onAskIA}><Sparkles size={13} /></button>
       {highlight && (
-        <button className="hl-toolbar-btn hl-toolbar-del" title="Eliminar resaltado" onClick={onDelete}><Trash2 size={13} /></button>
+        <button className="hl-toolbar-btn hl-toolbar-del" title={t('paperui.highlight.deleteHighlight')} onClick={onDelete}><Trash2 size={13} /></button>
       )}
-      <button className="hl-toolbar-btn hl-toolbar-close" title="Cerrar" onClick={onClose}><X size={13} /></button>
+      <button className="hl-toolbar-btn hl-toolbar-close" title={t('paperui.highlight.close')} onClick={onClose}><X size={13} /></button>
     </div>
   );
 }
@@ -103,6 +106,7 @@ export default function HighlightableText({
   onAskAssistant,     // (payload) → { available, answer }
   paperMeta = {},     // { doi, title, authors, year, journal, source, url, paper_id }
 }) {
+  const { t } = useTranslation();
   const containerRef   = useRef(null);
   const threadRef      = useRef(null);
   const [toolbar, setToolbar] = useState(null);
@@ -262,7 +266,7 @@ export default function HighlightableText({
       role: 'assistant',
       content: result.available
         ? result.answer
-        : '⚠ La IA no está disponible en este momento.',
+        : t('paperui.assistant.aiUnavailable'),
       suggestions: result.suggestions || [],
       sources: result.sources || [],
     };
@@ -319,7 +323,7 @@ export default function HighlightableText({
         <mark
           key={i}
           className={`hl hl-${seg.hl.color}`}
-          title={seg.hl.note || seg.hl.color}
+          title={seg.hl.note || t(`paperui.colors.${seg.hl.color}`)}
           onClick={(e) => handleMarkClick(e, seg.hl)}
         >
           {seg.text}
@@ -352,7 +356,7 @@ export default function HighlightableText({
         <div className="hl-note-input-wrap" style={{ top: (toolbar.pos?.top || 0) + 50, left: toolbar.pos?.left || 0 }}>
           <textarea
             className="hl-note-input"
-            placeholder="Añade una nota a este resaltado…"
+            placeholder={t('paperui.highlight.notePlaceholder')}
             value={noteInput.value}
             rows={3}
             onChange={e => setNoteInput(prev => ({ ...prev, value: e.target.value }))}
@@ -360,10 +364,10 @@ export default function HighlightableText({
             autoFocus
           />
           <div className="hl-note-input-actions">
-            <button className="hl-note-save" onClick={handleSaveNote}>Guardar nota</button>
-            <button className="hl-note-cancel" onClick={() => setNoteInput(prev => ({ ...prev, open: false }))}>Cancelar</button>
+            <button className="hl-note-save" onClick={handleSaveNote}>{t('paperui.highlight.saveNote')}</button>
+            <button className="hl-note-cancel" onClick={() => setNoteInput(prev => ({ ...prev, open: false }))}>{t('paperui.highlight.cancel')}</button>
           </div>
-          <span className="hl-note-hint">Ctrl+Enter para guardar</span>
+          <span className="hl-note-hint">{t('paperui.highlight.saveHint')}</span>
         </div>
       )}
 
@@ -381,7 +385,12 @@ export default function HighlightableText({
           {/* Chips rápidos — solo si no hay historial ni loading */}
           {aiState.history.length === 0 && !aiState.loading && (
             <div className="cc-assistant-chips">
-              {['Explícalo simple', 'Resúmelo', '¿Por qué importa?', '¿Qué metodología usa?'].map(q => (
+              {[
+                t('paperui.assistant.chipExplain'),
+                t('paperui.assistant.chipSummarize'),
+                t('paperui.assistant.chipWhy'),
+                t('paperui.assistant.chipMethod'),
+              ].map(q => (
                 <button key={q} className="cc-assistant-chip" onClick={() => handleAskSubmit(q)}>{q}</button>
               ))}
             </div>
@@ -391,7 +400,7 @@ export default function HighlightableText({
           {aiState.loading && aiState.history.length === 0 && (
             <div className="cc-assistant-loading" style={{ padding: '10px 12px' }}>
               <span className="cc-abs-loading-dot"/><span className="cc-abs-loading-dot"/><span className="cc-abs-loading-dot"/>
-              <span style={{ fontSize: 12, color: 'var(--text-3)', marginLeft: 8 }}>Pensando…</span>
+              <span style={{ fontSize: 12, color: 'var(--text-3)', marginLeft: 8 }}>{t('paperui.assistant.thinking')}</span>
             </div>
           )}
 
@@ -405,7 +414,7 @@ export default function HighlightableText({
                       <span className="cc-ai-summary-badge"><Sparkles size={11} /> IA</span>
                       <button
                         className="cc-msg-copy"
-                        title="Copiar respuesta"
+                        title={t('paperui.assistant.copyAnswer')}
                         onClick={() => navigator.clipboard.writeText(msg.content).catch(() => {})}
                       ><Copy size={13} /></button>
                     </div>
@@ -413,7 +422,11 @@ export default function HighlightableText({
                   <p className="cc-msg-text">{renderMarkdown(msg.content)}</p>
                   {msg.role === 'assistant' && (
                     <p className="cc-msg-attribution">
-                      ↳ Basado en {field === 'fulltext' ? 'el texto completo del PDF' : 'el abstract del paper'}
+                      {t('paperui.assistant.basedOnPrefix', {
+                        source: field === 'fulltext'
+                          ? t('paperui.assistant.basedOnFulltext')
+                          : t('paperui.assistant.basedOnAbstract'),
+                      })}
                     </p>
                   )}
                   {msg.role === 'assistant' && <TrustSources sources={msg.sources} />}
@@ -438,7 +451,7 @@ export default function HighlightableText({
           <div className="cc-assistant-input-row">
             <input
               className="cc-assistant-input"
-              placeholder={aiState.history.length ? 'Pregunta de seguimiento…' : 'Pregunta sobre este fragmento o el paper…'}
+              placeholder={aiState.history.length ? t('paperui.assistant.followupPlaceholder') : t('paperui.assistant.askPlaceholder')}
               value={aiState.question}
               onChange={e => setAiState(prev => ({ ...prev, question: e.target.value }))}
               onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) handleAskSubmit(aiState.question); }}

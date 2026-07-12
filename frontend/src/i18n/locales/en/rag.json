@@ -1,0 +1,48 @@
+{
+  "back": "Library",
+  "backTitle": "Back to the library",
+  "ask": {
+    "title": "Ask your library",
+    "corpusTitle": "Indexed sources (papers + highlights)",
+    "welcomeTitle": "Chat with everything you've saved",
+    "welcomeText": "I ask across your papers and highlights at once, synthesize between them, and cite where each fact comes from.",
+    "aiBadge": "AI",
+    "searching": "Searching your library…",
+    "placeholder": "Ask about your papers and highlights…",
+    "unavailable": "⚠ AI is unavailable. Set GROQ_API_KEY on the server.",
+    "errorToast": "Couldn't query your library",
+    "error": "⚠ An error occurred while querying your library.",
+    "openSource": "Open source",
+    "kindHighlight": "Highlight",
+    "kindPaper": "Paper",
+    "examples": [
+      "What main topics does my library cover?",
+      "What research methods appear in my papers?",
+      "Summarize what I know about transformers",
+      "Are there contradictions between my sources?"
+    ]
+  },
+  "deep": {
+    "title": "Deep Research",
+    "subtitle": "Choose a collection and the AI will generate a literature review: topics, methodologies, findings, contradictions and gaps.",
+    "selectPlaceholder": "Select a collection…",
+    "analyzing": "Analyzing…",
+    "generate": "Generate report",
+    "phase": "Reading the papers and synthesizing patterns… this may take a few seconds.",
+    "insufficient": "This collection needs at least 2 papers to analyze.",
+    "unavailable": "AI is unavailable. Set GROQ_API_KEY on the server.",
+    "analyzedCount": "{{analyzed}} of {{total}} papers analyzed",
+    "synthesis": "Synthesis",
+    "sourcesTitle": "Analyzed papers",
+    "open": "Open",
+    "chooseCollection": "Choose a collection",
+    "generateError": "Couldn't generate the analysis",
+    "sections": {
+      "themes": "Topics and clusters",
+      "methods": "Methodologies",
+      "findings": "Key findings",
+      "contradictions": "Contradictions",
+      "gaps": "Research gaps"
+    }
+  }
+}

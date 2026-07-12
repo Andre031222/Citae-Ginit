@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { X, Download, Copy, Check } from '../Icons';
 import { colorHex } from '../../constants/highlightColors';
 import notify from '../../services/swal';
@@ -106,6 +107,7 @@ function draw(canvas, highlight, theme, accentHex) {
 }
 
 const QuoteshotModal = ({ highlight, onClose }) => {
+  const { t } = useTranslation();
   const canvasRef = useRef(null);
   const [themeIdx, setThemeIdx] = useState(0);
   const [copied, setCopied] = useState(false);
@@ -147,7 +149,7 @@ const QuoteshotModal = ({ highlight, onClose }) => {
         setCopied(true);
         setTimeout(() => setCopied(false), 1800);
       } catch {
-        notify.info('Tu navegador no permite copiar la imagen', 'Usa el botón Descargar');
+        notify.info(t('tools.share.copyFailTitle'), t('tools.share.copyFailText'));
       }
     }, 'image/png');
   };
@@ -156,8 +158,8 @@ const QuoteshotModal = ({ highlight, onClose }) => {
     <div className="qs-backdrop" onClick={onClose}>
       <div className="qs-modal" onClick={e => e.stopPropagation()}>
         <div className="qs-header">
-          <span className="qs-title">Crear Quoteshot</span>
-          <button className="lib-icon-btn" onClick={onClose} title="Cerrar"><X size={15} /></button>
+          <span className="qs-title">{t('tools.share.title')}</span>
+          <button className="lib-icon-btn" onClick={onClose} title={t('tools.share.close')}><X size={15} /></button>
         </div>
 
         <div className="qs-preview">
@@ -165,24 +167,24 @@ const QuoteshotModal = ({ highlight, onClose }) => {
         </div>
 
         <div className="qs-themes">
-          {themes.map((t, i) => (
+          {themes.map((th, i) => (
             <button
-              key={t.name}
+              key={th.name}
               className={`qs-theme ${i === themeIdx ? 'is-active' : ''}`}
               onClick={() => setThemeIdx(i)}
-              style={{ background: t.bg[0], color: t.text }}
+              style={{ background: th.bg[0], color: th.text }}
             >
-              {t.name}
+              {t(`tools.share.theme.${th.name.toLowerCase()}`)}
             </button>
           ))}
         </div>
 
         <div className="qs-actions">
           <button className="lib-btn-ghost" onClick={handleCopy}>
-            {copied ? <><Check size={14} /> Copiado</> : <><Copy size={14} /> Copiar imagen</>}
+            {copied ? <><Check size={14} /> {t('tools.share.copied')}</> : <><Copy size={14} /> {t('tools.share.copyImage')}</>}
           </button>
           <button className="lib-btn-primary" onClick={handleDownload}>
-            <Download size={14} /> Descargar PNG
+            <Download size={14} /> {t('tools.share.downloadPng')}
           </button>
         </div>
       </div>

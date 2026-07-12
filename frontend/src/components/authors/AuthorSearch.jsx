@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import {
   Users, User, Loader, ChevronLeft, Search, AlertCircle,
@@ -13,6 +14,7 @@ function compact(n) {
 }
 
 function AuthorCard({ author, active, onSelect }) {
+  const { t } = useTranslation();
   const meta = [author.institution, author.institutionCountry].filter(Boolean).join(' · ');
   return (
     <button
@@ -24,9 +26,9 @@ function AuthorCard({ author, active, onSelect }) {
         <span className="au-card-name">{author.name}</span>
         {meta && <span className="au-card-inst">{meta}</span>}
         <span className="au-card-stats">
-          <span title="Publicaciones"><BookOpen size={12} /> {compact(author.worksCount)}</span>
-          <span title="Citas totales"><Quote size={12} /> {compact(author.citationCount)}</span>
-          {author.hIndex > 0 && <span title="Índice h"><Award size={12} /> h{author.hIndex}</span>}
+          <span title={t('tools.author.tPublications')}><BookOpen size={12} /> {compact(author.worksCount)}</span>
+          <span title={t('tools.author.tCitations')}><Quote size={12} /> {compact(author.citationCount)}</span>
+          {author.hIndex > 0 && <span title={t('tools.author.tHIndex')}><Award size={12} /> h{author.hIndex}</span>}
         </span>
         {author.topics?.length > 0 && (
           <span className="au-card-topics">
@@ -39,6 +41,7 @@ function AuthorCard({ author, active, onSelect }) {
 }
 
 function WorkRow({ work, onCite }) {
+  const { t } = useTranslation();
   const meta = [work.publication_year, work.journal].filter(Boolean).join(' · ');
   return (
     <div className="au-work">
@@ -47,19 +50,19 @@ function WorkRow({ work, onCite }) {
         <p className="au-work-meta">
           {meta}
           {work.citationCount > 0 && (
-            <span className="au-work-cites"><Quote size={11} /> {compact(work.citationCount)} citas</span>
+            <span className="au-work-cites"><Quote size={11} /> {t('tools.author.citationsCount', { count: compact(work.citationCount) })}</span>
           )}
         </p>
       </div>
       <div className="au-work-actions">
         {work.url && (
-          <a href={work.url} target="_blank" rel="noopener noreferrer" className="au-work-link" title="Abrir publicación">
+          <a href={work.url} target="_blank" rel="noopener noreferrer" className="au-work-link" title={t('tools.author.openPublication')}>
             <ExternalLink size={13} />
           </a>
         )}
         {onCite && (
-          <button className="au-work-cite" onClick={() => onCite(work)} title="Generar cita">
-            <Quote size={13} /> Citar
+          <button className="au-work-cite" onClick={() => onCite(work)} title={t('tools.author.generateCitation')}>
+            <Quote size={13} /> {t('tools.author.cite')}
           </button>
         )}
       </div>
@@ -68,6 +71,7 @@ function WorkRow({ work, onCite }) {
 }
 
 const AuthorSearch = ({ embedded = false, onCite }) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [query,    setQuery]    = useState('');
   const [loading,  setLoading]  = useState(false);
@@ -89,7 +93,7 @@ const AuthorSearch = ({ embedded = false, onCite }) => {
       const list = await searchAuthors(q);
       setAuthors(list);
     } catch (err) {
-      notify.error('Error', err.response?.data?.error || 'No se pudo buscar autores');
+      notify.error(t('tools.author.errorTitle'), err.response?.data?.error || t('tools.author.searchError'));
     } finally {
       setLoading(false);
     }
@@ -104,7 +108,7 @@ const AuthorSearch = ({ embedded = false, onCite }) => {
       const list = await getAuthorWorks(author.id, nextSort);
       setWorks(list);
     } catch (err) {
-      notify.error('Error', err.response?.data?.error || 'No se pudieron cargar las publicaciones');
+      notify.error(t('tools.author.errorTitle'), err.response?.data?.error || t('tools.author.worksError'));
     } finally {
       setWorksLoading(false);
     }
@@ -118,12 +122,12 @@ const AuthorSearch = ({ embedded = false, onCite }) => {
     <div className={`au-page ${embedded ? 'is-embedded' : ''}`}>
       {!embedded && (
         <header className="au-topbar">
-          <button className="lib-back" onClick={() => navigate('/app')} title="Volver">
-            <ChevronLeft size={16} /> Volver
+          <button className="lib-back" onClick={() => navigate('/app')} title={t('tools.author.back')}>
+            <ChevronLeft size={16} /> {t('tools.author.back')}
           </button>
           <div className="au-brand">
             <Users size={18} />
-            <h1 className="au-title">Descubrir autores</h1>
+            <h1 className="au-title">{t('tools.author.heading')}</h1>
           </div>
         </header>
       )}
@@ -131,7 +135,7 @@ const AuthorSearch = ({ embedded = false, onCite }) => {
       <div className="au-body">
         <div className="au-search-section">
           <p className="au-subtitle">
-            Busca investigadores por nombre y explora su perfil, métricas y publicaciones (vía OpenAlex).
+            {t('tools.author.subtitle')}
           </p>
           <div className="au-search-wrap">
             <Search size={16} className="au-search-ic" />
@@ -141,18 +145,18 @@ const AuthorSearch = ({ embedded = false, onCite }) => {
               value={query}
               onChange={e => setQuery(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder="Ej: Yoshua Bengio, Geoffrey Hinton…"
+              placeholder={t('tools.author.searchPlaceholder')}
               disabled={loading}
             />
             <button className="au-search-btn" onClick={handleSearch} disabled={loading || query.trim().length < 2}>
-              {loading ? <Loader size={14} className="lib-spin" /> : 'Buscar'}
+              {loading ? <Loader size={14} className="lib-spin" /> : t('tools.author.search')}
             </button>
           </div>
         </div>
 
         {authors && authors.length === 0 && (
           <div className="au-empty">
-            <AlertCircle size={15} /> No se encontraron autores para «{query}».
+            <AlertCircle size={15} /> {t('tools.author.noResults', { query })}
           </div>
         )}
 
@@ -173,7 +177,7 @@ const AuthorSearch = ({ embedded = false, onCite }) => {
               {!selected ? (
                 <div className="au-detail-empty">
                   <Users size={28} />
-                  <p>Selecciona un autor para ver sus publicaciones.</p>
+                  <p>{t('tools.author.selectPrompt')}</p>
                 </div>
               ) : (
                 <>
@@ -184,9 +188,9 @@ const AuthorSearch = ({ embedded = false, onCite }) => {
                         <p className="au-detail-inst"><Globe size={12} /> {selected.institution}</p>
                       )}
                       <div className="au-detail-metrics">
-                        <span><BookOpen size={13} /> {compact(selected.worksCount)} obras</span>
-                        <span><Quote size={13} /> {compact(selected.citationCount)} citas</span>
-                        {selected.hIndex > 0 && <span><Award size={13} /> índice h {selected.hIndex}</span>}
+                        <span><BookOpen size={13} /> {t('tools.author.worksCount', { count: compact(selected.worksCount) })}</span>
+                        <span><Quote size={13} /> {t('tools.author.citationsCount', { count: compact(selected.citationCount) })}</span>
+                        {selected.hIndex > 0 && <span><Award size={13} /> {t('tools.author.hIndexLabel', { count: selected.hIndex })}</span>}
                         {selected.orcid && (
                           <a href={`https://orcid.org/${selected.orcid}`} target="_blank" rel="noopener noreferrer" className="au-orcid">
                             ORCID <ExternalLink size={11} />
@@ -200,23 +204,23 @@ const AuthorSearch = ({ embedded = false, onCite }) => {
                         onClick={() => loadWorks(selected, 'cited')}
                         disabled={worksLoading}
                       >
-                        <TrendingUp size={12} /> Más citadas
+                        <TrendingUp size={12} /> {t('tools.author.mostCited')}
                       </button>
                       <button
                         className={sort === 'recent' ? 'au-sort-active' : ''}
                         onClick={() => loadWorks(selected, 'recent')}
                         disabled={worksLoading}
                       >
-                        Recientes
+                        {t('tools.author.recent')}
                       </button>
                     </div>
                   </div>
 
                   <div className="au-works">
                     {worksLoading ? (
-                      <div className="au-works-loading"><Loader size={16} className="lib-spin" /> Cargando publicaciones…</div>
+                      <div className="au-works-loading"><Loader size={16} className="lib-spin" /> {t('tools.author.loadingWorks')}</div>
                     ) : works.length === 0 ? (
-                      <p className="au-works-empty">Sin publicaciones disponibles.</p>
+                      <p className="au-works-empty">{t('tools.author.noWorks')}</p>
                     ) : (
                       works.map((w, i) => <WorkRow key={w.sourceId || i} work={w} onCite={onCite} />)
                     )}

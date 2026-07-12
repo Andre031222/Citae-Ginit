@@ -1,4 +1,5 @@
 import React from 'react';
+import i18n from '../../i18n';
 
 export function renderCited(text, { sources = [], onCite } = {}) {
   return String(text).split(/(\[\d+\])/g).map((part, i) => {
@@ -11,7 +12,7 @@ export function renderCited(text, { sources = [], onCite } = {}) {
         key={i}
         type="button"
         className="cite-chip"
-        title={src ? src.title : `Fuente ${n}`}
+        title={src ? src.title : i18n.t('paperui.citeText.source', { n })}
         onClick={onCite ? () => onCite(n) : undefined}
         tabIndex={onCite ? 0 : -1}
       >

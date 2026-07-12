@@ -1,0 +1,150 @@
+{
+  "copy": "Copy",
+  "copied": "Copied",
+  "citeText": {
+    "source": "Source {{n}}"
+  },
+  "citationDisplay": {
+    "title": "Generated Citations",
+    "exportAll": "Export All"
+  },
+  "colors": {
+    "yellow": "Quote / key idea",
+    "green": "Data / evidence",
+    "blue": "Own insight",
+    "pink": "Doubt / contradiction",
+    "navy": "Paper key point"
+  },
+  "score": {
+    "signalsTitle": "Score signals",
+    "titleSim": "Title similarity",
+    "sourceBoost": "Cross-sources",
+    "citationBoost": "Citations",
+    "authorBoost": "Author in query",
+    "doiBoost": "Verified DOI",
+    "yearBoost": "Year"
+  },
+  "drawer": {
+    "aria": "Paper details",
+    "reference": "Reference",
+    "openDownload": "Open / Download",
+    "close": "Close (Esc)",
+    "match": "Match",
+    "citations_one": "{{formatted}} citation",
+    "citations_other": "{{formatted}} citations",
+    "unknownAuthors": "Unknown authors",
+    "searchingAbstract": "Finding summary…",
+    "aiSummaryBadge": "AI-generated summary",
+    "noAbstract": "No summary available for this paper.",
+    "loadingText": "Loading text…",
+    "pdfExtracted": "📄 Text extracted from the PDF",
+    "noFulltext": "Full text not available. Upload the paper's PDF to highlight it.",
+    "notesPdf": "PDF notes",
+    "notesAbstract": "Abstract notes",
+    "deleteNote": "Delete",
+    "noMeta": "No metadata available.",
+    "citeIntro": "Select and copy this reference in the format you need. The text is editable — you can adjust it before copying.",
+    "loading": "Loading…",
+    "choose": "Choose this paper →",
+    "tabs": {
+      "abstract": "Abstract",
+      "fulltext": "PDF Text",
+      "meta": "Metadata",
+      "cite": "Cite"
+    },
+    "meta": {
+      "publisher": "Publisher",
+      "journal": "Journal",
+      "year": "Year",
+      "volume": "Volume",
+      "issue": "Issue",
+      "pages": "Pages",
+      "doi": "DOI",
+      "sources": "Sources",
+      "citations": "Citations"
+    }
+  },
+  "row": {
+    "citationsK": "{{n}}k citations",
+    "citations_one": "{{count}} citation",
+    "citations_other": "{{count}} citations",
+    "deselect": "Deselect",
+    "selectToCopy": "Select to copy",
+    "bestMatch": "Best match",
+    "verifiedIn": "Verified in {{count}} sources",
+    "sourcesCount": "{{count}} sources",
+    "sharedThemesAria": "Themes shared with the search"
+  },
+  "sort": {
+    "score": "Relevance",
+    "year": "Year (recent)",
+    "citations": "Citations"
+  },
+  "refine": {
+    "searchLabel": "Search:",
+    "noClearMatch": "We couldn't find a clear match.",
+    "hintPrefix": "Try adding the ",
+    "hintMid": ", the ",
+    "author": "author",
+    "hintOr": " or the ",
+    "year": "year",
+    "hintSuffix": " to the title, or paste the article's URL or DOI directly.",
+    "showApprox_one": "View {{count}} approximate result",
+    "showApprox_other": "View {{count}} approximate results"
+  },
+  "compare": {
+    "directSummary": "Direct summary",
+    "sharedThemes": "Shared themes",
+    "themeCount": "{{count}} of {{total}} papers",
+    "sortLabel": "Sort",
+    "sourceLabel": "Source",
+    "allSources": "All",
+    "resetFilters": "Reset filters",
+    "reset": "Reset",
+    "deselectAll": "Deselect all",
+    "selectAll": "Select all",
+    "resultsFiltered_one": "{{shown}} of {{total}} result",
+    "resultsFiltered_other": "{{shown}} of {{total}} results",
+    "results_one": "{{count}} result",
+    "results_other": "{{count}} results",
+    "selectedCount_one": " · {{count}} selected",
+    "selectedCount_other": " · {{count}} selected",
+    "matchPercent": "{{score}}% match",
+    "emptyFilter": "No results for the selected source.",
+    "viewAllSources": "View all sources",
+    "hintActive": "← Viewing details of the selected result",
+    "hintIdle": "Click a result to view details, or check ✓ to copy citations in bulk",
+    "citeCount_one": "{{count}} citation",
+    "citeCount_other": "{{count}} citations",
+    "citationFormat": "Citation format",
+    "copyCites_one": "Copy {{count}} citation",
+    "copyCites_other": "Copy {{count}} citations",
+    "clearSelection": "Clear selection"
+  },
+  "highlight": {
+    "trustSources_one": "{{count}} verified source",
+    "trustSources_other": "{{count}} verified sources",
+    "addNote": "Add note",
+    "askAi": "Ask the AI",
+    "deleteHighlight": "Delete highlight",
+    "close": "Close",
+    "notePlaceholder": "Add a note to this highlight…",
+    "saveNote": "Save note",
+    "cancel": "Cancel",
+    "saveHint": "Ctrl+Enter to save"
+  },
+  "assistant": {
+    "aiUnavailable": "⚠ The AI is not available right now.",
+    "chipExplain": "Explain it simply",
+    "chipSummarize": "Summarize it",
+    "chipWhy": "Why does it matter?",
+    "chipMethod": "What methodology does it use?",
+    "thinking": "Thinking…",
+    "copyAnswer": "Copy answer",
+    "basedOnFulltext": "the full PDF text",
+    "basedOnAbstract": "the paper abstract",
+    "basedOnPrefix": "↳ Based on {{source}}",
+    "followupPlaceholder": "Follow-up question…",
+    "askPlaceholder": "Ask about this excerpt or the paper…"
+  }
+}
