@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   ExternalLink, Plus, Folder, Sparkles, Loader, X, Check, Tag as TagIcon, Library, Highlighter, Copy, LinkIcon,
 } from '../Icons';
@@ -43,6 +44,7 @@ function renderAbstractHighlighted(abstract, highlights) {
 }
 
 const FolderMenu = ({ collections, memberIds, onToggle }) => {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
 
@@ -56,11 +58,11 @@ const FolderMenu = ({ collections, memberIds, onToggle }) => {
   return (
     <div className="lib-folder-wrap" ref={ref}>
       <button className="ld-action" onClick={() => setOpen(o => !o)}>
-        <Folder size={14} /> Colección
+        <Folder size={14} /> {t('library.detail.collection')}
       </button>
       {open && (
         <div className="lib-folder-menu ld-folder-menu">
-          {collections.length === 0 && <span className="lib-folder-empty">Crea una colección primero</span>}
+          {collections.length === 0 && <span className="lib-folder-empty">{t('library.detail.folderEmpty')}</span>}
           {collections.map(c => {
             const inIt = memberIds.has(c.id);
             return (
@@ -81,6 +83,7 @@ const LibraryDetail = ({
   paper, collections,
   onToggleCollection, onAddTag, onRemoveTag, onAutoTag, autoTagging, onFilterTag,
 }) => {
+  const { t } = useTranslation();
   const [tagInput, setTagInput] = useState('');
   const [adding, setAdding]     = useState(false);
   const [highlights, setHighlights] = useState([]);
@@ -129,7 +132,7 @@ const LibraryDetail = ({
     return (
       <div className="ld-empty">
         <Library size={32} />
-        <p>Selecciona un paper para ver su detalle</p>
+        <p>{t('library.detail.selectPaper')}</p>
       </div>
     );
   }
@@ -151,10 +154,10 @@ const LibraryDetail = ({
       <div className="ld-hero">
         <PaperCover paper={paper} size={120} className="ld-cover" />
         <div className="ld-hero-meta">
-          {paper.is_favorite && <span className="ld-fav-badge">★ Favorito</span>}
+          {paper.is_favorite && <span className="ld-fav-badge">{t('library.detail.favorite')}</span>}
           <h2 className="ld-title">{paper.title}</h2>
           <p className="ld-authors">
-            {paper.authors || 'Autores desconocidos'}
+            {paper.authors || t('library.detail.unknownAuthors')}
             {paper.publication_year ? ` · ${paper.publication_year}` : ''}
           </p>
           {paper.journal && <p className="ld-journal">{paper.journal}</p>}
@@ -170,28 +173,28 @@ const LibraryDetail = ({
         <FolderMenu collections={collections} memberIds={memberIds} onToggle={(c, add) => onToggleCollection(paper, c, add)} />
         <button className="ld-action" onClick={() => onAutoTag(paper)} disabled={autoTagging}>
           {autoTagging ? <Loader size={14} className="lib-spin" /> : <Sparkles size={14} />}
-          Auto-etiquetar
+          {t('library.detail.autoTag')}
         </button>
         <button className="ld-action" onClick={() => {
           const cite = formatCitation(paper, 'APA');
-          navigator.clipboard.writeText(cite).then(() => notify.success('Cita APA copiada')).catch(() => {});
+          navigator.clipboard.writeText(cite).then(() => notify.success(t('library.detail.citationCopied'))).catch(() => {});
         }}>
-          <Copy size={14} /> Citar
+          <Copy size={14} /> {t('library.detail.cite')}
         </button>
         {url && (
           <a className="ld-action" href={url} target="_blank" rel="noopener noreferrer">
-            <ExternalLink size={14} /> Abrir
+            <ExternalLink size={14} /> {t('library.detail.open')}
           </a>
         )}
       </div>
 
       <div className="ld-section">
-        <span className="ld-section-label"><TagIcon size={12} /> Etiquetas</span>
+        <span className="ld-section-label"><TagIcon size={12} /> {t('library.detail.tagsLabel')}</span>
         <div className="ld-tags">
-          {(paper.tags || []).map(t => (
-            <span key={t.id} className="ld-tag">
-              <button className="ld-tag-name" onClick={() => onFilterTag(t.name)}>#{t.name}</button>
-              <button className="ld-tag-x" onClick={() => onRemoveTag(paper, t)} title="Quitar"><X size={9} /></button>
+          {(paper.tags || []).map(tg => (
+            <span key={tg.id} className="ld-tag">
+              <button className="ld-tag-name" onClick={() => onFilterTag(tg.name)}>#{tg.name}</button>
+              <button className="ld-tag-x" onClick={() => onRemoveTag(paper, tg)} title={t('library.detail.remove')}><X size={9} /></button>
             </span>
           ))}
           {adding ? (
@@ -201,18 +204,18 @@ const LibraryDetail = ({
                 value={tagInput}
                 onChange={e => setTagInput(e.target.value)}
                 onBlur={() => { if (!tagInput.trim()) setAdding(false); }}
-                placeholder="nueva etiqueta…"
+                placeholder={t('library.detail.newTagPlaceholder')}
               />
             </form>
           ) : (
-            <button className="ld-tag-add" onClick={() => setAdding(true)}><Plus size={11} /> Añadir</button>
+            <button className="ld-tag-add" onClick={() => setAdding(true)}><Plus size={11} /> {t('library.detail.add')}</button>
           )}
         </div>
       </div>
 
       {(paper.collections || []).length > 0 && (
         <div className="ld-section">
-          <span className="ld-section-label"><Folder size={12} /> En colecciones</span>
+          <span className="ld-section-label"><Folder size={12} /> {t('library.detail.inCollections')}</span>
           <div className="ld-collections">
             {paper.collections.map(c => (
               <span key={c.id} className="ld-coll-chip" style={{ '--c': colorHex(c.color) }}>
@@ -226,7 +229,7 @@ const LibraryDetail = ({
 
       {highlights.some(hl => hl.note) && (
         <div className="ld-section">
-          <span className="ld-section-label"><Highlighter size={12} /> Tus notas</span>
+          <span className="ld-section-label"><Highlighter size={12} /> {t('library.detail.yourNotes')}</span>
           <div className="ld-highlights">
             {highlights.filter(hl => hl.note).map((hl, i) => (
               <div key={hl.id} className="ld-hl" style={{ '--c': colorHex(hl.color) }}>
@@ -243,18 +246,18 @@ const LibraryDetail = ({
 
       <div className="ld-section ld-abstract-section">
         <span className="ld-section-label">
-          Resumen
+          {t('library.detail.summary')}
           {highlights.length > 0 && (
             <em className="ld-hl-count">
-              <Highlighter size={11} /> {highlights.length} resaltado{highlights.length !== 1 ? 's' : ''}
+              <Highlighter size={11} /> {t('library.detail.highlightsCount', { count: highlights.length })}
             </em>
           )}
         </span>
         {loadingAbs
-          ? <p className="ld-abstract ld-abstract-empty"><Loader size={13} className="lib-spin" /> Buscando resumen…</p>
+          ? <p className="ld-abstract ld-abstract-empty"><Loader size={13} className="lib-spin" /> {t('library.detail.loadingSummary')}</p>
           : abstract
             ? <p className="ld-abstract">{renderAbstractHighlighted(abstract, highlights)}</p>
-            : <p className="ld-abstract ld-abstract-empty">Sin resumen disponible para este paper.</p>}
+            : <p className="ld-abstract ld-abstract-empty">{t('library.detail.noSummary')}</p>}
       </div>
     </div>
   );

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import {
   FileText, ChevronLeft, Loader, Sparkles, ExternalLink,
@@ -9,16 +10,17 @@ import { renderCited } from '../common/CiteText';
 import notify from '../../services/swal';
 
 const SECTIONS = [
-  { key: 'themes',         label: 'Temas y clusters',  icon: Search,      kind: 'themes' },
-  { key: 'methods',        label: 'Metodologías',       icon: FileText,    kind: 'list'  },
-  { key: 'findings',       label: 'Hallazgos clave',    icon: Award,       kind: 'list'  },
-  { key: 'contradictions', label: 'Contradicciones',    icon: Zap,         kind: 'list'  },
-  { key: 'gaps',           label: 'Vacíos de investigación', icon: AlertCircle, kind: 'list' },
+  { key: 'themes',         icon: Search,      kind: 'themes' },
+  { key: 'methods',        icon: FileText,    kind: 'list'  },
+  { key: 'findings',       icon: Award,       kind: 'list'  },
+  { key: 'contradictions', icon: Zap,         kind: 'list'  },
+  { key: 'gaps',           icon: AlertCircle, kind: 'list' },
 ];
 
 const renderRefs = (text, sources) => renderCited(text, { sources });
 
 const DeepResearch = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [params] = useSearchParams();
 
@@ -39,14 +41,14 @@ const DeepResearch = () => {
       const r = await deepResearch(collectionId);
       setResult(r);
     } catch (err) {
-      notify.error(err.response?.data?.error || 'No se pudo generar el análisis');
+      notify.error(err.response?.data?.error || t('rag.deep.generateError'));
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [t]);
 
   const handleGenerate = () => {
-    if (!selected) { notify.info('Elige una colección'); return; }
+    if (!selected) { notify.info(t('rag.deep.chooseCollection')); return; }
     run(selected);
   };
 
@@ -55,20 +57,20 @@ const DeepResearch = () => {
   return (
     <div className="dr-page">
       <header className="dr-topbar">
-        <button className="lib-back" onClick={() => navigate('/library')} title="Volver a la biblioteca">
+        <button className="lib-back" onClick={() => navigate('/library')} title={t('rag.backTitle')}>
           <ChevronLeft size={16} />
-          Biblioteca
+          {t('rag.back')}
         </button>
         <div className="dr-brand">
           <FileText size={18} />
-          <h1 className="dr-title">Deep Research</h1>
+          <h1 className="dr-title">{t('rag.deep.title')}</h1>
         </div>
       </header>
 
       <div className="dr-body">
         <div className="dr-controls">
           <p className="dr-subtitle">
-            Elige una colección y la IA generará una revisión de literatura: temas, metodologías, hallazgos, contradicciones y vacíos.
+            {t('rag.deep.subtitle')}
           </p>
           <div className="dr-picker">
             <select
@@ -77,31 +79,31 @@ const DeepResearch = () => {
               onChange={e => setSelected(e.target.value)}
               disabled={loading}
             >
-              <option value="">Selecciona una colección…</option>
+              <option value="">{t('rag.deep.selectPlaceholder')}</option>
               {collections.map(c => (
                 <option key={c.id} value={c.id}>{c.name} ({c.paper_count})</option>
               ))}
             </select>
             <button className="dr-generate" onClick={handleGenerate} disabled={loading || !selected}>
               {loading
-                ? <><Loader size={14} className="lib-spin" /> Analizando…</>
-                : <><Sparkles size={14} /> Generar informe</>}
+                ? <><Loader size={14} className="lib-spin" /> {t('rag.deep.analyzing')}</>
+                : <><Sparkles size={14} /> {t('rag.deep.generate')}</>}
             </button>
           </div>
-          {loading && <p className="dr-phase">Leyendo los papers y sintetizando patrones… puede tardar unos segundos.</p>}
+          {loading && <p className="dr-phase">{t('rag.deep.phase')}</p>}
         </div>
 
         {result && result.insufficient && (
           <div className="dr-warning">
             <AlertCircle size={15} />
-            Esta colección necesita al menos 2 papers para analizar.
+            {t('rag.deep.insufficient')}
           </div>
         )}
 
         {result && result.available === false && (
           <div className="dr-warning">
             <AlertCircle size={15} />
-            La IA no está disponible. Configura GROQ_API_KEY en el servidor.
+            {t('rag.deep.unavailable')}
           </div>
         )}
 
@@ -109,13 +111,13 @@ const DeepResearch = () => {
           <div className="dr-report">
             <div className="dr-report-head">
               <span className="dr-analyzed">
-                {result.analyzed} de {result.total} papers analizados
+                {t('rag.deep.analyzedCount', { analyzed: result.analyzed, total: result.total })}
               </span>
             </div>
 
             {report.summary && (
               <section className="dr-summary">
-                <h2 className="dr-summary-title"><Sparkles size={14} /> Síntesis</h2>
+                <h2 className="dr-summary-title"><Sparkles size={14} /> {t('rag.deep.synthesis')}</h2>
                 <p>{renderRefs(report.summary, result.sources)}</p>
               </section>
             )}
@@ -126,7 +128,7 @@ const DeepResearch = () => {
               const Icon = sec.icon;
               return (
                 <section key={sec.key} className={`dr-section dr-section-${sec.key}`}>
-                  <h3 className="dr-section-title"><Icon size={14} /> {sec.label}</h3>
+                  <h3 className="dr-section-title"><Icon size={14} /> {t(`rag.deep.sections.${sec.key}`)}</h3>
                   {sec.kind === 'themes' ? (
                     <div className="dr-themes">
                       {items.map((t, i) => (
@@ -151,7 +153,7 @@ const DeepResearch = () => {
             })}
 
             <section className="dr-section dr-sources-section">
-              <h3 className="dr-section-title"><FileText size={14} /> Papers analizados</h3>
+              <h3 className="dr-section-title"><FileText size={14} /> {t('rag.deep.sourcesTitle')}</h3>
               <ol className="dr-sources">
                 {result.sources.map(s => (
                   <li key={s.n} className="dr-source">
@@ -163,7 +165,7 @@ const DeepResearch = () => {
                       </span>
                     </span>
                     {s.url && (
-                      <a href={s.url} target="_blank" rel="noopener noreferrer" className="dr-source-link" title="Abrir">
+                      <a href={s.url} target="_blank" rel="noopener noreferrer" className="dr-source-link" title={t('rag.deep.open')}>
                         <ExternalLink size={13} />
                       </a>
                     )}

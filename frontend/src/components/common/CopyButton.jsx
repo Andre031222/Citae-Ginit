@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Copy, Check } from '../Icons';
 
 /** Limpia etiquetas HTML y entidades para el portapapeles */
@@ -23,13 +24,15 @@ function stripHtml(html = '') {
  */
 export default function CopyButton({
   text,
-  label     = 'Copiar',
+  label,
   iconOnly  = false,
   className = '',
   classNameOk = '',
   size      = 16,
   resetMs   = 2000,
 }) {
+  const { t } = useTranslation();
+  const resolvedLabel = label ?? t('paperui.copy');
   const [ok, setOk] = useState(false);
 
   const handleClick = () => {
@@ -48,11 +51,11 @@ export default function CopyButton({
     <button
       className={cls}
       onClick={handleClick}
-      title={ok ? 'Copiado' : label}
-      aria-label={label}
+      title={ok ? t('paperui.copied') : resolvedLabel}
+      aria-label={resolvedLabel}
     >
       {ok ? <Check size={size} /> : <Copy size={size} />}
-      {!iconOnly && <span>{ok ? 'Copiado' : label}</span>}
+      {!iconOnly && <span>{ok ? t('paperui.copied') : resolvedLabel}</span>}
     </button>
   );
 }

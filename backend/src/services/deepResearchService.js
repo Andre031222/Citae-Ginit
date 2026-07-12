@@ -1,4 +1,5 @@
 const { groqChat, hasKeys } = require('./groqClient');
+const llm = require('./llmContext');
 
 const MODEL_SMART = process.env.GROQ_MODEL || 'llama-3.3-70b-versatile';
 const MAX_PAPERS  = 15;
@@ -21,7 +22,7 @@ async function analyzeCollection(papers, collectionName) {
     `Eres un investigador senior. Analiza en profundidad esta colección de ${used.length} papers` +
     `${collectionName ? ` titulada "${collectionName}"` : ''} y produce una revisión de literatura estructurada.\n\n` +
     `PAPERS:\n${list}\n\n` +
-    `Responde ÚNICAMENTE con JSON válido, en español, con esta forma exacta:\n` +
+    `Responde ÚNICAMENTE con JSON válido, en ${llm.outputLanguage()}, con esta forma exacta:\n` +
     `{\n` +
     `  "summary": "síntesis ejecutiva en 3-4 oraciones",\n` +
     `  "themes": [{"title": "tema/cluster", "detail": "qué lo une", "papers": [1,2]}],\n` +

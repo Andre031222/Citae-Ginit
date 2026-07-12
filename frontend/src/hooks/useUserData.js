@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import api from '../services/api';
 import notify from '../services/swal';
+import i18n from '../i18n';
 import {
   getHighlights, createHighlight, updateHighlight,
   deleteHighlight, clearAllHighlights,
@@ -32,34 +33,34 @@ export function useUserData(user) {
   }, [user, loadHistory, loadFavorites, loadHighlights]);
 
   const handleClearHistory = useCallback(async () => {
-    try { await api.delete('/auth/history'); setUserHistory([]); notify.success('Historial eliminado'); }
-    catch { notify.error('Error al limpiar historial'); }
+    try { await api.delete('/auth/history'); setUserHistory([]); notify.success(i18n.t('shell.notify.historyCleared')); }
+    catch { notify.error(i18n.t('shell.errors.clearHistory')); }
   }, []);
 
   const handleRemoveFavorite = useCallback(async (id) => {
-    try { await api.delete(`/auth/favorites/${id}`); notify.success('Eliminado de favoritos'); loadFavorites(); }
-    catch { notify.error('Error al eliminar'); }
+    try { await api.delete(`/auth/favorites/${id}`); notify.success(i18n.t('shell.notify.removedFavorite')); loadFavorites(); }
+    catch { notify.error(i18n.t('shell.errors.removeFavorite')); }
   }, [loadFavorites]);
 
   const handleCreateHighlight = useCallback(async (payload) => {
     if (!user) return;
     try { await createHighlight(payload); loadHighlights(); }
-    catch { notify.error('Error al guardar el resaltado'); }
+    catch { notify.error(i18n.t('shell.errors.saveHighlight')); }
   }, [user, loadHighlights]);
 
   const handleUpdateHighlight = useCallback(async (id, changes) => {
     try { await updateHighlight(id, changes); loadHighlights(); }
-    catch { notify.error('Error al actualizar el apunte'); }
+    catch { notify.error(i18n.t('shell.errors.updateNote')); }
   }, [loadHighlights]);
 
   const handleDeleteHighlight = useCallback(async (id) => {
     try { await deleteHighlight(id); loadHighlights(); }
-    catch { notify.error('Error al eliminar el resaltado'); }
+    catch { notify.error(i18n.t('shell.errors.deleteHighlight')); }
   }, [loadHighlights]);
 
   const handleClearHighlights = useCallback(async () => {
-    try { await clearAllHighlights(); setUserHighlights([]); notify.success('Todos los apuntes eliminados'); }
-    catch { notify.error('Error al limpiar apuntes'); }
+    try { await clearAllHighlights(); setUserHighlights([]); notify.success(i18n.t('shell.notify.allNotesCleared')); }
+    catch { notify.error(i18n.t('shell.errors.clearNotes')); }
   }, []);
 
   return {

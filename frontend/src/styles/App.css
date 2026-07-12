@@ -25,3 +25,16 @@
 @import './components/authors.css';
 @import './components/apikeys.css';
 @import './components/searchprogress.css';
+
+/* Transición suave al cambiar de idioma (ES <-> EN): la interfaz se atenúa
+   mientras se intercambian los textos y vuelve a aparecer. */
+#root {
+  transition: opacity 150ms ease;
+}
+#root.lang-switching {
+  opacity: 0.25;
+}
+@media (prefers-reduced-motion: reduce) {
+  #root { transition: none; }
+  #root.lang-switching { opacity: 1; }
+}

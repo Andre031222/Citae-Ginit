@@ -52,7 +52,8 @@ app.use(express.urlencoded({ extended: true }));
 // del usuario (cargadas de forma perezosa) antes que las de la plataforma, y
 // persiste los cambios de estado de esas claves (agotada/invalida) al terminar.
 app.use((req, res, next) => {
-  const seed = { req, keyUpdates: [], userProvidersLoaded: false, userProviders: [] };
+  const lang = req.headers['x-citae-lang'] === 'en' ? 'en' : 'es';
+  const seed = { req, lang, keyUpdates: [], userProvidersLoaded: false, userProviders: [] };
   llm.run(seed, () => {
     res.on('finish', () => {
       if (!seed.keyUpdates.length) return;

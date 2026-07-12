@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useBranding } from '../../context/BrandingContext';
 import { updateBranding, uploadBrandingAsset, uploadFeatureImage, deleteFeatureImage } from '../../services/brandingService';
@@ -7,25 +8,16 @@ import notify from '../../services/swal';
 import { Palette, Upload, ImageIcon, Settings, Check, FileText, ChevronLeft, X, Users, Shield, Search } from '../Icons';
 
 const ASSET_SLOTS = [
-  { key: 'logo',    label: 'Logo',    hint: 'PNG, SVG recomendados', urlKey: 'logo_url' },
-  { key: 'favicon', label: 'Favicon', hint: 'ICO o PNG 32×32',      urlKey: 'favicon_url' },
-  { key: 'hero',    label: 'Hero',    hint: 'JPG o PNG, 1280px+',   urlKey: 'hero_image_url' },
-];
-
-const DEFAULT_FEATURES = [
-  { title: 'Búsqueda multi-fuente', desc: 'CrossRef, Semantic Scholar, OpenAlex y arXiv simultáneamente con scoring de relevancia.' },
-  { title: '7 formatos de cita',    desc: 'APA, MLA, Chicago, Harvard, IEEE, Vancouver y BibTeX generados al instante.' },
-  { title: 'Resaltado semántico',   desc: '5 colores con significado académico: citas clave, evidencia, insights, dudas y más.' },
-  { title: 'Reading Assistant IA',  desc: 'Conversación multi-turno sobre el paper. Preguntas sugeridas, historial y Trust Cards.' },
-  { title: 'PDF completo',          desc: 'Sube el PDF y resalta cualquier sección del texto completo, no solo el abstract.' },
-  { title: 'Export flexible',       desc: 'Exporta tus apuntes en Markdown, JSON estructurado o tabla para Notion.' },
+  { key: 'logo',    label: 'Logo',    urlKey: 'logo_url' },
+  { key: 'favicon', label: 'Favicon', urlKey: 'favicon_url' },
+  { key: 'hero',    label: 'Hero',    urlKey: 'hero_image_url' },
 ];
 
 const FEATURE_ACCEPT = 'image/jpeg,image/png,image/webp,image/avif,image/gif,image/svg+xml';
 
 const HERO_FONT_GROUPS = [
   {
-    group: 'Sans-serif modernas',
+    id: 'sans',
     fonts: [
       { value: 'Inter',             label: 'Inter' },
       { value: 'Plus Jakarta Sans', label: 'Plus Jakarta Sans' },
@@ -39,7 +31,7 @@ const HERO_FONT_GROUPS = [
     ],
   },
   {
-    group: 'Serif editorial (estilo revista)',
+    id: 'serifEditorial',
     fonts: [
       { value: 'Source Serif 4',     label: 'Source Serif 4' },
       { value: 'Crimson Pro',        label: 'Crimson Pro' },
@@ -51,7 +43,7 @@ const HERO_FONT_GROUPS = [
     ],
   },
   {
-    group: 'Serif académica clásica',
+    id: 'serifClassic',
     fonts: [
       { value: 'Merriweather',      label: 'Merriweather' },
       { value: 'Playfair Display',  label: 'Playfair Display' },
@@ -64,7 +56,7 @@ const HERO_FONT_GROUPS = [
     ],
   },
   {
-    group: 'Cursivas / caligráficas',
+    id: 'script',
     fonts: [
       { value: 'Dancing Script', label: 'Dancing Script' },
       { value: 'Great Vibes',    label: 'Great Vibes' },
@@ -74,7 +66,7 @@ const HERO_FONT_GROUPS = [
     ],
   },
   {
-    group: 'Display / decorativas',
+    id: 'display',
     fonts: [
       { value: 'Righteous', label: 'Righteous' },
       { value: 'Fredoka',   label: 'Fredoka' },
@@ -83,8 +75,11 @@ const HERO_FONT_GROUPS = [
 ];
 
 export default function AdminBranding({ user, onClose, embedded = false }) {
+  const { t } = useTranslation();
   const { branding, refresh } = useBranding();
   const navigate = useNavigate();
+
+  const DEFAULT_FEATURES = t('adminwrite.admin.features.defaults', { returnObjects: true });
 
   const [colors, setColors] = useState({
     primary_color: branding.primary_color,
@@ -122,7 +117,7 @@ export default function AdminBranding({ user, onClose, embedded = false }) {
         const { users: list } = await listUsers({ search: userSearch, limit: 200 });
         if (active) setUsers(list);
       } catch {
-        if (active) notify.error('Error al cargar usuarios');
+        if (active) notify.error(t('adminwrite.admin.toast.loadUsersError'));
       } finally {
         if (active) setUsersLoading(false);
       }
@@ -136,9 +131,9 @@ export default function AdminBranding({ user, onClose, embedded = false }) {
     try {
       await setUserRole(u.id, newRole);
       setUsers(prev => prev.map(x => (x.id === u.id ? { ...x, role: newRole } : x)));
-      notify.success(newRole === 'super_admin' ? 'Ahora es administrador' : 'Permiso de administrador retirado');
+      notify.success(newRole === 'super_admin' ? t('adminwrite.admin.toast.nowAdmin') : t('adminwrite.admin.toast.adminRemoved'));
     } catch (e) {
-      notify.error(e.response?.data?.message || 'No se pudo cambiar el rol');
+      notify.error(e.response?.data?.message || t('adminwrite.admin.toast.roleChangeError'));
     } finally { setUserBusy(null); }
   };
 
@@ -147,9 +142,9 @@ export default function AdminBranding({ user, onClose, embedded = false }) {
     try {
       await setUserActive(u.id, !u.is_active);
       setUsers(prev => prev.map(x => (x.id === u.id ? { ...x, is_active: !u.is_active } : x)));
-      notify.success(!u.is_active ? 'Cuenta activada' : 'Cuenta desactivada');
+      notify.success(!u.is_active ? t('adminwrite.admin.toast.accountActivated') : t('adminwrite.admin.toast.accountDeactivated'));
     } catch (e) {
-      notify.error(e.response?.data?.message || 'No se pudo cambiar el estado');
+      notify.error(e.response?.data?.message || t('adminwrite.admin.toast.stateChangeError'));
     } finally { setUserBusy(null); }
   };
 
@@ -162,9 +157,9 @@ export default function AdminBranding({ user, onClose, embedded = false }) {
     try {
       await updateBranding(colors);
       await refresh();
-      notify.success('Colores actualizados');
+      notify.success(t('adminwrite.admin.toast.colorsSaved'));
     } catch {
-      notify.error('Error al guardar');
+      notify.error(t('adminwrite.admin.toast.saveError'));
     } finally { setSavingColors(false); }
   };
 
@@ -173,9 +168,9 @@ export default function AdminBranding({ user, onClose, embedded = false }) {
     try {
       await updateBranding(hero);
       await refresh();
-      notify.success('Hero actualizado');
+      notify.success(t('adminwrite.admin.toast.heroSaved'));
     } catch {
-      notify.error('Error al guardar');
+      notify.error(t('adminwrite.admin.toast.saveError'));
     } finally { setSavingHero(false); }
   };
 
@@ -185,9 +180,9 @@ export default function AdminBranding({ user, onClose, embedded = false }) {
     try {
       await uploadBrandingAsset(slot, file);
       await refresh();
-      notify.success(`${slot} actualizado`);
+      notify.success(t('adminwrite.admin.toast.assetUpdated', { slot }));
     } catch {
-      notify.error('Error al subir el archivo');
+      notify.error(t('adminwrite.admin.toast.uploadError'));
     } finally { setUploading(u => ({ ...u, [slot]: false })); }
   };
 
@@ -196,8 +191,8 @@ export default function AdminBranding({ user, onClose, embedded = false }) {
     try {
       await updateBranding({ features_data: features });
       await refresh();
-      notify.success('Funciones actualizadas');
-    } catch { notify.error('Error al guardar'); }
+      notify.success(t('adminwrite.admin.toast.featuresSaved'));
+    } catch { notify.error(t('adminwrite.admin.toast.saveError')); }
     finally { setSavingFeatures(false); }
   };
 
@@ -211,8 +206,8 @@ export default function AdminBranding({ user, onClose, embedded = false }) {
       if (Array.isArray(newBranding?.features_data)) {
         setFeatures(Array(6).fill(null).map((_, i) => newBranding.features_data[i] || {}));
       }
-      notify.success('Imagen actualizada');
-    } catch { notify.error('Error al subir imagen'); }
+      notify.success(t('adminwrite.admin.toast.imageUpdated'));
+    } catch { notify.error(t('adminwrite.admin.toast.imageUploadError')); }
     finally { setUploading(u => ({ ...u, [key]: false })); }
   };
 
@@ -225,8 +220,8 @@ export default function AdminBranding({ user, onClose, embedded = false }) {
       if (Array.isArray(newBranding?.features_data)) {
         setFeatures(Array(6).fill(null).map((_, i) => newBranding.features_data[i] || {}));
       }
-      notify.success('Imagen eliminada');
-    } catch { notify.error('Error al eliminar'); }
+      notify.success(t('adminwrite.admin.toast.imageDeleted'));
+    } catch { notify.error(t('adminwrite.admin.toast.imageDeleteError')); }
     finally { setUploading(u => ({ ...u, [key]: false })); }
   };
 
@@ -244,25 +239,25 @@ export default function AdminBranding({ user, onClose, embedded = false }) {
         <div className="admin-branding-header">
           <button className="admin-back-btn" onClick={() => navigate('/app')}>
             <ChevronLeft size={15} />
-            Volver a la app
+            {t('adminwrite.admin.back')}
           </button>
           <div className="admin-branding-title">
             <Settings size={18} />
-            <span>Super Admin — Identidad visual</span>
+            <span>{t('adminwrite.admin.headerTitle')}</span>
           </div>
           {onClose && (
-            <button className="admin-branding-close" onClick={onClose} title="Cerrar" aria-label="Cerrar"><X size={16} /></button>
+            <button className="admin-branding-close" onClick={onClose} title={t('adminwrite.admin.close')} aria-label={t('adminwrite.admin.close')}><X size={16} /></button>
           )}
         </div>
       )}
 
       <section className="admin-section">
         <h2 className="admin-section-title">
-          <Palette size={15} /> Colores del sitio
+          <Palette size={15} /> {t('adminwrite.admin.colors.title')}
         </h2>
         <div className="admin-field-row">
           <label className="admin-label">
-            Nombre del sitio
+            {t('adminwrite.admin.colors.siteName')}
             <input
               className="admin-input"
               value={colors.site_name}
@@ -273,7 +268,7 @@ export default function AdminBranding({ user, onClose, embedded = false }) {
         </div>
         <div className="admin-field-row admin-field-row--colors">
           <label className="admin-label">
-            Color primario
+            {t('adminwrite.admin.colors.primary')}
             <div className="admin-color-wrap">
               <input type="color" className="admin-color-swatch"
                 value={colors.primary_color}
@@ -285,7 +280,7 @@ export default function AdminBranding({ user, onClose, embedded = false }) {
             </div>
           </label>
           <label className="admin-label">
-            Color acento (gold)
+            {t('adminwrite.admin.colors.accent')}
             <div className="admin-color-wrap">
               <input type="color" className="admin-color-swatch"
                 value={colors.accent_color}
@@ -298,23 +293,23 @@ export default function AdminBranding({ user, onClose, embedded = false }) {
           </label>
         </div>
         <button className="admin-btn-primary" onClick={handleColorSave} disabled={savingColors}>
-          {savingColors ? 'Guardando…' : <><Check size={13} /> Guardar colores</>}
+          {savingColors ? t('adminwrite.admin.saving') : <><Check size={13} /> {t('adminwrite.admin.colors.save')}</>}
         </button>
       </section>
 
       <section className="admin-section admin-section--hero">
         <h2 className="admin-section-title">
-          <FileText size={15} /> Contenido del hero
+          <FileText size={15} /> {t('adminwrite.admin.hero.title')}
         </h2>
 
         <div className="admin-hero-layout">
 
           <div className="admin-font-panel">
-            <p className="admin-font-panel-title">Tipografía</p>
+            <p className="admin-font-panel-title">{t('adminwrite.admin.hero.typography')}</p>
             <div className="admin-font-list">
-              {HERO_FONT_GROUPS.map(({ group, fonts }) => (
-                <div key={group} className="admin-font-list-group">
-                  <p className="admin-font-list-group-label">{group}</p>
+              {HERO_FONT_GROUPS.map(({ id, fonts }) => (
+                <div key={id} className="admin-font-list-group">
+                  <p className="admin-font-list-group-label">{t(`adminwrite.admin.hero.fontGroups.${id}`)}</p>
                   {fonts.map(f => (
                     <button
                       key={f.value}
@@ -339,7 +334,7 @@ export default function AdminBranding({ user, onClose, embedded = false }) {
           <div className="admin-hero-fields">
 
             <div className="admin-hero-preview">
-              <p className="admin-hero-preview-label">Vista previa</p>
+              <p className="admin-hero-preview-label">{t('adminwrite.admin.hero.preview')}</p>
               <h3 className="admin-hero-preview-title" style={{ fontFamily: `'${hero.hero_font}', serif` }}>
                 {hero.hero_title_1 && <>{hero.hero_title_1}<br /></>}
                 {hero.hero_title_em && <em style={{ color: 'var(--gold-hover)' }}>{hero.hero_title_em}</em>}
@@ -351,32 +346,32 @@ export default function AdminBranding({ user, onClose, embedded = false }) {
 
             <div className="admin-field-row">
               <label className="admin-label">
-                Línea 1 del título
+                {t('adminwrite.admin.hero.line1')}
                 <input className="admin-input"
                   value={hero.hero_title_1}
                   onChange={e => setHero(h => ({ ...h, hero_title_1: e.target.value }))}
-                  placeholder="Cita, resalta y" maxLength={120} />
+                  placeholder={t('adminwrite.admin.hero.line1Ph')} maxLength={120} />
               </label>
             </div>
             <div className="admin-field-row admin-field-row--cols2">
               <label className="admin-label">
-                Palabra resaltada
+                {t('adminwrite.admin.hero.emWord')}
                 <input className="admin-input admin-input--em"
                   value={hero.hero_title_em}
                   onChange={e => setHero(h => ({ ...h, hero_title_em: e.target.value }))}
-                  placeholder="comprende" maxLength={60} />
+                  placeholder={t('adminwrite.admin.hero.emWordPh')} maxLength={60} />
               </label>
               <label className="admin-label">
-                Texto después
+                {t('adminwrite.admin.hero.after')}
                 <input className="admin-input"
                   value={hero.hero_title_2}
                   onChange={e => setHero(h => ({ ...h, hero_title_2: e.target.value }))}
-                  placeholder="tus papers" maxLength={120} />
+                  placeholder={t('adminwrite.admin.hero.afterPh')} maxLength={120} />
               </label>
             </div>
             <div className="admin-field-row">
               <label className="admin-label">
-                Subtítulo
+                {t('adminwrite.admin.hero.subtitle')}
                 <textarea className="admin-textarea"
                   value={hero.hero_subtitle}
                   onChange={e => setHero(h => ({ ...h, hero_subtitle: e.target.value }))}
@@ -385,7 +380,7 @@ export default function AdminBranding({ user, onClose, embedded = false }) {
             </div>
 
             <button className="admin-btn-primary" onClick={handleHeroSave} disabled={savingHero}>
-              {savingHero ? 'Guardando…' : <><Check size={13} /> Guardar hero</>}
+              {savingHero ? t('adminwrite.admin.saving') : <><Check size={13} /> {t('adminwrite.admin.hero.save')}</>}
             </button>
           </div>
         </div>
@@ -393,10 +388,10 @@ export default function AdminBranding({ user, onClose, embedded = false }) {
 
       <section className="admin-section">
         <h2 className="admin-section-title">
-          <ImageIcon size={15} /> Imágenes del sitio
+          <ImageIcon size={15} /> {t('adminwrite.admin.assets.title')}
         </h2>
         <div className="admin-assets-grid">
-          {ASSET_SLOTS.map(({ key, label, hint, urlKey }) => (
+          {ASSET_SLOTS.map(({ key, label, urlKey }) => (
             <div key={key} className="admin-asset-card">
               <div className="admin-asset-preview">
                 {branding[urlKey]
@@ -406,11 +401,11 @@ export default function AdminBranding({ user, onClose, embedded = false }) {
               </div>
               <div className="admin-asset-info">
                 <span className="admin-asset-label">{label}</span>
-                <span className="admin-asset-hint">{hint}</span>
+                <span className="admin-asset-hint">{t(`adminwrite.admin.assets.hints.${key}`)}</span>
               </div>
               <label className={`admin-btn-upload ${uploading[key] ? 'admin-btn-upload--busy' : ''}`}>
                 <Upload size={13} />
-                {uploading[key] ? 'Subiendo…' : 'Subir'}
+                {uploading[key] ? t('adminwrite.admin.uploading') : t('adminwrite.admin.assets.upload')}
                 <input type="file" accept="image/*,.ico,.svg" style={{ display: 'none' }}
                   disabled={uploading[key]}
                   onChange={e => handleAssetUpload(key, e.target.files[0])} />
@@ -422,11 +417,10 @@ export default function AdminBranding({ user, onClose, embedded = false }) {
 
       <section className="admin-section">
         <h2 className="admin-section-title">
-          <ImageIcon size={15} /> Funciones
+          <ImageIcon size={15} /> {t('adminwrite.admin.features.title')}
         </h2>
         <p className="admin-section-hint">
-          Personaliza título, descripción e imagen de cada función.
-          Formatos: JPG, PNG, WebP, AVIF, GIF, SVG — se optimizan automáticamente a WebP.
+          {t('adminwrite.admin.features.hint')}
         </p>
         <div className="admin-features-grid">
           {DEFAULT_FEATURES.map((def, i) => {
@@ -434,7 +428,7 @@ export default function AdminBranding({ user, onClose, embedded = false }) {
             const key = `feat_${i}`;
             return (
               <div key={i} className="admin-feature-item">
-                <div className="admin-feature-item-num">Función {i + 1}</div>
+                <div className="admin-feature-item-num">{t('adminwrite.admin.features.itemNum', { n: i + 1 })}</div>
 
                 <div className="admin-feature-img-wrap">
                   {fd.image_url
@@ -444,7 +438,7 @@ export default function AdminBranding({ user, onClose, embedded = false }) {
                   <div className="admin-feature-img-actions">
                     <label className={`admin-btn-upload admin-btn-upload--sm ${uploading[key] ? 'admin-btn-upload--busy' : ''}`}>
                       <Upload size={11} />
-                      {uploading[key] ? 'Subiendo…' : 'Subir imagen'}
+                      {uploading[key] ? t('adminwrite.admin.uploading') : t('adminwrite.admin.features.uploadImage')}
                       <input
                         type="file"
                         accept={FEATURE_ACCEPT}
@@ -456,7 +450,7 @@ export default function AdminBranding({ user, onClose, embedded = false }) {
                     {fd.image_url && (
                       <button
                         className="admin-btn-icon-sm"
-                        title="Quitar imagen"
+                        title={t('adminwrite.admin.features.removeImage')}
                         onClick={() => handleFeatureImageDelete(i)}
                         disabled={!!uploading[key]}
                       >
@@ -467,7 +461,7 @@ export default function AdminBranding({ user, onClose, embedded = false }) {
                 </div>
 
                 <label className="admin-label">
-                  Título
+                  {t('adminwrite.admin.features.fieldTitle')}
                   <input
                     className="admin-input"
                     value={fd.title ?? def.title}
@@ -478,7 +472,7 @@ export default function AdminBranding({ user, onClose, embedded = false }) {
                 </label>
 
                 <label className="admin-label">
-                  Descripción
+                  {t('adminwrite.admin.features.fieldDesc')}
                   <textarea
                     className="admin-textarea"
                     rows={2}
@@ -493,34 +487,32 @@ export default function AdminBranding({ user, onClose, embedded = false }) {
           })}
         </div>
         <button className="admin-btn-primary" onClick={handleFeaturesSave} disabled={savingFeatures}>
-          {savingFeatures ? 'Guardando…' : <><Check size={13} /> Guardar funciones</>}
+          {savingFeatures ? t('adminwrite.admin.saving') : <><Check size={13} /> {t('adminwrite.admin.features.save')}</>}
         </button>
       </section>
 
       <section className="admin-section">
         <h2 className="admin-section-title">
-          <Users size={15} /> Usuarios registrados
+          <Users size={15} /> {t('adminwrite.admin.users.title')}
         </h2>
         <p className="admin-section-hint">
-          Gestiona los usuarios que se han registrado: concede o retira permisos de
-          administrador y activa o desactiva cuentas. Los cambios de rol se aplican
-          cuando el usuario recarga su sesión.
+          {t('adminwrite.admin.users.hint')}
         </p>
 
         <div className="admin-users-search">
           <Search size={14} />
           <input
             className="admin-input"
-            placeholder="Buscar por nombre, usuario o email…"
+            placeholder={t('adminwrite.admin.users.searchPh')}
             value={userSearch}
             onChange={e => setUserSearch(e.target.value)}
           />
         </div>
 
         {usersLoading ? (
-          <p className="admin-users-empty">Cargando usuarios…</p>
+          <p className="admin-users-empty">{t('adminwrite.admin.users.loading')}</p>
         ) : users.length === 0 ? (
-          <p className="admin-users-empty">No hay usuarios que coincidan.</p>
+          <p className="admin-users-empty">{t('adminwrite.admin.users.empty')}</p>
         ) : (
           <div className="admin-users-list">
             {users.map(u => {
@@ -537,9 +529,9 @@ export default function AdminBranding({ user, onClose, embedded = false }) {
                   <div className="admin-user-meta">
                     <span className="admin-user-name">
                       {u.full_name || u.username}
-                      {isSelf  && <span className="admin-user-tag">tú</span>}
-                      {isAdmin && <span className="admin-user-tag admin-user-tag--admin"><Shield size={10} /> Admin</span>}
-                      {!u.is_active && <span className="admin-user-tag admin-user-tag--off">Inactivo</span>}
+                      {isSelf  && <span className="admin-user-tag">{t('adminwrite.admin.users.tagSelf')}</span>}
+                      {isAdmin && <span className="admin-user-tag admin-user-tag--admin"><Shield size={10} /> {t('adminwrite.admin.users.tagAdmin')}</span>}
+                      {!u.is_active && <span className="admin-user-tag admin-user-tag--off">{t('adminwrite.admin.users.tagOff')}</span>}
                     </span>
                     <span className="admin-user-email">{u.email}</span>
                   </div>
@@ -547,18 +539,18 @@ export default function AdminBranding({ user, onClose, embedded = false }) {
                     <button
                       className="admin-user-btn"
                       disabled={isSelf || busy}
-                      title={isSelf ? 'No puedes cambiar tu propio rol' : ''}
+                      title={isSelf ? t('adminwrite.admin.users.cantChangeOwnRole') : ''}
                       onClick={() => handleToggleRole(u)}
                     >
-                      {isAdmin ? 'Quitar admin' : 'Hacer admin'}
+                      {isAdmin ? t('adminwrite.admin.users.removeAdmin') : t('adminwrite.admin.users.makeAdmin')}
                     </button>
                     <button
                       className={`admin-user-btn ${u.is_active ? 'admin-user-btn--danger' : ''}`}
                       disabled={isSelf || busy}
-                      title={isSelf ? 'No puedes desactivar tu propia cuenta' : ''}
+                      title={isSelf ? t('adminwrite.admin.users.cantDeactivateSelf') : ''}
                       onClick={() => handleToggleActive(u)}
                     >
-                      {u.is_active ? 'Desactivar' : 'Activar'}
+                      {u.is_active ? t('adminwrite.admin.users.deactivate') : t('adminwrite.admin.users.activate')}
                     </button>
                   </div>
                 </div>

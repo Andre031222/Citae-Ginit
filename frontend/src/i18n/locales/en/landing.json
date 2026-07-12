@@ -1,0 +1,159 @@
+{
+  "nav": {
+    "home": "Home",
+    "features": "Features",
+    "how": "How it works",
+    "formats": "Formats",
+    "toggleTheme": "Switch theme",
+    "continueGoogle": "Continue with Google",
+    "login": "Log in",
+    "startFree": "Start free"
+  },
+  "hero": {
+    "seeHow": "See how it works",
+    "badgeDoi": "Verified DOI",
+    "badgePeerReview": "Peer reviewed",
+    "badgeFormats": "7 formats",
+    "badgeFree": "Free",
+    "floatCite": "Citation generated in APA",
+    "floatAi": "AI answered your question"
+  },
+  "sources": {
+    "label": "Search simultaneously across"
+  },
+  "loop": {
+    "ariaLabel": "Supported academic sources and citation formats"
+  },
+  "features": {
+    "heading": "Everything your research needs",
+    "subheading": "Multi-source search, instant citations, semantic highlighting and an AI reading assistant — all in one place.",
+    "multiSource": {
+      "title": "Multi-source search",
+      "desc": "CrossRef, Semantic Scholar, OpenAlex and arXiv simultaneously with relevance scoring."
+    },
+    "formats": {
+      "title": "7 citation formats",
+      "desc": "APA, MLA, Chicago, Harvard, IEEE, Vancouver and BibTeX generated instantly."
+    },
+    "highlight": {
+      "title": "Semantic highlighting",
+      "desc": "5 colors with academic meaning: key citations, evidence, insights, questions and more."
+    },
+    "assistant": {
+      "title": "AI Reading Assistant",
+      "desc": "Multi-turn conversation about the paper. Suggested questions, history and Trust Cards."
+    },
+    "pdf": {
+      "title": "Full PDF",
+      "desc": "Upload the PDF and highlight any section of the full text, not just the abstract."
+    },
+    "export": {
+      "title": "Flexible export",
+      "desc": "Export your notes as Markdown, structured JSON or a table for Notion."
+    }
+  },
+  "how": {
+    "heading": "Four steps, perfect result"
+  },
+  "steps": {
+    "search": {
+      "title": "Search or upload your paper",
+      "desc": "Enter a DOI, URL, title or upload a PDF from your device."
+    },
+    "select": {
+      "title": "Pick the result",
+      "desc": "Choose from multiple sources with smart relevance scoring."
+    },
+    "cite": {
+      "title": "Cite, highlight and ask",
+      "desc": "Generate the citation, highlight passages and chat with the AI about the paper."
+    },
+    "export": {
+      "title": "Export your notes",
+      "desc": "Markdown, JSON or a Notion table in one click. Everything organized."
+    }
+  },
+  "ai": {
+    "heading": "Chat with your paper",
+    "subheading": "Select any passage, ask the AI and get contextual answers. Multi-turn conversation, suggested questions and transparent attribution.",
+    "perkHistory": "Conversation history per session",
+    "perkSuggested": "Automatic suggested questions",
+    "perkTrust": "Trust Card: based only on what you read",
+    "perkPdf": "Works on the abstract and the full PDF",
+    "tryFree": "Try it free",
+    "demoQuestion": "What does zero-shot mean here?",
+    "demoAnswerPre": "Zero-shot means the model can segment objects it ",
+    "demoAnswerStrong": "never saw during training",
+    "demoAnswerPost": ". SAM was trained with a flexible prompt that lets it generalize without specific examples for each category.",
+    "demoTrust": "Based on the paper's abstract",
+    "demoChip1": "How does it compare to CLIP?",
+    "demoChip2": "What limitations does it have?",
+    "inputPlaceholder": "Follow-up question…"
+  },
+  "formatsSection": {
+    "heading": "The 7 academic standards",
+    "subheading": "Generated instantly with direct copy to clipboard."
+  },
+  "formats": {
+    "apa": {
+      "field": "Psychology · Social sciences",
+      "sample": "Author, A. A. (2024). Title. Journal Name, 5(2), 12–25."
+    },
+    "mla": {
+      "field": "Literature · Humanities",
+      "sample": "Author, Name. \"Title.\" Journal Name, vol. 5, 2024, pp. 12–25."
+    },
+    "chicago": {
+      "field": "History · Art",
+      "sample": "Author, N. \"Title.\" Journal Name 5, no. 2 (2024): 12–25."
+    },
+    "harvard": {
+      "field": "General · UK universities",
+      "sample": "Author, A. A. (2024) 'Title', Journal Name, 5(2), pp. 12–25."
+    },
+    "ieee": {
+      "field": "Engineering · Computing",
+      "sample": "[1] A. Author, \"Title,\" Journal, vol. 5, no. 2, pp. 12–25, 2024."
+    },
+    "vancouver": {
+      "field": "Medicine · Health sciences",
+      "sample": "Author AA. Title. Journal Name. 2024;5(2):12–25."
+    },
+    "bibtex": {
+      "field": "LaTeX · Computing",
+      "sample": "@article{author2024,\n  author = {Author, A.},\n  year   = {2024}\n}"
+    }
+  },
+  "stats": {
+    "formats": "Citation formats",
+    "sources": "Academic sources",
+    "exports": "Export types",
+    "free": "Free"
+  },
+  "cta": {
+    "eyebrow": "Start today",
+    "headingLine1": "Research faster,",
+    "headingLine2": "cite without errors",
+    "sub": "No subscription. No extensions. No hassle.",
+    "createAccount": "Create free account",
+    "haveAccount": "I already have an account",
+    "trust": "No credit card · No installation · Instant access"
+  },
+  "footer": {
+    "tagline": "Search, read and cite academic papers in seconds. No card required.",
+    "productTitle": "Product",
+    "productSearch": "Search papers",
+    "productCite": "Generate citations",
+    "productReader": "AI reader",
+    "productExport": "Export bibliography",
+    "formatsTitle": "Formats",
+    "accountTitle": "Account",
+    "accountLogin": "Log in",
+    "accountRegister": "Register free",
+    "copy": "© {{year}} Citae · Academic research tool",
+    "madeBy": "Developed by {{name}}"
+  },
+  "mobile": {
+    "ariaLabel": "Navigation"
+  }
+}

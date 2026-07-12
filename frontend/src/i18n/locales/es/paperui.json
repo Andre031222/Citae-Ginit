@@ -1,0 +1,150 @@
+{
+  "copy": "Copiar",
+  "copied": "Copiado",
+  "citeText": {
+    "source": "Fuente {{n}}"
+  },
+  "citationDisplay": {
+    "title": "Citaciones Generadas",
+    "exportAll": "Exportar Todo"
+  },
+  "colors": {
+    "yellow": "Cita / idea clave",
+    "green": "Dato / evidencia",
+    "blue": "Insight propio",
+    "pink": "Duda / contradicción",
+    "navy": "Clave del paper"
+  },
+  "score": {
+    "signalsTitle": "Señales de score",
+    "titleSim": "Similitud título",
+    "sourceBoost": "Fuentes cruzadas",
+    "citationBoost": "Citaciones",
+    "authorBoost": "Autor en query",
+    "doiBoost": "DOI verificado",
+    "yearBoost": "Año"
+  },
+  "drawer": {
+    "aria": "Detalles del paper",
+    "reference": "Referencia",
+    "openDownload": "Abrir / Descargar",
+    "close": "Cerrar (Esc)",
+    "match": "Coincidencia",
+    "citations_one": "{{formatted}} cita",
+    "citations_other": "{{formatted}} citas",
+    "unknownAuthors": "Autores desconocidos",
+    "searchingAbstract": "Buscando resumen…",
+    "aiSummaryBadge": "Resumen generado por IA",
+    "noAbstract": "Resumen no disponible para este paper.",
+    "loadingText": "Cargando texto…",
+    "pdfExtracted": "📄 Texto extraído del PDF",
+    "noFulltext": "Texto completo no disponible. Sube el PDF del paper para resaltarlo.",
+    "notesPdf": "Apuntes del PDF",
+    "notesAbstract": "Apuntes del abstract",
+    "deleteNote": "Eliminar",
+    "noMeta": "Sin metadatos disponibles.",
+    "citeIntro": "Selecciona y copia esta referencia en el formato que necesitas. El texto es editable — puedes ajustarlo antes de copiar.",
+    "loading": "Cargando…",
+    "choose": "Elegir este paper →",
+    "tabs": {
+      "abstract": "Abstract",
+      "fulltext": "Texto PDF",
+      "meta": "Metadatos",
+      "cite": "Citar"
+    },
+    "meta": {
+      "publisher": "Editorial",
+      "journal": "Revista",
+      "year": "Año",
+      "volume": "Volumen",
+      "issue": "Número",
+      "pages": "Páginas",
+      "doi": "DOI",
+      "sources": "Fuentes",
+      "citations": "Citaciones"
+    }
+  },
+  "row": {
+    "citationsK": "{{n}}k citas",
+    "citations_one": "{{count}} cita",
+    "citations_other": "{{count}} citas",
+    "deselect": "Deseleccionar",
+    "selectToCopy": "Seleccionar para copiar",
+    "bestMatch": "Mejor coincidencia",
+    "verifiedIn": "Verificado en {{count}} fuentes",
+    "sourcesCount": "{{count}} fuentes",
+    "sharedThemesAria": "Temas en común con la búsqueda"
+  },
+  "sort": {
+    "score": "Relevancia",
+    "year": "Año (reciente)",
+    "citations": "Citaciones"
+  },
+  "refine": {
+    "searchLabel": "Búsqueda:",
+    "noClearMatch": "No encontramos una coincidencia clara.",
+    "hintPrefix": "Prueba añadiendo el ",
+    "hintMid": ", el ",
+    "author": "autor",
+    "hintOr": " o el ",
+    "year": "año",
+    "hintSuffix": " al título, o pega directamente la URL o DOI del artículo.",
+    "showApprox_one": "Ver {{count}} resultado aproximado",
+    "showApprox_other": "Ver {{count}} resultados aproximados"
+  },
+  "compare": {
+    "directSummary": "Resumen directo",
+    "sharedThemes": "Temas en común",
+    "themeCount": "{{count}} de {{total}} papers",
+    "sortLabel": "Ordenar",
+    "sourceLabel": "Fuente",
+    "allSources": "Todas",
+    "resetFilters": "Restablecer filtros",
+    "reset": "Restablecer",
+    "deselectAll": "Deseleccionar todos",
+    "selectAll": "Seleccionar todos",
+    "resultsFiltered_one": "{{shown}} de {{total}} resultado",
+    "resultsFiltered_other": "{{shown}} de {{total}} resultados",
+    "results_one": "{{count}} resultado",
+    "results_other": "{{count}} resultados",
+    "selectedCount_one": " · {{count}} seleccionado",
+    "selectedCount_other": " · {{count}} seleccionados",
+    "matchPercent": "{{score}}% de coincidencia",
+    "emptyFilter": "Sin resultados para la fuente seleccionada.",
+    "viewAllSources": "Ver todas las fuentes",
+    "hintActive": "← Viendo detalles del resultado seleccionado",
+    "hintIdle": "Haz clic en un resultado para ver detalles, o marca ✓ para copiar citas en bloque",
+    "citeCount_one": "{{count}} cita",
+    "citeCount_other": "{{count}} citas",
+    "citationFormat": "Formato de citación",
+    "copyCites_one": "Copiar {{count}} cita",
+    "copyCites_other": "Copiar {{count}} citas",
+    "clearSelection": "Limpiar selección"
+  },
+  "highlight": {
+    "trustSources_one": "{{count}} fuente verificada",
+    "trustSources_other": "{{count}} fuentes verificadas",
+    "addNote": "Añadir nota",
+    "askAi": "Preguntar a la IA",
+    "deleteHighlight": "Eliminar resaltado",
+    "close": "Cerrar",
+    "notePlaceholder": "Añade una nota a este resaltado…",
+    "saveNote": "Guardar nota",
+    "cancel": "Cancelar",
+    "saveHint": "Ctrl+Enter para guardar"
+  },
+  "assistant": {
+    "aiUnavailable": "⚠ La IA no está disponible en este momento.",
+    "chipExplain": "Explícalo simple",
+    "chipSummarize": "Resúmelo",
+    "chipWhy": "¿Por qué importa?",
+    "chipMethod": "¿Qué metodología usa?",
+    "thinking": "Pensando…",
+    "copyAnswer": "Copiar respuesta",
+    "basedOnFulltext": "el texto completo del PDF",
+    "basedOnAbstract": "el abstract del paper",
+    "basedOnPrefix": "↳ Basado en {{source}}",
+    "followupPlaceholder": "Pregunta de seguimiento…",
+    "askPlaceholder": "Pregunta sobre este fragmento o el paper…"
+  }
+}

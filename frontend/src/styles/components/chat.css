@@ -946,6 +946,28 @@
 }
 .chat-incognito-label { font-size: var(--fs-xs); font-weight: 600; }
 
+/* Selector de idioma (ES / EN) */
+.lang-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  height: 32px;
+  padding: 0 9px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: transparent;
+  color: var(--text-muted);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: .02em;
+  cursor: pointer;
+  transition: color 140ms var(--ease-ui), border-color 140ms var(--ease-ui);
+}
+.lang-switch:hover { color: var(--text); border-color: var(--text-muted); }
+.lang-switch-current { color: var(--accent); }
+.lang-switch-sep { opacity: .5; }
+.lang-switch-next { opacity: .7; }
+
 /* Banner de modo incógnito sobre el hilo */
 .chat-incognito-bar {
   display: flex;

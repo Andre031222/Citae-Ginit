@@ -1,10 +1,12 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import citoLogo from '../assets/citae-logo-v2.png';
 import { Sun, Moon, Copy, Sparkles, X, ArrowRight, Bot, GoogleIcon, Home, Info, Quote } from './Icons';
 import { useBranding } from '../context/BrandingContext';
 import { googleAuthUrl } from '../services/apiBase';
 import LogoLoop from './LogoLoop';
+import LanguageSwitcher from './common/LanguageSwitcher';
 
 function scrollTo(id) {
   const el = document.getElementById(id);
@@ -53,8 +55,8 @@ const FEATURES = [
         <path d="M57 54 L50 47" stroke="var(--accent)" strokeWidth="1" strokeOpacity=".32" strokeDasharray="2.5 2"/>
       </svg>
     ),
-    title: 'Búsqueda multi-fuente',
-    desc: 'CrossRef, Semantic Scholar, OpenAlex y arXiv simultáneamente con scoring de relevancia.',
+    titleKey: 'features.multiSource.title',
+    descKey: 'features.multiSource.desc',
   },
   {
     illo: (
@@ -70,8 +72,8 @@ const FEATURES = [
         <rect x="22" y="49" width="14" height="2.5" rx="1.25" fill="var(--accent)" fillOpacity=".28"/>
       </svg>
     ),
-    title: '7 formatos de cita',
-    desc: 'APA, MLA, Chicago, Harvard, IEEE, Vancouver y BibTeX generados al instante.',
+    titleKey: 'features.formats.title',
+    descKey: 'features.formats.desc',
   },
   {
     illo: (
@@ -93,8 +95,8 @@ const FEATURES = [
         <circle cx="55" cy="63.5" r="2.5" fill="#22C55E"/>
       </svg>
     ),
-    title: 'Resaltado semántico',
-    desc: '5 colores con significado académico: citas clave, evidencia, insights, dudas y más.',
+    titleKey: 'features.highlight.title',
+    descKey: 'features.highlight.desc',
   },
   {
     illo: (
@@ -111,8 +113,8 @@ const FEATURES = [
         <path d="M62 10 L64 16 L70 18 L64 20 L62 26 L60 20 L54 18 L60 16 Z" fill="var(--accent)" fillOpacity=".65"/>
       </svg>
     ),
-    title: 'Reading Assistant IA',
-    desc: 'Conversación multi-turno sobre el paper. Preguntas sugeridas, historial y Trust Cards.',
+    titleKey: 'features.assistant.title',
+    descKey: 'features.assistant.desc',
   },
   {
     illo: (
@@ -127,8 +129,8 @@ const FEATURES = [
         <rect x="22" y="57" width="18" height="2.5" rx="1.25" fill="var(--accent)" fillOpacity=".22"/>
       </svg>
     ),
-    title: 'PDF completo',
-    desc: 'Sube el PDF y resalta cualquier sección del texto completo, no solo el abstract.',
+    titleKey: 'features.pdf.title',
+    descKey: 'features.pdf.desc',
   },
   {
     illo: (
@@ -144,46 +146,46 @@ const FEATURES = [
         <rect x="56" y="44" width="14" height="14" rx="4" fill="var(--accent)" fillOpacity=".1" stroke="var(--accent)" strokeWidth="1.5"/>
       </svg>
     ),
-    title: 'Export flexible',
-    desc: 'Exporta tus apuntes en Markdown, JSON estructurado o tabla para Notion.',
+    titleKey: 'features.export.title',
+    descKey: 'features.export.desc',
   },
 ];
 
 const FORMAT_CARDS = [
   {
     name: 'APA',
-    field: 'Psicología · Ciencias sociales',
-    sample: 'Autor, A. A. (2024). Título. Nombre de la Revista, 5(2), 12–25.',
+    fieldKey: 'formats.apa.field',
+    sampleKey: 'formats.apa.sample',
   },
   {
     name: 'MLA',
-    field: 'Literatura · Humanidades',
-    sample: 'Autor, Nombre. "Título." Nombre Revista, vol. 5, 2024, pp. 12–25.',
+    fieldKey: 'formats.mla.field',
+    sampleKey: 'formats.mla.sample',
   },
   {
     name: 'Chicago',
-    field: 'Historia · Arte',
-    sample: 'Autor, N. "Título." Nombre Revista 5, n.º 2 (2024): 12–25.',
+    fieldKey: 'formats.chicago.field',
+    sampleKey: 'formats.chicago.sample',
   },
   {
     name: 'Harvard',
-    field: 'General · Universidades UK',
-    sample: "Autor, A. A. (2024) 'Título', Nombre Revista, 5(2), pp. 12–25.",
+    fieldKey: 'formats.harvard.field',
+    sampleKey: 'formats.harvard.sample',
   },
   {
     name: 'IEEE',
-    field: 'Ingeniería · Computación',
-    sample: '[1] A. Autor, "Título," Revista, vol. 5, no. 2, pp. 12–25, 2024.',
+    fieldKey: 'formats.ieee.field',
+    sampleKey: 'formats.ieee.sample',
   },
   {
     name: 'Vancouver',
-    field: 'Medicina · Ciencias de la salud',
-    sample: 'Autor AA. Título. Nombre Revista. 2024;5(2):12–25.',
+    fieldKey: 'formats.vancouver.field',
+    sampleKey: 'formats.vancouver.sample',
   },
   {
     name: 'BibTeX',
-    field: 'LaTeX · Computación',
-    sample: '@article{autor2024,\n  author = {Autor, A.},\n  year   = {2024}\n}',
+    fieldKey: 'formats.bibtex.field',
+    sampleKey: 'formats.bibtex.sample',
   },
 ];
 
@@ -227,8 +229,8 @@ const LOOP_LOGOS = [
 const STEPS = [
   {
     n: '01',
-    title: 'Busca o sube tu paper',
-    desc: 'Ingresa DOI, URL, título o sube un PDF desde tu dispositivo.',
+    titleKey: 'steps.search.title',
+    descKey: 'steps.search.desc',
     icon: (
       <svg viewBox="0 0 24 24" fill="none" className="lp-how-svg" aria-hidden>
         <circle cx="11" cy="11" r="6" stroke="var(--accent)" strokeWidth="1.8"/>
@@ -239,8 +241,8 @@ const STEPS = [
   },
   {
     n: '02',
-    title: 'Selecciona el resultado',
-    desc: 'Elige de múltiples fuentes con score de relevancia inteligente.',
+    titleKey: 'steps.select.title',
+    descKey: 'steps.select.desc',
     icon: (
       <svg viewBox="0 0 24 24" fill="none" className="lp-how-svg" aria-hidden>
         <rect x="3" y="3" width="13" height="4" rx="2" fill="var(--accent)" fillOpacity=".12" stroke="var(--accent)" strokeWidth="1.4"/>
@@ -253,8 +255,8 @@ const STEPS = [
   },
   {
     n: '03',
-    title: 'Cita, resalta y pregunta',
-    desc: 'Genera la cita, resalta fragmentos y conversa con la IA sobre el paper.',
+    titleKey: 'steps.cite.title',
+    descKey: 'steps.cite.desc',
     icon: (
       <svg viewBox="0 0 24 24" fill="none" className="lp-how-svg" aria-hidden>
         <rect x="2" y="5" width="14" height="3" rx="1.5" fill="#FBE34D" fillOpacity=".85"/>
@@ -267,8 +269,8 @@ const STEPS = [
   },
   {
     n: '04',
-    title: 'Exporta tus apuntes',
-    desc: 'Markdown, JSON o tabla Notion en un clic. Todo organizado.',
+    titleKey: 'steps.export.title',
+    descKey: 'steps.export.desc',
     icon: (
       <svg viewBox="0 0 24 24" fill="none" className="lp-how-svg" aria-hidden>
         <rect x="2" y="2" width="14" height="18" rx="2.5" fill="var(--accent)" fillOpacity=".08" stroke="var(--accent)" strokeWidth="1.4"/>
@@ -281,6 +283,7 @@ const STEPS = [
 ];
 
 export default function LandingPage({ theme, onToggleTheme }) {
+  const { t } = useTranslation();
   const [scrolled, setScrolled] = useState(false);
   const { branding } = useBranding();
 
@@ -306,22 +309,23 @@ export default function LandingPage({ theme, onToggleTheme }) {
           </Link>
 
           <nav className="lp-nav-links">
-            <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Inicio</button>
-            <button onClick={() => navTo('features')}>Funciones</button>
-            <button onClick={() => navTo('how')}>Cómo funciona</button>
-            <button onClick={() => navTo('formats')}>Formatos</button>
+            <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>{t('landing.nav.home')}</button>
+            <button onClick={() => navTo('features')}>{t('landing.nav.features')}</button>
+            <button onClick={() => navTo('how')}>{t('landing.nav.how')}</button>
+            <button onClick={() => navTo('formats')}>{t('landing.nav.formats')}</button>
           </nav>
 
           <div className="lp-nav-actions">
-            <button className="lp-nav-theme" onClick={onToggleTheme} title="Cambiar tema">
+            <LanguageSwitcher className="lp-nav-lang" />
+            <button className="lp-nav-theme" onClick={onToggleTheme} title={t('landing.nav.toggleTheme')}>
               {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
             </button>
             <a href={GOOGLE_AUTH_URL} className="lp-nav-btn-google">
               <GoogleIcon size={15} />
-              <span className="lp-google-txt">Continuar con Google</span>
+              <span className="lp-google-txt">{t('landing.nav.continueGoogle')}</span>
             </a>
-            <Link to="/login" className="lp-nav-btn-ghost">Iniciar sesión</Link>
-            <Link to="/register" className="lp-nav-btn-cta">Empezar gratis</Link>
+            <Link to="/login" className="lp-nav-btn-ghost">{t('landing.nav.login')}</Link>
+            <Link to="/register" className="lp-nav-btn-cta">{t('landing.nav.startFree')}</Link>
           </div>
         </div>
       </header>
@@ -346,30 +350,30 @@ export default function LandingPage({ theme, onToggleTheme }) {
             </p>
             <div className="lp-hero-actions">
               <Link to="/register" className="lp-btn-primary">
-                Empezar gratis
+                {t('landing.nav.startFree')}
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
               </Link>
-              <button className="lp-btn-ghost" onClick={() => navTo('how')}>Ver cómo funciona</button>
+              <button className="lp-btn-ghost" onClick={() => navTo('how')}>{t('landing.hero.seeHow')}</button>
             </div>
             <div className="lp-trust-row">
               <span className="lp-trust-badge">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                DOI verificado
+                {t('landing.hero.badgeDoi')}
               </span>
               <span className="lp-trust-sep" aria-hidden />
               <span className="lp-trust-badge">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                Revisado por pares
+                {t('landing.hero.badgePeerReview')}
               </span>
               <span className="lp-trust-sep" aria-hidden />
               <span className="lp-trust-badge">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 12h4"/></svg>
-                7 formatos
+                {t('landing.hero.badgeFormats')}
               </span>
               <span className="lp-trust-sep" aria-hidden />
               <span className="lp-trust-badge">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                Gratis
+                {t('landing.hero.badgeFree')}
               </span>
             </div>
           </div>
@@ -415,10 +419,10 @@ export default function LandingPage({ theme, onToggleTheme }) {
 
             <div className="lp-hero-float lp-hero-float-1">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-              Cita generada en APA
+              {t('landing.hero.floatCite')}
             </div>
             <div className="lp-hero-float lp-hero-float-2">
-              <Bot size={14} /> IA respondió tu pregunta
+              <Bot size={14} /> {t('landing.hero.floatAi')}
             </div>
           </div>
         </div>
@@ -427,7 +431,7 @@ export default function LandingPage({ theme, onToggleTheme }) {
       {/* SOURCES STRIP */}
       <section className="lp-sources-strip">
         <div className="lp-container lp-sources-inner">
-          <span className="lp-sources-label">Búsqueda simultánea en</span>
+          <span className="lp-sources-label">{t('landing.sources.label')}</span>
           {SOURCES.map(s => (
             <div key={s.name} className="lp-source-chip" style={{ '--source-color': s.color }}>
               {s.name}
@@ -448,7 +452,7 @@ export default function LandingPage({ theme, onToggleTheme }) {
           fadeOut
           scaleOnHover
           style={{ '--logoloop-fadeColorAuto': 'var(--surface-0)' }}
-          ariaLabel="Fuentes académicas y formatos de cita soportados"
+          ariaLabel={t('landing.loop.ariaLabel')}
         />
       </section>
 
@@ -456,17 +460,17 @@ export default function LandingPage({ theme, onToggleTheme }) {
       <section className="lp-section lp-features-section" id="features">
         <div className="lp-container">
           <Reveal>
-            <h2 className="lp-section-h2">Todo lo que necesita tu investigación</h2>
-            <p className="lp-section-sub">Búsqueda multi-fuente, citas al instante, resaltado semántico y un asistente de lectura IA — todo en un solo lugar.</p>
+            <h2 className="lp-section-h2">{t('landing.features.heading')}</h2>
+            <p className="lp-section-sub">{t('landing.features.subheading')}</p>
           </Reveal>
           <div className="lp-features-grid">
             {FEATURES.map((f, i) => {
               const fd = branding.features_data?.[i];
-              const title    = fd?.title    || f.title;
-              const desc     = fd?.desc     || f.desc;
+              const title    = fd?.title    || t(`landing.${f.titleKey}`);
+              const desc     = fd?.desc     || t(`landing.${f.descKey}`);
               const imageUrl = fd?.image_url;
               return (
-                <Reveal key={f.title} delay={i * 60}>
+                <Reveal key={f.titleKey} delay={i * 60}>
                   <div className="lp-feature-card">
                     <div className="lp-feature-illo">
                       {imageUrl
@@ -488,7 +492,7 @@ export default function LandingPage({ theme, onToggleTheme }) {
       <section className="lp-section lp-how-section" id="how">
         <div className="lp-container">
           <Reveal>
-            <h2 className="lp-section-h2">Cuatro pasos, resultado perfecto</h2>
+            <h2 className="lp-section-h2">{t('landing.how.heading')}</h2>
           </Reveal>
           <div className="lp-how-grid">
             {STEPS.map((s, i) => (
@@ -497,8 +501,8 @@ export default function LandingPage({ theme, onToggleTheme }) {
                   <span className="lp-how-num">{s.n}</span>
                   <div className="lp-how-icon">{s.icon}</div>
                 </div>
-                <h3 className="lp-how-card-title">{s.title}</h3>
-                <p className="lp-how-card-desc">{s.desc}</p>
+                <h3 className="lp-how-card-title">{t(`landing.${s.titleKey}`)}</h3>
+                <p className="lp-how-card-desc">{t(`landing.${s.descKey}`)}</p>
               </Reveal>
             ))}
           </div>
@@ -510,18 +514,18 @@ export default function LandingPage({ theme, onToggleTheme }) {
         <div className="lp-container lp-ai-inner">
           <Reveal className="lp-ai-text">
             <div className="lp-section-label">Reading Assistant</div>
-            <h2 className="lp-section-h2">Conversa con tu paper</h2>
+            <h2 className="lp-section-h2">{t('landing.ai.heading')}</h2>
             <p className="lp-section-sub">
-              Selecciona cualquier fragmento, pregunta a la IA y recibe respuestas contextuales. Conversación multi-turno, preguntas sugeridas y atribución transparente.
+              {t('landing.ai.subheading')}
             </p>
             <ul className="lp-ai-perks">
-              <li><span className="lp-perk-dot" style={{ '--c': '#0056D6' }} />Historial de conversación por sesión</li>
-              <li><span className="lp-perk-dot" style={{ '--c': '#16A34A' }} />Preguntas sugeridas automáticas</li>
-              <li><span className="lp-perk-dot" style={{ '--c': '#3B82F6' }} />Trust Card: basado solo en lo que leíste</li>
-              <li><span className="lp-perk-dot" style={{ '--c': '#FBE34D' }} />Funciona sobre abstract y PDF completo</li>
+              <li><span className="lp-perk-dot" style={{ '--c': '#0056D6' }} />{t('landing.ai.perkHistory')}</li>
+              <li><span className="lp-perk-dot" style={{ '--c': '#16A34A' }} />{t('landing.ai.perkSuggested')}</li>
+              <li><span className="lp-perk-dot" style={{ '--c': '#3B82F6' }} />{t('landing.ai.perkTrust')}</li>
+              <li><span className="lp-perk-dot" style={{ '--c': '#FBE34D' }} />{t('landing.ai.perkPdf')}</li>
             </ul>
             <Link to="/register" className="lp-btn-primary lp-btn-sm">
-              Probar gratis
+              {t('landing.ai.tryFree')}
             </Link>
           </Reveal>
 
@@ -535,18 +539,18 @@ export default function LandingPage({ theme, onToggleTheme }) {
                 <span className="lp-hl-mark lp-hl-blue">"SAM achieves zero-shot generalization to unseen objects and images without any additional training."</span>
               </div>
               <div className="lp-chat-thread">
-                <div className="lp-chat-msg lp-chat-user">¿Qué significa zero-shot aquí?</div>
+                <div className="lp-chat-msg lp-chat-user">{t('landing.ai.demoQuestion')}</div>
                 <div className="lp-chat-msg lp-chat-ai">
-                  Zero-shot significa que el modelo puede segmentar objetos que <strong>nunca vio durante el entrenamiento</strong>. SAM fue entrenado con un prompt flexible que le permite generalizar sin ejemplos específicos para cada categoría.
-                  <div className="lp-chat-trust">↳ Basado en el abstract del paper</div>
+                  {t('landing.ai.demoAnswerPre')}<strong>{t('landing.ai.demoAnswerStrong')}</strong>{t('landing.ai.demoAnswerPost')}
+                  <div className="lp-chat-trust">↳ {t('landing.ai.demoTrust')}</div>
                 </div>
                 <div className="lp-chat-suggestions">
-                  <button className="lp-chat-chip">¿Cómo se compara con CLIP?</button>
-                  <button className="lp-chat-chip">¿Qué limitaciones tiene?</button>
+                  <button className="lp-chat-chip">{t('landing.ai.demoChip1')}</button>
+                  <button className="lp-chat-chip">{t('landing.ai.demoChip2')}</button>
                 </div>
               </div>
               <div className="lp-chat-input">
-                <input placeholder="Pregunta de seguimiento…" readOnly />
+                <input placeholder={t('landing.ai.inputPlaceholder')} readOnly />
                 <button className="lp-chat-send"><ArrowRight size={14} /></button>
               </div>
             </div>
@@ -558,17 +562,17 @@ export default function LandingPage({ theme, onToggleTheme }) {
       <section className="lp-section lp-formats-section" id="formats">
         <div className="lp-container lp-formats-inner">
           <Reveal>
-            <h2 className="lp-section-h2">Los 7 estándares académicos</h2>
-            <p className="lp-section-sub">Generados al instante con copia directa al portapapeles.</p>
+            <h2 className="lp-section-h2">{t('landing.formatsSection.heading')}</h2>
+            <p className="lp-section-sub">{t('landing.formatsSection.subheading')}</p>
           </Reveal>
           <div className="lp-format-grid">
             {FORMAT_CARDS.map((f, i) => (
               <Reveal key={f.name} delay={i * 50} className="lp-format-card">
                 <div className="lp-format-card-head">
                   <span className="lp-format-name">{f.name}</span>
-                  <span className="lp-format-field">{f.field}</span>
+                  <span className="lp-format-field">{t(`landing.${f.fieldKey}`)}</span>
                 </div>
-                <pre className="lp-format-sample">{f.sample}</pre>
+                <pre className="lp-format-sample">{t(`landing.${f.sampleKey}`)}</pre>
               </Reveal>
             ))}
           </div>
@@ -579,10 +583,10 @@ export default function LandingPage({ theme, onToggleTheme }) {
       <section className="lp-stats-section">
         <div className="lp-container lp-stats-inner">
           {[
-            { n: '7',    label: 'Formatos de cita',   cls: 'lp-stat-n-blue' },
-            { n: '4',    label: 'Fuentes académicas',  cls: '' },
-            { n: '3',    label: 'Tipos de export',     cls: 'lp-stat-n-blue' },
-            { n: '100%', label: 'Gratuito',            cls: 'lp-stat-n-gold' },
+            { n: '7',    label: t('landing.stats.formats'),  cls: 'lp-stat-n-blue' },
+            { n: '4',    label: t('landing.stats.sources'),  cls: '' },
+            { n: '3',    label: t('landing.stats.exports'),  cls: 'lp-stat-n-blue' },
+            { n: '100%', label: t('landing.stats.free'),     cls: 'lp-stat-n-gold' },
           ].map((s, i) => (
             <Reveal key={s.label} delay={i * 60} className="lp-stat">
               <div className={`lp-stat-n ${s.cls}`}>{s.n}</div>
@@ -596,16 +600,16 @@ export default function LandingPage({ theme, onToggleTheme }) {
       <section className="lp-cta-section">
         <div className="lp-container lp-cta-inner">
           <Reveal>
-            <p className="lp-cta-eyebrow">Empieza hoy</p>
-            <h2 className="lp-cta-h2">Investiga más rápido,<br /><span>cita sin errores</span></h2>
-            <p className="lp-cta-sub">Sin suscripción. Sin extensiones. Sin complicaciones.</p>
+            <p className="lp-cta-eyebrow">{t('landing.cta.eyebrow')}</p>
+            <h2 className="lp-cta-h2">{t('landing.cta.headingLine1')}<br /><span>{t('landing.cta.headingLine2')}</span></h2>
+            <p className="lp-cta-sub">{t('landing.cta.sub')}</p>
             <div className="lp-cta-actions">
               <Link to="/register" className="lp-btn-primary lp-btn-lg">
-                Crear cuenta gratis
+                {t('landing.cta.createAccount')}
               </Link>
-              <Link to="/login" className="lp-btn-ghost">Ya tengo cuenta</Link>
+              <Link to="/login" className="lp-btn-ghost">{t('landing.cta.haveAccount')}</Link>
             </div>
-            <p className="lp-cta-trust">Sin tarjeta de crédito · Sin instalación · Acceso inmediato</p>
+            <p className="lp-cta-trust">{t('landing.cta.trust')}</p>
           </Reveal>
         </div>
       </section>
@@ -620,24 +624,24 @@ export default function LandingPage({ theme, onToggleTheme }) {
               <span>{branding.site_name || 'Citae'}</span>
             </div>
             <p className="lp-footer-tagline">
-              Busca, lee y cita papers académicos en segundos. Sin registro de tarjeta.
+              {t('landing.footer.tagline')}
             </p>
           </div>
 
           {/* Producto */}
           <div className="lp-footer-col">
-            <h4 className="lp-footer-col-title">Producto</h4>
+            <h4 className="lp-footer-col-title">{t('landing.footer.productTitle')}</h4>
             <ul className="lp-footer-list">
-              <li><Link to="/register">Buscar papers</Link></li>
-              <li><Link to="/register">Generar citas</Link></li>
-              <li><Link to="/register">Lector con IA</Link></li>
-              <li><Link to="/register">Exportar bibliografía</Link></li>
+              <li><Link to="/register">{t('landing.footer.productSearch')}</Link></li>
+              <li><Link to="/register">{t('landing.footer.productCite')}</Link></li>
+              <li><Link to="/register">{t('landing.footer.productReader')}</Link></li>
+              <li><Link to="/register">{t('landing.footer.productExport')}</Link></li>
             </ul>
           </div>
 
           {/* Formatos */}
           <div className="lp-footer-col">
-            <h4 className="lp-footer-col-title">Formatos</h4>
+            <h4 className="lp-footer-col-title">{t('landing.footer.formatsTitle')}</h4>
             <ul className="lp-footer-list lp-footer-list--plain">
               <li>APA</li>
               <li>MLA</li>
@@ -649,39 +653,39 @@ export default function LandingPage({ theme, onToggleTheme }) {
 
           {/* Cuenta */}
           <div className="lp-footer-col">
-            <h4 className="lp-footer-col-title">Cuenta</h4>
+            <h4 className="lp-footer-col-title">{t('landing.footer.accountTitle')}</h4>
             <ul className="lp-footer-list">
-              <li><Link to="/login">Iniciar sesión</Link></li>
-              <li><Link to="/register">Registrarse gratis</Link></li>
+              <li><Link to="/login">{t('landing.footer.accountLogin')}</Link></li>
+              <li><Link to="/register">{t('landing.footer.accountRegister')}</Link></li>
             </ul>
           </div>
         </div>
 
         <div className="lp-footer-bottom">
           <div className="lp-container lp-footer-bottom-inner">
-            <p className="lp-footer-copy">© {new Date().getFullYear()} Citae · Herramienta de investigación académica</p>
-            <p className="lp-footer-made">Desarrollado por Richar Andre Vilca Solorzano</p>
+            <p className="lp-footer-copy">{t('landing.footer.copy', { year: new Date().getFullYear() })}</p>
+            <p className="lp-footer-made">{t('landing.footer.madeBy', { name: 'Richar Andre Vilca Solorzano' })}</p>
           </div>
         </div>
       </footer>
 
       {/* Barra inferior flotante de navegación (solo móvil) */}
-      <nav className="lp-mobile-bar" aria-label="Navegación">
+      <nav className="lp-mobile-bar" aria-label={t('landing.mobile.ariaLabel')}>
         <button className="lp-mb-item" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
           <Home size={20} />
-          <span>Inicio</span>
+          <span>{t('landing.nav.home')}</span>
         </button>
         <button className="lp-mb-item" onClick={() => navTo('features')}>
           <Sparkles size={20} />
-          <span>Funciones</span>
+          <span>{t('landing.nav.features')}</span>
         </button>
         <button className="lp-mb-item" onClick={() => navTo('how')}>
           <Info size={20} />
-          <span>Cómo funciona</span>
+          <span>{t('landing.nav.how')}</span>
         </button>
         <button className="lp-mb-item" onClick={() => navTo('formats')}>
           <Quote size={20} />
-          <span>Formatos</span>
+          <span>{t('landing.nav.formats')}</span>
         </button>
       </nav>
     </div>

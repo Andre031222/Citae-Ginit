@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Copy, Download, Check } from './Icons';
 import { CITATION_FORMATS } from '../constants/citationFormats';
 
 const CitationDisplay = ({ citations, onExport }) => {
+  const { t } = useTranslation();
   const [copiedFormat, setCopiedFormat] = useState(null);
   const [activeFormat, setActiveFormat] = useState('APA');
 
@@ -19,10 +21,10 @@ const CitationDisplay = ({ citations, onExport }) => {
   return (
     <div className="citation-display">
       <div className="citation-header">
-        <h3>Citaciones Generadas</h3>
+        <h3>{t('paperui.citationDisplay.title')}</h3>
         <button className="export-button" onClick={onExport}>
           <Download size={16} />
-          Exportar Todo
+          {t('paperui.citationDisplay.exportAll')}
         </button>
       </div>
 
@@ -54,9 +56,9 @@ const CitationDisplay = ({ citations, onExport }) => {
               onClick={() => handleCopy(activeFormat, citations[activeFormat])}
             >
               {copiedFormat === activeFormat ? (
-                <><Check size={16} />Copiado</>
+                <><Check size={16} />{t('paperui.copied')}</>
               ) : (
-                <><Copy size={16} />Copiar</>
+                <><Copy size={16} />{t('paperui.copy')}</>
               )}
             </button>
           </div>

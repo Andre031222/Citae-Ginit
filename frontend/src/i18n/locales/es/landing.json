@@ -1,0 +1,159 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "features": "Funciones",
+    "how": "Cómo funciona",
+    "formats": "Formatos",
+    "toggleTheme": "Cambiar tema",
+    "continueGoogle": "Continuar con Google",
+    "login": "Iniciar sesión",
+    "startFree": "Empezar gratis"
+  },
+  "hero": {
+    "seeHow": "Ver cómo funciona",
+    "badgeDoi": "DOI verificado",
+    "badgePeerReview": "Revisado por pares",
+    "badgeFormats": "7 formatos",
+    "badgeFree": "Gratis",
+    "floatCite": "Cita generada en APA",
+    "floatAi": "IA respondió tu pregunta"
+  },
+  "sources": {
+    "label": "Búsqueda simultánea en"
+  },
+  "loop": {
+    "ariaLabel": "Fuentes académicas y formatos de cita soportados"
+  },
+  "features": {
+    "heading": "Todo lo que necesita tu investigación",
+    "subheading": "Búsqueda multi-fuente, citas al instante, resaltado semántico y un asistente de lectura IA — todo en un solo lugar.",
+    "multiSource": {
+      "title": "Búsqueda multi-fuente",
+      "desc": "CrossRef, Semantic Scholar, OpenAlex y arXiv simultáneamente con scoring de relevancia."
+    },
+    "formats": {
+      "title": "7 formatos de cita",
+      "desc": "APA, MLA, Chicago, Harvard, IEEE, Vancouver y BibTeX generados al instante."
+    },
+    "highlight": {
+      "title": "Resaltado semántico",
+      "desc": "5 colores con significado académico: citas clave, evidencia, insights, dudas y más."
+    },
+    "assistant": {
+      "title": "Reading Assistant IA",
+      "desc": "Conversación multi-turno sobre el paper. Preguntas sugeridas, historial y Trust Cards."
+    },
+    "pdf": {
+      "title": "PDF completo",
+      "desc": "Sube el PDF y resalta cualquier sección del texto completo, no solo el abstract."
+    },
+    "export": {
+      "title": "Export flexible",
+      "desc": "Exporta tus apuntes en Markdown, JSON estructurado o tabla para Notion."
+    }
+  },
+  "how": {
+    "heading": "Cuatro pasos, resultado perfecto"
+  },
+  "steps": {
+    "search": {
+      "title": "Busca o sube tu paper",
+      "desc": "Ingresa DOI, URL, título o sube un PDF desde tu dispositivo."
+    },
+    "select": {
+      "title": "Selecciona el resultado",
+      "desc": "Elige de múltiples fuentes con score de relevancia inteligente."
+    },
+    "cite": {
+      "title": "Cita, resalta y pregunta",
+      "desc": "Genera la cita, resalta fragmentos y conversa con la IA sobre el paper."
+    },
+    "export": {
+      "title": "Exporta tus apuntes",
+      "desc": "Markdown, JSON o tabla Notion en un clic. Todo organizado."
+    }
+  },
+  "ai": {
+    "heading": "Conversa con tu paper",
+    "subheading": "Selecciona cualquier fragmento, pregunta a la IA y recibe respuestas contextuales. Conversación multi-turno, preguntas sugeridas y atribución transparente.",
+    "perkHistory": "Historial de conversación por sesión",
+    "perkSuggested": "Preguntas sugeridas automáticas",
+    "perkTrust": "Trust Card: basado solo en lo que leíste",
+    "perkPdf": "Funciona sobre abstract y PDF completo",
+    "tryFree": "Probar gratis",
+    "demoQuestion": "¿Qué significa zero-shot aquí?",
+    "demoAnswerPre": "Zero-shot significa que el modelo puede segmentar objetos que ",
+    "demoAnswerStrong": "nunca vio durante el entrenamiento",
+    "demoAnswerPost": ". SAM fue entrenado con un prompt flexible que le permite generalizar sin ejemplos específicos para cada categoría.",
+    "demoTrust": "Basado en el abstract del paper",
+    "demoChip1": "¿Cómo se compara con CLIP?",
+    "demoChip2": "¿Qué limitaciones tiene?",
+    "inputPlaceholder": "Pregunta de seguimiento…"
+  },
+  "formatsSection": {
+    "heading": "Los 7 estándares académicos",
+    "subheading": "Generados al instante con copia directa al portapapeles."
+  },
+  "formats": {
+    "apa": {
+      "field": "Psicología · Ciencias sociales",
+      "sample": "Autor, A. A. (2024). Título. Nombre de la Revista, 5(2), 12–25."
+    },
+    "mla": {
+      "field": "Literatura · Humanidades",
+      "sample": "Autor, Nombre. \"Título.\" Nombre Revista, vol. 5, 2024, pp. 12–25."
+    },
+    "chicago": {
+      "field": "Historia · Arte",
+      "sample": "Autor, N. \"Título.\" Nombre Revista 5, n.º 2 (2024): 12–25."
+    },
+    "harvard": {
+      "field": "General · Universidades UK",
+      "sample": "Autor, A. A. (2024) 'Título', Nombre Revista, 5(2), pp. 12–25."
+    },
+    "ieee": {
+      "field": "Ingeniería · Computación",
+      "sample": "[1] A. Autor, \"Título,\" Revista, vol. 5, no. 2, pp. 12–25, 2024."
+    },
+    "vancouver": {
+      "field": "Medicina · Ciencias de la salud",
+      "sample": "Autor AA. Título. Nombre Revista. 2024;5(2):12–25."
+    },
+    "bibtex": {
+      "field": "LaTeX · Computación",
+      "sample": "@article{autor2024,\n  author = {Autor, A.},\n  year   = {2024}\n}"
+    }
+  },
+  "stats": {
+    "formats": "Formatos de cita",
+    "sources": "Fuentes académicas",
+    "exports": "Tipos de export",
+    "free": "Gratuito"
+  },
+  "cta": {
+    "eyebrow": "Empieza hoy",
+    "headingLine1": "Investiga más rápido,",
+    "headingLine2": "cita sin errores",
+    "sub": "Sin suscripción. Sin extensiones. Sin complicaciones.",
+    "createAccount": "Crear cuenta gratis",
+    "haveAccount": "Ya tengo cuenta",
+    "trust": "Sin tarjeta de crédito · Sin instalación · Acceso inmediato"
+  },
+  "footer": {
+    "tagline": "Busca, lee y cita papers académicos en segundos. Sin registro de tarjeta.",
+    "productTitle": "Producto",
+    "productSearch": "Buscar papers",
+    "productCite": "Generar citas",
+    "productReader": "Lector con IA",
+    "productExport": "Exportar bibliografía",
+    "formatsTitle": "Formatos",
+    "accountTitle": "Cuenta",
+    "accountLogin": "Iniciar sesión",
+    "accountRegister": "Registrarse gratis",
+    "copy": "© {{year}} Citae · Herramienta de investigación académica",
+    "madeBy": "Desarrollado por {{name}}"
+  },
+  "mobile": {
+    "ariaLabel": "Navegación"
+  }
+}

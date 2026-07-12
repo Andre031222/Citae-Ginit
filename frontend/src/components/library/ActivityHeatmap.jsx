@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Activity, Loader } from '../Icons';
 import { getActivity } from '../../services/libraryService';
-
-const MONTHS = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
 
 function buildGrid() {
   const today   = new Date();
@@ -35,14 +34,15 @@ function getLevel(count) {
   return 3;
 }
 
-const STAT_LABELS = [
-  { key: 'papers',      label: 'Papers'      },
-  { key: 'highlights',  label: 'Resaltados'  },
-  { key: 'collections', label: 'Colecciones' },
-  { key: 'tags',        label: 'Etiquetas'   },
-];
-
 const ActivityHeatmap = () => {
+  const { t } = useTranslation();
+  const MONTHS = t('library.heatmap.months', { returnObjects: true });
+  const STAT_LABELS = [
+    { key: 'papers',      label: t('library.heatmap.stats.papers')      },
+    { key: 'highlights',  label: t('library.heatmap.stats.highlights')  },
+    { key: 'collections', label: t('library.heatmap.stats.collections') },
+    { key: 'tags',        label: t('library.heatmap.stats.tags')        },
+  ];
   const [data,    setData]    = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -87,14 +87,14 @@ const ActivityHeatmap = () => {
 
   const activeDays  = activity.filter(a => a.count > 0).length;
   const activeWeeks = weeks.filter(week => week.some(c => (dateMap[c.date] || 0) > 0)).length;
-  const DAY_LABELS  = ['', 'L', '', 'X', '', 'V', ''];
+  const DAY_LABELS  = t('library.heatmap.days', { returnObjects: true });
 
   return (
     <div className="hm-wrap">
       <div className="hm-header">
         <Activity size={13} />
-        <span>Actividad</span>
-        <em className="hm-total">{total} este año</em>
+        <span>{t('library.heatmap.title')}</span>
+        <em className="hm-total">{t('library.heatmap.thisYear', { count: total })}</em>
       </div>
 
       <div className="hm-stats">
@@ -130,7 +130,7 @@ const ActivityHeatmap = () => {
                     <div
                       key={di}
                       className={`hm-cell hm-lv${getLevel(count)}`}
-                      title={count > 0 ? `${cell.date} · ${count} actividad(es)` : cell.date}
+                      title={count > 0 ? t('library.heatmap.cellActivity', { date: cell.date, count }) : cell.date}
                     />
                   );
                 })}
@@ -141,8 +141,8 @@ const ActivityHeatmap = () => {
       </div>
 
       <div className="hm-totals">
-        <span><strong>{activeDays}</strong> días activos</span>
-        <span><strong>{activeWeeks}</strong> semanas</span>
+        <span><strong>{activeDays}</strong> {t('library.heatmap.activeDays')}</span>
+        <span><strong>{activeWeeks}</strong> {t('library.heatmap.weeks')}</span>
       </div>
     </div>
   );

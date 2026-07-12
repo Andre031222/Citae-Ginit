@@ -122,6 +122,15 @@ async function groqChat({ model, messages, max_tokens, temperature = 0.4, timeou
   const runtime = [...userProviders, ...PLATFORM];
   if (!runtime.length) return null;
 
+  // Directiva de idioma FUERTE (como system, alta prioridad): fuerza el idioma
+  // de salida sin importar el idioma en que estén redactadas las instrucciones.
+  // Sin esto, un prompt en español arrastra la respuesta al español aunque se
+  // pida "en English". Se aplica a TODA llamada al modelo de forma centralizada.
+  const langDirective = llm.getLang() === 'en'
+    ? 'CRITICAL: Write your ENTIRE response in English, regardless of the language of the instructions or the sources. Output language: English.'
+    : 'CRÍTICO: Escribe TODA tu respuesta en español, sin importar el idioma de las instrucciones o las fuentes. Idioma de salida: español.';
+  const finalMessages = [{ role: 'system', content: langDirective }, ...messages];
+
   const tier = tierOf(model);
   let lastErr = null;
 
@@ -137,7 +146,7 @@ async function groqChat({ model, messages, max_tokens, temperature = 0.4, timeou
       try {
         const { data } = await axios.post(
           cfg.url,
-          { model: cfg.modelFor(tier), messages, max_tokens, temperature },
+          { model: cfg.modelFor(tier), messages: finalMessages, max_tokens, temperature },
           {
             headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json', ...cfg.headers() },
             timeout,

@@ -13,4 +13,16 @@ function get() {
   return storage.getStore();
 }
 
-module.exports = { storage, run, get };
+// Idioma de salida solicitado para la petición actual ('es' | 'en').
+// Se siembra en el middleware a partir de la cabecera X-Citae-Lang.
+function getLang() {
+  const store = storage.getStore();
+  return store && store.lang === 'en' ? 'en' : 'es';
+}
+
+// Nombre del idioma para instruir al modelo dentro del prompt.
+function outputLanguage() {
+  return getLang() === 'en' ? 'English' : 'español';
+}
+
+module.exports = { storage, run, get, getLang, outputLanguage };

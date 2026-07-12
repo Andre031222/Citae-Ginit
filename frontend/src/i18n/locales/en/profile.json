@@ -1,0 +1,144 @@
+{
+  "loading": "Loading profile…",
+  "back": "Back",
+  "accountGroup": "ACCOUNT",
+  "infoMessage": "Changes apply across your entire Citae account.",
+  "nav": {
+    "profile": "Profile",
+    "ai": "AI Keys",
+    "storage": "Storage",
+    "general": "Preferences"
+  },
+  "storage": {
+    "summary": "A summary of everything you have saved in Citae.",
+    "papers": "Papers",
+    "highlights": "Highlights",
+    "collections": "Collections",
+    "tags": "Tags"
+  },
+  "general": {
+    "language": "Language",
+    "languageValue": "Spanish",
+    "account": "Account",
+    "accountType": "Account type",
+    "roleUser": "User",
+    "themeHint": "The theme (light/dark) is changed with the button in the top bar."
+  },
+  "avatar": {
+    "title": "Profile picture",
+    "alt": "Avatar",
+    "upload": "Upload image",
+    "remove": "Remove",
+    "help": "PNG, JPEG or GIF · max. 10 MB"
+  },
+  "form": {
+    "firstName": "First name",
+    "firstNamePlaceholder": "Your first name",
+    "lastName": "Last name",
+    "lastNamePlaceholder": "Your last name",
+    "email": "Email address",
+    "changeEmail": "Change email address",
+    "timezone": "Time zone",
+    "save": "Save changes",
+    "saving": "Saving…"
+  },
+  "timezones": {
+    "lima": "America/Lima (Peru)",
+    "laPaz": "America/La Paz (Bolivia)",
+    "bogota": "America/Bogotá (Colombia)",
+    "guayaquil": "America/Guayaquil (Ecuador)",
+    "caracas": "America/Caracas (Venezuela)",
+    "buenosAires": "America/Buenos Aires (Argentina)",
+    "santiago": "America/Santiago (Chile)",
+    "mexico": "America/Mexico",
+    "newYork": "America/New York (USA East)",
+    "losAngeles": "America/Los Angeles (USA West)",
+    "madrid": "Europe/Madrid (Spain)",
+    "london": "Europe/London (UK)"
+  },
+  "removePhoto": {
+    "title": "Remove profile picture?",
+    "confirm": "Remove",
+    "cancel": "Cancel"
+  },
+  "changeEmailDialog": {
+    "title": "Coming soon",
+    "text": "This feature will be available soon."
+  },
+  "alerts": {
+    "imageTooLarge": "The image must not exceed 10 MB",
+    "invalidImageType": "Only PNG, JPEG or GIF",
+    "photoRemoved": "Photo removed",
+    "photoRemoveError": "Failed to remove the photo",
+    "connectionError": "Connection error",
+    "nameRequired": "First name is required",
+    "invalidEmail": "Invalid email address",
+    "profileUpdated": "Profile updated",
+    "updateError": "Failed to update"
+  },
+  "apiKeys": {
+    "intro1": "Use your own AI key. ",
+    "introStrong1": "Yours will be used first",
+    "intro2": " and, if it runs out, Citae will keep working with the default service. Your keys are stored encrypted and are never shown in full. ",
+    "introStrong2": "A single key from any of the three providers is enough",
+    "intro3": " — and creating one is free.",
+    "banner": "One of your keys ran out or is no longer valid. Test it again, replace it, or add another.",
+    "providerAria": "AI provider",
+    "keyPlaceholder": "Paste your API key here",
+    "add": "Add",
+    "howToTitle": "How to get your {{provider}} key",
+    "openProvider": "Open {{provider}}",
+    "freeNote": "creating the key is free.",
+    "loading": "Loading…",
+    "empty": "You haven't added any keys yet.",
+    "test": "Test",
+    "testTitle": "Test the key",
+    "removeTitle": "Remove",
+    "removeAria": "Remove key",
+    "status": {
+      "active": "Active",
+      "exhausted": "Exhausted",
+      "invalid": "Invalid"
+    },
+    "providers": {
+      "groq": {
+        "hint": "Starts with gsk_…",
+        "steps": [
+          "Create a free account on Groq",
+          "Click «Create API Key»",
+          "Copy the key (gsk_…) and paste it here"
+        ]
+      },
+      "google": {
+        "hint": "Starts with AIza…",
+        "steps": [
+          "Sign in with your Google account",
+          "Click «Create API key»",
+          "Copy the key (AIza…) and paste it here"
+        ]
+      },
+      "openrouter": {
+        "hint": "Starts with sk-or-…",
+        "steps": [
+          "Create a free account on OpenRouter",
+          "Click «Create Key»",
+          "Copy the key (sk-or-…) and paste it here"
+        ]
+      }
+    },
+    "toasts": {
+      "loadError": "Your keys could not be loaded",
+      "invalidKey": "The key does not look valid",
+      "added": "Key added and validated",
+      "addErrorTitle": "Could not add",
+      "addErrorText": "Try again",
+      "works": "The key works",
+      "noResponse": "The key does not respond",
+      "testError": "The key could not be tested",
+      "removeConfirmTitle": "Remove this key?",
+      "removeConfirmText": "It will stop being used immediately. You can add another whenever you want.",
+      "removeConfirmBtn": "Remove",
+      "removeError": "Could not remove"
+    }
+  }
+}

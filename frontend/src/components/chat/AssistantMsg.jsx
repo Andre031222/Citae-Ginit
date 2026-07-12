@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import notify from '../../services/swal';
 import CandidateComparison from '../CandidateComparison';
 import CitationDisplay from '../CitationDisplay';
@@ -8,21 +9,22 @@ import { AlertCircle, Check, Plus, Edit, Star, ExternalLink, Search, Filter } fr
 import citoLogo from '../../assets/citae-logo-v2.png';
 
 function SearchTransparency({ meta }) {
+  const { t } = useTranslation();
   if (!meta) return null;
   const f = meta.filters || {};
   const chips = [];
   if (f.yearFrom && f.yearTo) chips.push(`${f.yearFrom}–${f.yearTo}`);
-  else if (f.yearFrom)        chips.push(`desde ${f.yearFrom}`);
-  else if (f.yearTo)          chips.push(`hasta ${f.yearTo}`);
-  if (f.minCitations)         chips.push(`≥ ${f.minCitations} citas`);
-  if (f.type === 'preprint')  chips.push('preprints');
-  if (f.type === 'article')   chips.push('artículos');
+  else if (f.yearFrom)        chips.push(t('chatview.transparency.from', { year: f.yearFrom }));
+  else if (f.yearTo)          chips.push(t('chatview.transparency.to', { year: f.yearTo }));
+  if (f.minCitations)         chips.push(t('chatview.transparency.minCitations', { count: f.minCitations }));
+  if (f.type === 'preprint')  chips.push(t('chatview.transparency.preprints'));
+  if (f.type === 'article')   chips.push(t('chatview.transparency.articles'));
 
   return (
     <div className="chat-search-meta">
       <span className="csm-query">
         <Search size={12} />
-        Búsqueda: <strong>{meta.searchedFor}</strong>
+        {t('chatview.transparency.searchLabel')} <strong>{meta.searchedFor}</strong>
       </span>
       {chips.length > 0 && (
         <span className="csm-filters">
@@ -31,7 +33,7 @@ function SearchTransparency({ meta }) {
         </span>
       )}
       {meta.filteredOut > 0 && (
-        <span className="csm-note">{meta.filteredOut} resultado{meta.filteredOut !== 1 ? 's' : ''} ocultos por los filtros</span>
+        <span className="csm-note">{t('chatview.transparency.hidden', { count: meta.filteredOut })}</span>
       )}
     </div>
   );
@@ -48,6 +50,7 @@ const AssistantMsg = ({
   msg, onExport, onFavorite, onChooseCandidate, onOpenDrawer,
   activeCandidate, user, onMetaUpdate, onAddToBiblio, inBiblio,
 }) => {
+  const { t } = useTranslation();
   const [editing, setEditing]       = useState(false);
   const [savingMeta, setSavingMeta] = useState(false);
 
@@ -57,7 +60,7 @@ const AssistantMsg = ({
       await onMetaUpdate(msg.id, msg.paper, draft);
       setEditing(false);
     } catch {
-      notify.error('Error al actualizar los metadatos');
+      notify.error(t('chatview.assistant.metaUpdateError'));
     } finally { setSavingMeta(false); }
   };
 
@@ -127,7 +130,7 @@ const AssistantMsg = ({
                       {paperLink(msg.paper) && (
                         <a className="chat-paper-open" href={paperLink(msg.paper)}
                           target="_blank" rel="noopener noreferrer">
-                          Ver paper <ExternalLink size={11} />
+                          {t('chatview.assistant.viewPaper')} <ExternalLink size={11} />
                         </a>
                       )}
                     </div>
@@ -135,7 +138,7 @@ const AssistantMsg = ({
                       {msg.paper?.doi && (
                         <span className="chat-paper-trust-badge">
                           <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                          DOI verificado
+                          {t('chatview.assistant.doiVerified')}
                         </span>
                       )}
                       {msg.paper?.source && (
@@ -151,7 +154,7 @@ const AssistantMsg = ({
                     <button
                       className={`chat-biblio-btn ${inBiblio ? 'chat-biblio-btn-active' : ''}`}
                       onClick={() => onAddToBiblio(msg)}
-                      title={inBiblio ? 'Quitar de bibliografía' : 'Añadir a bibliografía'}
+                      title={inBiblio ? t('chatview.assistant.removeFromBiblio') : t('chatview.assistant.addToBiblio')}
                     >
                       {inBiblio ? <Check size={11} /> : <Plus size={11} />} Bib
                     </button>
@@ -160,14 +163,14 @@ const AssistantMsg = ({
                     <button
                       className={`chat-edit-btn ${editing ? 'chat-edit-btn-active' : ''}`}
                       onClick={() => setEditing(v => !v)}
-                      title="Editar metadatos"
+                      title={t('chatview.assistant.editMeta')}
                     >
                       <Edit size={13} />
                     </button>
                   )}
                   {user && (
                     <button className="chat-fav-btn" onClick={() => onFavorite(msg.paper?.id)}
-                      title="Guardar en favoritos">
+                      title={t('chatview.assistant.saveToFavorites')}>
                       <Star size={15} />
                     </button>
                   )}

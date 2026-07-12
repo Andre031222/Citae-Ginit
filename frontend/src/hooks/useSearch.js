@@ -1,6 +1,7 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 import api from '../services/api';
 import notify from '../services/swal';
+import i18n from '../i18n';
 
 export function useSearch({ user, loadHistory }) {
   const [messages,   setMessages]   = useState([]);
@@ -26,7 +27,7 @@ export function useSearch({ user, loadHistory }) {
       ...prev,
       { id: uid,     role: 'user',      content: input },
       { id: uid + 1, role: 'assistant', loading: true, searching: true,
-        query: input, loadingText: 'Buscando en bases académicas…' },
+        query: input, loadingText: i18n.t('shell.search.searchingDatabases') },
     ]);
     setExtracting(true);
     try {
@@ -77,7 +78,7 @@ export function useSearch({ user, loadHistory }) {
     } catch (err) {
       setMessages(prev => prev.map(m =>
         m.id === uid + 1
-          ? { ...m, loading: false, error: err.response?.data?.error || 'Error al buscar el artículo' }
+          ? { ...m, loading: false, error: err.response?.data?.error || i18n.t('shell.errors.searchArticle') }
           : m
       ));
     } finally { setExtracting(false); }
@@ -110,7 +111,7 @@ export function useSearch({ user, loadHistory }) {
         return updated;
       });
     } catch (err) {
-      notify.error('Error al cargar', err.response?.data?.error || 'No se pudo cargar el artículo');
+      notify.error(i18n.t('shell.notify.loadErrorTitle'), err.response?.data?.error || i18n.t('shell.errors.loadArticle'));
     } finally { setExtracting(false); }
   }, [canPersist, generateCitations, loadHistory]);
 
@@ -131,7 +132,7 @@ export function useSearch({ user, loadHistory }) {
         { headers: { 'Content-Type': 'multipart/form-data' } },
       );
       const { paper, warning } = data;
-      if (warning) notify.warning('Aviso', warning);
+      if (warning) notify.warning(i18n.t('shell.notify.warningTitle'), warning);
       const citations = await generateCitations(paper.id);
       setMessages(prev => prev.map(m =>
         m.id === uid + 1 ? { ...m, loading: false, paper, citations } : m
@@ -150,7 +151,7 @@ export function useSearch({ user, loadHistory }) {
       setMessages(prev => prev.map(m =>
         m.id === uid + 1
           ? { ...m, loading: false, error: err.response?.data?.error ||
-              (isImage ? 'Error al procesar la imagen' : 'Error al procesar el PDF') }
+              (isImage ? i18n.t('shell.errors.processImage') : i18n.t('shell.errors.processPdf')) }
           : m
       ));
     } finally { setExtracting(false); }
@@ -171,7 +172,7 @@ export function useSearch({ user, loadHistory }) {
       ));
     } catch {
       setMessages(prev => prev.map(m =>
-        m.id === uid + 1 ? { ...m, loading: false, error: 'Error al generar citaciones' } : m
+        m.id === uid + 1 ? { ...m, loading: false, error: i18n.t('shell.errors.generateCitations') } : m
       ));
     } finally { setExtracting(false); }
   }, [generateCitations]);
@@ -185,7 +186,7 @@ export function useSearch({ user, loadHistory }) {
       ...prev,
       userMsg,
       { id: uid + 1, role: 'assistant', loading: true,
-        loadingText: 'Generando cita…' },
+        loadingText: i18n.t('shell.search.generatingCitation') },
     ]);
     setExtracting(true);
     try {
@@ -208,7 +209,7 @@ export function useSearch({ user, loadHistory }) {
     } catch (err) {
       setMessages(prev => prev.map(m =>
         m.id === uid + 1
-          ? { ...m, loading: false, error: err.response?.data?.error || 'No se pudo generar la cita' }
+          ? { ...m, loading: false, error: err.response?.data?.error || i18n.t('shell.errors.generateCitation') }
           : m
       ));
     } finally { setExtracting(false); }

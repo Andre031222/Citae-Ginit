@@ -1,10 +1,12 @@
 import React, { useState, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Upload, X, FileText, ImageIcon, Loader, ArrowUp, Filter } from '../Icons';
 
 const ACCEPT = '.pdf,.jpg,.jpeg,.png,.webp';
 const isImage = (f) => f && f.type.startsWith('image/');
 
 const ChatInput = ({ onSend, onSendPDF, loading }) => {
+  const { t } = useTranslation();
   const [text, setText] = useState('');
   const [file, setFile] = useState(null);
   const [showFilters, setShowFilters] = useState(false);
@@ -76,31 +78,31 @@ const ChatInput = ({ onSend, onSendPDF, loading }) => {
       {showFilters && !file && (
         <div className="ci-filters">
           <div className="ci-filter-field">
-            <label>Año desde</label>
+            <label>{t('chatview.input.yearFrom')}</label>
             <input type="number" inputMode="numeric" placeholder="2018"
               value={yearFrom} onChange={e => setYearFrom(e.target.value)} />
           </div>
           <div className="ci-filter-field">
-            <label>Año hasta</label>
+            <label>{t('chatview.input.yearTo')}</label>
             <input type="number" inputMode="numeric" placeholder="2026"
               value={yearTo} onChange={e => setYearTo(e.target.value)} />
           </div>
           <div className="ci-filter-field">
-            <label>Mín. citas</label>
+            <label>{t('chatview.input.minCites')}</label>
             <input type="number" inputMode="numeric" placeholder="50"
               value={minCites} onChange={e => setMinCites(e.target.value)} />
           </div>
           <div className="ci-filter-field">
-            <label>Tipo</label>
+            <label>{t('chatview.input.type')}</label>
             <select value={type} onChange={e => setType(e.target.value)}>
-              <option value="">Todos</option>
-              <option value="article">Artículo</option>
-              <option value="preprint">Preprint</option>
+              <option value="">{t('chatview.input.typeAll')}</option>
+              <option value="article">{t('chatview.input.typeArticle')}</option>
+              <option value="preprint">{t('chatview.input.typePreprint')}</option>
             </select>
           </div>
           {activeCount > 0 && (
-            <button className="ci-filter-clear" onClick={clearFilters} title="Limpiar filtros">
-              <X size={12} /> Limpiar
+            <button className="ci-filter-clear" onClick={clearFilters} title={t('chatview.input.clearFilters')}>
+              <X size={12} /> {t('chatview.input.clear')}
             </button>
           )}
         </div>
@@ -111,7 +113,7 @@ const ChatInput = ({ onSend, onSendPDF, loading }) => {
           className="ci-attach"
           onClick={() => fileRef.current?.click()}
           disabled={loading}
-          title="Subir PDF o imagen"
+          title={t('chatview.input.attach')}
         >
           <Upload size={16} />
         </button>
@@ -119,7 +121,7 @@ const ChatInput = ({ onSend, onSendPDF, loading }) => {
           className={`ci-attach ci-filter-toggle${activeCount > 0 ? ' is-active' : ''}`}
           onClick={() => setShowFilters(v => !v)}
           disabled={loading || !!file}
-          title="Filtros de búsqueda (años, citas, tipo)"
+          title={t('chatview.input.filtersToggle')}
         >
           <Filter size={15} />
           {activeCount > 0 && <span className="ci-filter-badge">{activeCount}</span>}
@@ -134,7 +136,7 @@ const ChatInput = ({ onSend, onSendPDF, loading }) => {
         <textarea
           ref={taRef}
           className="ci-textarea"
-          placeholder="DOI, URL o título — o describe lo que buscas…"
+          placeholder={t('chatview.input.placeholder')}
           value={text}
           onChange={(e) => { setText(e.target.value); autoResize(); }}
           onKeyDown={keyDown}
@@ -148,7 +150,7 @@ const ChatInput = ({ onSend, onSendPDF, loading }) => {
           }
         </button>
       </div>
-      <p className="ci-hint">DOI · URL · título · PDF · imagen · ej: «redes neuronales desde 2020 con más de 100 citas»</p>
+      <p className="ci-hint">{t('chatview.input.hint')}</p>
     </div>
   );
 };

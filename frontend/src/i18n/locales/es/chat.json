@@ -1,0 +1,26 @@
+{
+  "hidePanel": "Ocultar panel",
+  "showPanel": "Mostrar panel",
+  "toolsAria": "Herramientas",
+  "library": "Biblioteca",
+  "libraryTitle": "Biblioteca — colecciones, etiquetas y exportación",
+  "newLabel": "Nueva",
+  "newTitle": "Nueva búsqueda",
+  "profileTitle": "Perfil y ajustes",
+  "login": "Iniciar sesión",
+  "incognitoOn": "Modo incógnito activo — esta conversación no se guarda en el historial",
+  "incognitoOff": "Activar modo incógnito (no guardar en el historial)",
+  "incognitoLabel": "Incógnito",
+  "tools": {
+    "radar": "Radar",
+    "radarTitle": "Radar de Afirmaciones — verifica evidencia académica",
+    "ask": "Preguntar",
+    "askTitle": "Pregunta a tu biblioteca — chat con IA sobre tus papers y resaltados",
+    "authors": "Autores",
+    "authorsTitle": "Descubrir autores — busca investigadores y sus publicaciones",
+    "write": "Redactar",
+    "writeTitle": "Redactar — escribe e inserta citas de tu biblioteca",
+    "review": "Repaso",
+    "reviewTitle": "Repaso del día — refuerza tus resaltados con repaso espaciado"
+  }
+}

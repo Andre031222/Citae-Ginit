@@ -26,9 +26,9 @@ describe('groupByDate', () => {
     ];
     const groups = groupByDate(items);
     const labels = groups.map(([label]) => label);
-    expect(labels).toContain('Hoy');
-    expect(labels).toContain('Este mes');
-    expect(labels).not.toContain('Ayer');
+    expect(labels).toContain('today');
+    expect(labels).toContain('month');
+    expect(labels).not.toContain('yesterday');
   });
 });
 

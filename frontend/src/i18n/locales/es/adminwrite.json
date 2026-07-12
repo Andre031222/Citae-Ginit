@@ -1,0 +1,121 @@
+{
+  "admin": {
+    "back": "Volver a la app",
+    "headerTitle": "Super Admin — Identidad visual",
+    "close": "Cerrar",
+    "saving": "Guardando…",
+    "uploading": "Subiendo…",
+    "colors": {
+      "title": "Colores del sitio",
+      "siteName": "Nombre del sitio",
+      "primary": "Color primario",
+      "accent": "Color acento (gold)",
+      "save": "Guardar colores"
+    },
+    "hero": {
+      "title": "Contenido del hero",
+      "typography": "Tipografía",
+      "preview": "Vista previa",
+      "line1": "Línea 1 del título",
+      "line1Ph": "Cita, resalta y",
+      "emWord": "Palabra resaltada",
+      "emWordPh": "comprende",
+      "after": "Texto después",
+      "afterPh": "tus papers",
+      "subtitle": "Subtítulo",
+      "save": "Guardar hero",
+      "fontGroups": {
+        "sans": "Sans-serif modernas",
+        "serifEditorial": "Serif editorial (estilo revista)",
+        "serifClassic": "Serif académica clásica",
+        "script": "Cursivas / caligráficas",
+        "display": "Display / decorativas"
+      }
+    },
+    "assets": {
+      "title": "Imágenes del sitio",
+      "upload": "Subir",
+      "hints": {
+        "logo": "PNG, SVG recomendados",
+        "favicon": "ICO o PNG 32×32",
+        "hero": "JPG o PNG, 1280px+"
+      }
+    },
+    "features": {
+      "title": "Funciones",
+      "hint": "Personaliza título, descripción e imagen de cada función. Formatos: JPG, PNG, WebP, AVIF, GIF, SVG — se optimizan automáticamente a WebP.",
+      "itemNum": "Función {{n}}",
+      "uploadImage": "Subir imagen",
+      "removeImage": "Quitar imagen",
+      "fieldTitle": "Título",
+      "fieldDesc": "Descripción",
+      "save": "Guardar funciones",
+      "defaults": [
+        { "title": "Búsqueda multi-fuente", "desc": "CrossRef, Semantic Scholar, OpenAlex y arXiv simultáneamente con scoring de relevancia." },
+        { "title": "7 formatos de cita", "desc": "APA, MLA, Chicago, Harvard, IEEE, Vancouver y BibTeX generados al instante." },
+        { "title": "Resaltado semántico", "desc": "5 colores con significado académico: citas clave, evidencia, insights, dudas y más." },
+        { "title": "Reading Assistant IA", "desc": "Conversación multi-turno sobre el paper. Preguntas sugeridas, historial y Trust Cards." },
+        { "title": "PDF completo", "desc": "Sube el PDF y resalta cualquier sección del texto completo, no solo el abstract." },
+        { "title": "Export flexible", "desc": "Exporta tus apuntes en Markdown, JSON estructurado o tabla para Notion." }
+      ]
+    },
+    "users": {
+      "title": "Usuarios registrados",
+      "hint": "Gestiona los usuarios que se han registrado: concede o retira permisos de administrador y activa o desactiva cuentas. Los cambios de rol se aplican cuando el usuario recarga su sesión.",
+      "searchPh": "Buscar por nombre, usuario o email…",
+      "loading": "Cargando usuarios…",
+      "empty": "No hay usuarios que coincidan.",
+      "tagSelf": "tú",
+      "tagAdmin": "Admin",
+      "tagOff": "Inactivo",
+      "cantChangeOwnRole": "No puedes cambiar tu propio rol",
+      "removeAdmin": "Quitar admin",
+      "makeAdmin": "Hacer admin",
+      "cantDeactivateSelf": "No puedes desactivar tu propia cuenta",
+      "deactivate": "Desactivar",
+      "activate": "Activar"
+    },
+    "toast": {
+      "loadUsersError": "Error al cargar usuarios",
+      "nowAdmin": "Ahora es administrador",
+      "adminRemoved": "Permiso de administrador retirado",
+      "roleChangeError": "No se pudo cambiar el rol",
+      "accountActivated": "Cuenta activada",
+      "accountDeactivated": "Cuenta desactivada",
+      "stateChangeError": "No se pudo cambiar el estado",
+      "colorsSaved": "Colores actualizados",
+      "saveError": "Error al guardar",
+      "heroSaved": "Hero actualizado",
+      "assetUpdated": "{{slot}} actualizado",
+      "uploadError": "Error al subir el archivo",
+      "featuresSaved": "Funciones actualizadas",
+      "imageUpdated": "Imagen actualizada",
+      "imageUploadError": "Error al subir imagen",
+      "imageDeleted": "Imagen eliminada",
+      "imageDeleteError": "Error al eliminar"
+    }
+  },
+  "write": {
+    "back": "Biblioteca",
+    "title": "Redactar",
+    "formatTitle": "Formato de cita",
+    "stats": "{{words}} palabras · {{count}} citas",
+    "clear": "Vaciar",
+    "copied": "Copiado",
+    "copy": "Copiar",
+    "download": "Descargar",
+    "titlePh": "Título del documento",
+    "bodyPh": "Empieza a escribir… Coloca el cursor donde quieras citar y haz clic en un paper de la derecha para insertar la cita.",
+    "references": "Referencias",
+    "insertCite": "Insertar cita",
+    "searchPh": "Buscar en tu biblioteca…",
+    "emptyLib": "Tu biblioteca está vacía. Añade papers para poder citarlos.",
+    "noResults": "Sin resultados.",
+    "insertAtCursor": "Insertar cita en el cursor",
+    "cited": "Citadas ({{count}})",
+    "removeFromRefs": "Quitar de referencias",
+    "confirmClearTitle": "¿Vaciar el documento?",
+    "confirmClearText": "Se borrará el texto y las citas.",
+    "defaultFilename": "documento"
+  }
+}

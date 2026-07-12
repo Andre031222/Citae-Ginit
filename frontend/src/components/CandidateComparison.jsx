@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { formatCitation, formatMultiple, CITATION_FORMATS } from '../services/citationFormatter';
 import HighlightableText from './HighlightableText';
 import api from '../services/api';
@@ -40,6 +41,7 @@ function extractKw(text) {
 }
 
 const ScoreBadge = React.memo(function ScoreBadge({ score, breakdown }) {
+  const { t } = useTranslation();
   const [show, setShow] = useState(false);
   const cls = score >= 85 ? 'score-high' : score >= 65 ? 'score-mid' : 'score-low';
 
@@ -48,12 +50,12 @@ const ScoreBadge = React.memo(function ScoreBadge({ score, breakdown }) {
   }
 
   const signals = [
-    { label: 'Similitud título',  val: breakdown.titleSim,                      icon: <Check size={11} />,    show: true },
-    { label: 'Fuentes cruzadas',  val: breakdown.sourceBoost,                   icon: <Check size={11} />,    show: breakdown.sourceBoost > 0 },
-    { label: 'Citaciones',        val: Math.round(breakdown.citationBoost),      icon: <Star size={11} />,     show: breakdown.citationBoost > 0 },
-    { label: 'Autor en query',    val: breakdown.authorBoost,                    icon: <User size={11} />,     show: breakdown.authorBoost > 0 },
-    { label: 'DOI verificado',    val: breakdown.doiBoost,                       icon: <LinkIcon size={11} />, show: breakdown.doiBoost > 0 },
-    { label: 'Año',               val: breakdown.yearBoost,                      icon: <Calendar size={11} />, show: breakdown.yearBoost !== 0 },
+    { label: t('paperui.score.titleSim'),      val: breakdown.titleSim,                      icon: <Check size={11} />,    show: true },
+    { label: t('paperui.score.sourceBoost'),   val: breakdown.sourceBoost,                   icon: <Check size={11} />,    show: breakdown.sourceBoost > 0 },
+    { label: t('paperui.score.citationBoost'), val: Math.round(breakdown.citationBoost),      icon: <Star size={11} />,     show: breakdown.citationBoost > 0 },
+    { label: t('paperui.score.authorBoost'),   val: breakdown.authorBoost,                    icon: <User size={11} />,     show: breakdown.authorBoost > 0 },
+    { label: t('paperui.score.doiBoost'),      val: breakdown.doiBoost,                       icon: <LinkIcon size={11} />, show: breakdown.doiBoost > 0 },
+    { label: t('paperui.score.yearBoost'),     val: breakdown.yearBoost,                      icon: <Calendar size={11} />, show: breakdown.yearBoost !== 0 },
   ].filter(s => s.show);
 
   return (
@@ -66,7 +68,7 @@ const ScoreBadge = React.memo(function ScoreBadge({ score, breakdown }) {
       {score}%
       {show && (
         <span className="cc-score-tip" onClick={e => e.stopPropagation()}>
-          <span className="cc-score-tip-title">Señales de score</span>
+          <span className="cc-score-tip-title">{t('paperui.score.signalsTitle')}</span>
           {signals.map(s => (
             <span key={s.label} className="cc-score-tip-row">
               <span className="cc-score-tip-icon">{s.icon}</span>
@@ -98,6 +100,7 @@ export function ReferenceDrawer({
   user, userHighlights,
   onCreateHighlight, onUpdateHighlight, onDeleteHighlight, onAskAssistant,
 }) {
+  const { t } = useTranslation();
   const [tab, setTab]               = useState('abstract');
   const [abstract, setAbstract]     = useState(candidate.abstract || '');
   const [isAiGenerated, setIsAiGen] = useState(false);
@@ -168,35 +171,40 @@ export function ReferenceDrawer({
   const openUrl = doiUrl || candidate.url || null;
 
   const metaRows = [
-    ['Editorial',  candidate.publisher],
-    ['Revista',    candidate.journal],
-    ['Año',        candidate.publication_year],
-    ['Volumen',    candidate.volume],
-    ['Número',     candidate.issue],
-    ['Páginas',    candidate.pages],
-    ['DOI',        candidate.doi],
-    ['Fuentes',    candidate.sources?.join(', ')],
-    ['Citaciones', candidate.citationCount > 0 ? candidate.citationCount.toLocaleString() : null],
+    [t('paperui.drawer.meta.publisher'), candidate.publisher],
+    [t('paperui.drawer.meta.journal'),   candidate.journal],
+    [t('paperui.drawer.meta.year'),      candidate.publication_year],
+    [t('paperui.drawer.meta.volume'),    candidate.volume],
+    [t('paperui.drawer.meta.issue'),     candidate.issue],
+    [t('paperui.drawer.meta.pages'),     candidate.pages],
+    [t('paperui.drawer.meta.doi'),       candidate.doi],
+    [t('paperui.drawer.meta.sources'),   candidate.sources?.join(', ')],
+    [t('paperui.drawer.meta.citations'), candidate.citationCount > 0 ? candidate.citationCount.toLocaleString() : null],
   ].filter(([, v]) => v);
 
   const hasPdfText = fullText && fullText.trim().length > 0;
   const TABS = hasPdfText
     ? ['abstract', 'fulltext', 'meta', 'cite']
     : ['abstract', 'meta', 'cite'];
-  const TAB_LABELS = { abstract: 'Abstract', fulltext: 'Texto PDF', meta: 'Metadatos', cite: 'Citar' };
+  const TAB_LABELS = {
+    abstract: t('paperui.drawer.tabs.abstract'),
+    fulltext: t('paperui.drawer.tabs.fulltext'),
+    meta:     t('paperui.drawer.tabs.meta'),
+    cite:     t('paperui.drawer.tabs.cite'),
+  };
 
   return (
     <>
     <div className="cc-drawer-backdrop" onClick={onClose} aria-hidden="true" />
-    <aside className="cc-drawer" aria-label="Detalles del paper">
+    <aside className="cc-drawer" aria-label={t('paperui.drawer.aria')}>
 
       {/* Header */}
       <div className="cc-drawer-header">
-        <span className="cc-drawer-header-title">Referencia</span>
+        <span className="cc-drawer-header-title">{t('paperui.drawer.reference')}</span>
         <div className="cc-drawer-header-btns">
           {openUrl && (
             <a href={openUrl} target="_blank" rel="noopener noreferrer"
-              className="cc-drawer-icon-btn" title="Abrir / Descargar">
+              className="cc-drawer-icon-btn" title={t('paperui.drawer.openDownload')}>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
@@ -205,7 +213,7 @@ export function ReferenceDrawer({
               </svg>
             </a>
           )}
-          <button className="cc-drawer-icon-btn cc-drawer-close" onClick={onClose} title="Cerrar (Esc)">
+          <button className="cc-drawer-icon-btn cc-drawer-close" onClick={onClose} title={t('paperui.drawer.close')}>
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
               stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
               <line x1="18" y1="6" x2="6" y2="18"/>
@@ -219,11 +227,11 @@ export function ReferenceDrawer({
       <div className="cc-drawer-body">
 
         <div className="cc-drawer-match-row">
-          <span className="cc-drawer-match-label">Coincidencia</span>
+          <span className="cc-drawer-match-label">{t('paperui.drawer.match')}</span>
           <ScoreBadge score={candidate.score} breakdown={candidate.scoreBreakdown} />
           {candidate.citationCount > 0 && (
             <span className="cc-drawer-citations">
-              {candidate.citationCount.toLocaleString()} citas
+              {t('paperui.drawer.citations', { count: candidate.citationCount, formatted: candidate.citationCount.toLocaleString() })}
             </span>
           )}
         </div>
@@ -232,7 +240,7 @@ export function ReferenceDrawer({
         <h2 className="cc-drawer-title">{candidate.title}</h2>
 
         <p className="cc-drawer-authors">
-          {candidate.authors || 'Autores desconocidos'}
+          {candidate.authors || t('paperui.drawer.unknownAuthors')}
           {candidate.publication_year && <> · {candidate.publication_year}</>}
           {candidate.journal && <> · <em>{candidate.journal}</em></>}
         </p>
@@ -261,11 +269,11 @@ export function ReferenceDrawer({
                 <span className="cc-abs-loading-dot" />
                 <span className="cc-abs-loading-dot" />
                 <span className="cc-abs-loading-dot" />
-                <span style={{ fontSize: 12, color: 'var(--text-3)', marginLeft: 6 }}>Buscando resumen…</span>
+                <span style={{ fontSize: 12, color: 'var(--text-3)', marginLeft: 6 }}>{t('paperui.drawer.searchingAbstract')}</span>
               </div>
             : abstract
               ? <div className="cc-abs-wrap">
-                  {isAiGenerated && <span className="cc-ai-summary-badge"><Sparkles size={11} /> Resumen generado por IA</span>}
+                  {isAiGenerated && <span className="cc-ai-summary-badge"><Sparkles size={11} /> {t('paperui.drawer.aiSummaryBadge')}</span>}
                   {user
                     ? <HighlightableText
                         text={abstract}
@@ -305,7 +313,7 @@ export function ReferenceDrawer({
                     : <p className="cc-drawer-abstract">{abstract}</p>
                   }
                 </div>
-              : <p className="cc-drawer-no-abstract">Resumen no disponible para este paper.</p>
+              : <p className="cc-drawer-no-abstract">{t('paperui.drawer.noAbstract')}</p>
         )}
 
         {/* Texto completo del PDF */}
@@ -313,13 +321,13 @@ export function ReferenceDrawer({
           loadingFull
             ? <div className="cc-abs-loading">
                 <span className="cc-abs-loading-dot" /><span className="cc-abs-loading-dot" /><span className="cc-abs-loading-dot" />
-                <span style={{ fontSize: 12, color: 'var(--text-3)', marginLeft: 6 }}>Cargando texto…</span>
+                <span style={{ fontSize: 12, color: 'var(--text-3)', marginLeft: 6 }}>{t('paperui.drawer.loadingText')}</span>
               </div>
             : hasPdfText
               ? <div className="cc-abs-wrap">
                   <div className="cc-fulltext-header">
                     <span className="cc-ai-summary-badge" style={{ background: 'var(--surface-2)', color: 'var(--text-2)' }}>
-                      📄 Texto extraído del PDF
+                      {t('paperui.drawer.pdfExtracted')}
                     </span>
                   </div>
                   {user
@@ -356,7 +364,7 @@ export function ReferenceDrawer({
                     : <pre className="cc-fulltext-pre">{fullText}</pre>
                   }
                 </div>
-              : <p className="cc-drawer-no-abstract">Texto completo no disponible. Sube el PDF del paper para resaltarlo.</p>
+              : <p className="cc-drawer-no-abstract">{t('paperui.drawer.noFulltext')}</p>
         )}
 
         {/* Apuntes de este paper (acordeón) */}
@@ -367,7 +375,7 @@ export function ReferenceDrawer({
               onClick={() => setNotesExpanded(v => !v)}
             >
               <span className="cc-paper-notes-toggle-icon">{notesExpanded ? <ChevronDown size={12} /> : <ChevronRight size={12} />}</span>
-              Apuntes {tab === 'fulltext' ? 'del PDF' : 'del abstract'}
+              {tab === 'fulltext' ? t('paperui.drawer.notesPdf') : t('paperui.drawer.notesAbstract')}
               <span className="cc-paper-notes-count">
                 {paperHighlights.filter(h => h.field === (tab === 'fulltext' ? 'fulltext' : 'abstract')).length}
               </span>
@@ -384,7 +392,7 @@ export function ReferenceDrawer({
                     <div className="cc-note-actions">
                       <button
                         className="cc-note-del"
-                        title="Eliminar"
+                        title={t('paperui.drawer.deleteNote')}
                         onClick={() => {
                           onDeleteHighlight?.(hl.id);
                           // paperHighlights se actualiza automáticamente vía userHighlights
@@ -408,7 +416,7 @@ export function ReferenceDrawer({
                     <span className="cc-meta-val">{v}</span>
                   </div>
                 ))
-              : <p className="cc-drawer-no-abstract">Sin metadatos disponibles.</p>
+              : <p className="cc-drawer-no-abstract">{t('paperui.drawer.noMeta')}</p>
             }
           </div>
         )}
@@ -417,8 +425,7 @@ export function ReferenceDrawer({
         {tab === 'cite' && (
           <div className="cc-cite-tab">
             <p className="cc-cite-intro">
-              Selecciona y copia esta referencia en el formato que necesitas.
-              El texto es editable — puedes ajustarlo antes de copiar.
+              {t('paperui.drawer.citeIntro')}
             </p>
             {CITATION_FORMATS.map(fmt => {
               const text = formatCitation(candidate, fmt);
@@ -426,7 +433,7 @@ export function ReferenceDrawer({
                 <div key={fmt} className="cc-cite-block">
                   <div className="cc-cite-block-header">
                     <span className="cc-cite-fmt-name">{fmt}</span>
-                    <CopyButton text={text} className="cc-copy-btn cc-cite-copy-btn" classNameOk="cc-copy-ok" label="Copiar" resetMs={2200} />
+                    <CopyButton text={text} className="cc-copy-btn cc-cite-copy-btn" classNameOk="cc-copy-ok" label={t('paperui.copy')} resetMs={2200} />
                   </div>
                   <pre
                     className="cc-cite-text"
@@ -449,7 +456,7 @@ export function ReferenceDrawer({
       {/* Footer */}
       <div className="cc-drawer-footer">
         <button className="cc-choose-btn" onClick={() => onChoose(candidate)} disabled={choosing}>
-          {choosing ? 'Cargando…' : 'Elegir este paper →'}
+          {choosing ? t('paperui.drawer.loading') : t('paperui.drawer.choose')}
         </button>
       </div>
     </aside>
@@ -460,11 +467,12 @@ export function ReferenceDrawer({
 /* FILA DE LA LISTA — div.cc-row > label.cc-row-check + button.cc-row-inner.
    Estructura que separa el checkbox del clic en el cuerpo de la fila. */
 const CandidateRow = React.memo(function CandidateRow({ candidate, isActive, isSelected, onToggleSelect, onClick, rank, queryKws = [] }) {
+  const { t } = useTranslation();
   const firstAuthor  = candidate.authors?.split(',')[0]?.trim() || '';
   const citStr       = candidate.citationCount > 0
     ? (candidate.citationCount >= 1000
-        ? `${(candidate.citationCount / 1000).toFixed(1)}k citas`
-        : `${candidate.citationCount} citas`)
+        ? t('paperui.row.citationsK', { n: (candidate.citationCount / 1000).toFixed(1) })
+        : t('paperui.row.citations', { count: candidate.citationCount }))
     : null;
   const multiSource  = (candidate.sources || []).length >= 2;
 
@@ -478,7 +486,7 @@ const CandidateRow = React.memo(function CandidateRow({ candidate, isActive, isS
       {/* Checkbox */}
       <label
         className="cc-row-check"
-        title={isSelected ? 'Deseleccionar' : 'Seleccionar para copiar'}
+        title={isSelected ? t('paperui.row.deselect') : t('paperui.row.selectToCopy')}
         onClick={e => e.stopPropagation()}
       >
         <input type="checkbox" checked={isSelected} onChange={() => onToggleSelect(candidate)} />
@@ -490,7 +498,7 @@ const CandidateRow = React.memo(function CandidateRow({ candidate, isActive, isS
         <div className="cc-row-body">
           {rank === 0 && (
             <span className="cc-row-best">
-              <Star size={10} /> Mejor coincidencia
+              <Star size={10} /> {t('paperui.row.bestMatch')}
             </span>
           )}
 
@@ -510,8 +518,8 @@ const CandidateRow = React.memo(function CandidateRow({ candidate, isActive, isS
             <ScoreBadge score={candidate.score} breakdown={candidate.scoreBreakdown} />
             {citStr && <span className="cc-row-citations">{citStr}</span>}
             {multiSource && (
-              <span className="cc-row-verified" title={`Verificado en ${candidate.sources.length} fuentes`}>
-                <Check size={10} /> {candidate.sources.length} fuentes
+              <span className="cc-row-verified" title={t('paperui.row.verifiedIn', { count: candidate.sources.length })}>
+                <Check size={10} /> {t('paperui.row.sourcesCount', { count: candidate.sources.length })}
               </span>
             )}
             {(candidate.sources || []).map(s => (
@@ -520,7 +528,7 @@ const CandidateRow = React.memo(function CandidateRow({ candidate, isActive, isS
           </span>
 
           {sharedKws.length > 0 && (
-            <span className="cc-row-kws" aria-label="Temas en común con la búsqueda">
+            <span className="cc-row-kws" aria-label={t('paperui.row.sharedThemesAria')}>
               {sharedKws.map(w => <span key={w} className="cc-row-kw">{w}</span>)}
             </span>
           )}
@@ -532,10 +540,11 @@ const CandidateRow = React.memo(function CandidateRow({ candidate, isActive, isS
   );
 });
 
+// Opciones de orden. La etiqueta visible se resuelve en render vía t(`paperui.sort.${key}`).
 const SORT_OPTIONS = [
-  { key: 'score',     label: 'Relevancia' },
-  { key: 'year',      label: 'Año (reciente)' },
-  { key: 'citations', label: 'Citaciones' },
+  { key: 'score' },
+  { key: 'year' },
+  { key: 'citations' },
 ];
 
 const CandidateComparison = ({
@@ -548,6 +557,7 @@ const CandidateComparison = ({
   activeCandidate,
   onRowClick,
 }) => {
+  const { t } = useTranslation();
   // Multi-selección
   const [selected, setSelected]     = useState(new Set());
   const [bulkFormat, setBulkFormat] = useState('APA');
@@ -634,16 +644,15 @@ const CandidateComparison = ({
   if (action === 'refine') {
     return (
       <div className="cc-container cc-refine">
-        {query && <p className="cc-query-label">Búsqueda: <strong>"{query}"</strong></p>}
+        {query && <p className="cc-query-label">{t('paperui.refine.searchLabel')} <strong>"{query}"</strong></p>}
         <div className="cc-refine-icon">🔍</div>
-        <p className="cc-refine-msg">{message || 'No encontramos una coincidencia clara.'}</p>
+        <p className="cc-refine-msg">{message || t('paperui.refine.noClearMatch')}</p>
         <p className="cc-refine-hint">
-          Prueba añadiendo el <strong>DOI</strong>, el <strong>autor</strong> o el{' '}
-          <strong>año</strong> al título, o pega directamente la URL o DOI del artículo.
+          {t('paperui.refine.hintPrefix')}<strong>DOI</strong>{t('paperui.refine.hintMid')}<strong>{t('paperui.refine.author')}</strong>{t('paperui.refine.hintOr')}<strong>{t('paperui.refine.year')}</strong>{t('paperui.refine.hintSuffix')}
         </p>
         {candidates.length > 0 && (
           <details className="cc-refine-details">
-            <summary>Ver {candidates.length} resultado(s) aproximado(s)</summary>
+            <summary>{t('paperui.refine.showApprox', { count: candidates.length })}</summary>
             <div className="cc-list" style={{ marginTop: '0.75rem' }}>
               {candidates.map((c) => (
                 <CandidateRow
@@ -677,7 +686,7 @@ const CandidateComparison = ({
         <div className="cc-ai-analysis">
           <div className="cc-ai-analysis-header">
             <span className="cc-ai-analysis-icon"><Sparkles size={13} /></span>
-            <span className="cc-ai-analysis-label">Resumen directo</span>
+            <span className="cc-ai-analysis-label">{t('paperui.compare.directSummary')}</span>
           </div>
           <p className="cc-ai-analysis-text">{aiNarrative}</p>
         </div>
@@ -685,10 +694,10 @@ const CandidateComparison = ({
 
       {sharedThemes.length >= 2 && (
         <div className="cc-themes-bar">
-          <span className="cc-themes-bar-label">Temas en común</span>
+          <span className="cc-themes-bar-label">{t('paperui.compare.sharedThemes')}</span>
           <div className="cc-themes-bar-tags">
             {sharedThemes.map(({ kw, count }) => (
-              <span key={kw} className="cc-theme-tag" title={`${count} de ${candidates.length} papers`}>
+              <span key={kw} className="cc-theme-tag" title={t('paperui.compare.themeCount', { count, total: candidates.length })}>
                 {kw}
                 <span className="cc-theme-count">{count}</span>
               </span>
@@ -702,14 +711,14 @@ const CandidateComparison = ({
         <div className="cc-filter-bar-left">
           {/* Ordenar por */}
           <div className="cc-filter-group">
-            <span className="cc-filter-label">Ordenar</span>
+            <span className="cc-filter-label">{t('paperui.compare.sortLabel')}</span>
             <select
               className="cc-filter-select"
               value={sortBy}
               onChange={e => setSortBy(e.target.value)}
             >
               {SORT_OPTIONS.map(o => (
-                <option key={o.key} value={o.key}>{o.label}</option>
+                <option key={o.key} value={o.key}>{t(`paperui.sort.${o.key}`)}</option>
               ))}
             </select>
           </div>
@@ -717,13 +726,13 @@ const CandidateComparison = ({
           {/* Filtrar por fuente */}
           {availableSources.length > 1 && (
             <div className="cc-filter-group">
-              <span className="cc-filter-label">Fuente</span>
+              <span className="cc-filter-label">{t('paperui.compare.sourceLabel')}</span>
               <div className="cc-source-pills">
                 <button
                   className={`cc-source-pill ${filterSource === 'all' ? 'cc-source-pill-active' : ''}`}
                   onClick={() => setFilterSource('all')}
                 >
-                  Todas
+                  {t('paperui.compare.allSources')}
                 </button>
                 {availableSources.map(src => (
                   <button
@@ -743,16 +752,16 @@ const CandidateComparison = ({
           <button
             className="cc-filter-reset"
             onClick={() => { setSortBy('score'); setFilterSource('all'); }}
-            title="Restablecer filtros"
+            title={t('paperui.compare.resetFilters')}
           >
-            <X size={12} /> Restablecer
+            <X size={12} /> {t('paperui.compare.reset')}
           </button>
         )}
       </div>
 
       {/* Encabezado de la lista con "select all" */}
       <div className="cc-list-header">
-        <label className="cc-select-all" title={allSelected ? 'Deseleccionar todos' : 'Seleccionar todos'}>
+        <label className="cc-select-all" title={allSelected ? t('paperui.compare.deselectAll') : t('paperui.compare.selectAll')}>
           <input
             type="checkbox"
             checked={allSelected}
@@ -762,17 +771,17 @@ const CandidateComparison = ({
           <span className="cc-select-all-box" />
           <span className="cc-list-count">
             {displayCandidates.length !== candidates.length
-              ? <>{displayCandidates.length} de {candidates.length} resultado{candidates.length !== 1 ? 's' : ''}</>
-              : <>{candidates.length} resultado{candidates.length !== 1 ? 's' : ''}</>
+              ? t('paperui.compare.resultsFiltered', { shown: displayCandidates.length, total: candidates.length, count: candidates.length })
+              : t('paperui.compare.results', { count: candidates.length })
             }
             {!noneSelected && (
-              <span className="cc-list-count-sel"> · {selected.size} seleccionado{selected.size !== 1 ? 's' : ''}</span>
+              <span className="cc-list-count-sel">{t('paperui.compare.selectedCount', { count: selected.size })}</span>
             )}
           </span>
         </label>
         {displayCandidates[0]?.score > 0 && (
           <span className="cc-best-badge">
-            <Star size={12} /> {displayCandidates[0].score}% de coincidencia
+            <Star size={12} /> {t('paperui.compare.matchPercent', { score: displayCandidates[0].score })}
           </span>
         )}
       </div>
@@ -781,8 +790,8 @@ const CandidateComparison = ({
       <div className="cc-list">
         {displayCandidates.length === 0 ? (
           <div className="cc-empty-filter">
-            <p>Sin resultados para la fuente seleccionada.</p>
-            <button onClick={() => setFilterSource('all')}>Ver todas las fuentes</button>
+            <p>{t('paperui.compare.emptyFilter')}</p>
+            <button onClick={() => setFilterSource('all')}>{t('paperui.compare.viewAllSources')}</button>
           </div>
         ) : (
           displayCandidates.map((c, i) => (
@@ -804,8 +813,8 @@ const CandidateComparison = ({
       {noneSelected && displayCandidates.length > 0 && (
         <p className="cc-list-hint">
           {activeCandidate
-            ? '← Viendo detalles del resultado seleccionado'
-            : 'Haz clic en un resultado para ver detalles, o marca ✓ para copiar citas en bloque'}
+            ? t('paperui.compare.hintActive')
+            : t('paperui.compare.hintIdle')}
         </p>
       )}
 
@@ -813,14 +822,14 @@ const CandidateComparison = ({
       {!noneSelected && (
         <div className="cc-action-bar">
           <span className="cc-action-count">
-            {selected.size} cita{selected.size !== 1 ? 's' : ''}
+            {t('paperui.compare.citeCount', { count: selected.size })}
           </span>
 
           <select
             className="cc-format-select"
             value={bulkFormat}
             onChange={e => setBulkFormat(e.target.value)}
-            title="Formato de citación"
+            title={t('paperui.compare.citationFormat')}
           >
             {CITATION_FORMATS.map(f => (
               <option key={f} value={f}>{f}</option>
@@ -831,13 +840,13 @@ const CandidateComparison = ({
             className={`cc-action-copy-btn ${bulkCopied ? 'cc-action-copy-ok' : ''}`}
             onClick={handleBulkCopy}
           >
-            {bulkCopied ? <><Check size={13} /> Copiado</> : `Copiar ${selected.size} cita${selected.size !== 1 ? 's' : ''}`}
+            {bulkCopied ? <><Check size={13} /> {t('paperui.copied')}</> : t('paperui.compare.copyCites', { count: selected.size })}
           </button>
 
           <button
             className="cc-action-clear-btn"
             onClick={() => setSelected(new Set())}
-            title="Limpiar selección"
+            title={t('paperui.compare.clearSelection')}
           >
             <X size={13} />
           </button>

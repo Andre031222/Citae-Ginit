@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import Swal from 'sweetalert2';
 import api from '../services/api';
 import authService from '../services/authService';
@@ -14,6 +15,7 @@ import './Profile.css';
 const API_ORIGIN = (process.env.REACT_APP_API_URL || 'http://localhost:5000/api').replace(/\/api\/?$/, '');
 
 const Profile = ({ user, onUpdate, onClose }) => {
+  const { t } = useTranslation();
   const fileInputRef = useRef();
 
   const [formData, setFormData] = useState({
@@ -118,9 +120,9 @@ const Profile = ({ user, onUpdate, onClose }) => {
   const handleImageChange = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
-    if (file.size > 10 * 1024 * 1024) { setError('La imagen no debe superar los 10 MB'); return; }
+    if (file.size > 10 * 1024 * 1024) { setError(t('profile.alerts.imageTooLarge')); return; }
     const valid = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
-    if (!valid.includes(file.type)) { setError('Solo PNG, JPEG o GIF'); return; }
+    if (!valid.includes(file.type)) { setError(t('profile.alerts.invalidImageType')); return; }
     setError('');
 
     const cropped = await cropToSquare(file);
@@ -137,11 +139,11 @@ const Profile = ({ user, onUpdate, onClose }) => {
 
   const handleRemoveImage = async () => {
     const { isConfirmed } = await Swal.fire({
-      title: '¿Eliminar foto de perfil?',
+      title: t('profile.removePhoto.title'),
       icon: 'question',
       showCancelButton: true,
-      confirmButtonText: 'Eliminar',
-      cancelButtonText: 'Cancelar',
+      confirmButtonText: t('profile.removePhoto.confirm'),
+      cancelButtonText: t('profile.removePhoto.cancel'),
     });
     if (!isConfirmed) return;
     setLoading(true);
@@ -151,14 +153,14 @@ const Profile = ({ user, onUpdate, onClose }) => {
         setProfileImage(null);
         setImageFile(null);
         if (fileInputRef.current) fileInputRef.current.value = '';
-        setSuccess('Foto eliminada');
+        setSuccess(t('profile.alerts.photoRemoved'));
         setTimeout(() => setSuccess(''), 3000);
         onUpdate?.({ ...user, avatar_url: null, profile_image_url: null });
       } else {
-        setError(data.message || 'Error al eliminar la foto');
+        setError(data.message || t('profile.alerts.photoRemoveError'));
       }
     } catch (_) {
-      setError('Error de conexión');
+      setError(t('profile.alerts.connectionError'));
     } finally {
       setLoading(false);
     }
@@ -171,12 +173,12 @@ const Profile = ({ user, onUpdate, onClose }) => {
     setSuccess('');
 
     if (!formData.firstName.trim()) {
-      setError('El nombre es requerido');
+      setError(t('profile.alerts.nameRequired'));
       setLoading(false);
       return;
     }
     if (!formData.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      setError('Correo electrónico inválido');
+      setError(t('profile.alerts.invalidEmail'));
       setLoading(false);
       return;
     }
@@ -193,7 +195,7 @@ const Profile = ({ user, onUpdate, onClose }) => {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
       if (data.success) {
-        setSuccess('Perfil actualizado');
+        setSuccess(t('profile.alerts.profileUpdated'));
         const imgUrl = data.user?.profile_image_url
           || (data.user?.profile_image_path ? `${API_ORIGIN}${data.user.profile_image_path}` : null);
         if (imgUrl) setProfileImage(imgUrl);
@@ -201,10 +203,10 @@ const Profile = ({ user, onUpdate, onClose }) => {
         setTimeout(() => setSuccess(''), 3000);
         onUpdate?.({ ...user, ...data.user, avatar_url: imgUrl || data.user?.avatar_url });
       } else {
-        setError(data.message || 'Error al actualizar');
+        setError(data.message || t('profile.alerts.updateError'));
       }
     } catch (_) {
-      setError('Error de conexión');
+      setError(t('profile.alerts.connectionError'));
     } finally {
       setLoading(false);
     }
@@ -222,27 +224,27 @@ const Profile = ({ user, onUpdate, onClose }) => {
       <div className="loading-screen">
         <Loader size={28} className="spinning" style={{ color: 'var(--accent)' }} />
         <p style={{ color: 'var(--text-3)', fontSize: '0.875rem', marginTop: '0.75rem' }}>
-          Cargando perfil…
+          {t('profile.loading')}
         </p>
       </div>
     );
   }
 
   const navItems = [
-    { key: 'profile', icon: <User size={15} />,      label: 'Perfil' },
-    { key: 'ai',      icon: <Sparkles size={15} />,  label: 'Claves de IA' },
-    { key: 'storage', icon: <HardDrive size={15} />, label: 'Almacenamiento' },
-    { key: 'general', icon: <Settings size={15} />,  label: 'Preferencias' },
+    { key: 'profile', icon: <User size={15} />,      label: t('profile.nav.profile') },
+    { key: 'ai',      icon: <Sparkles size={15} />,  label: t('profile.nav.ai') },
+    { key: 'storage', icon: <HardDrive size={15} />, label: t('profile.nav.storage') },
+    { key: 'general', icon: <Settings size={15} />,  label: t('profile.nav.general') },
   ];
 
   const STAT_CARDS = [
-    { key: 'papers',      label: 'Papers',      icon: <Library size={18} /> },
-    { key: 'highlights',  label: 'Resaltados',  icon: <Highlighter size={18} /> },
-    { key: 'collections', label: 'Colecciones', icon: <Folder size={18} /> },
-    { key: 'tags',        label: 'Etiquetas',   icon: <TagIcon size={18} /> },
+    { key: 'papers',      label: t('profile.storage.papers'),      icon: <Library size={18} /> },
+    { key: 'highlights',  label: t('profile.storage.highlights'),  icon: <Highlighter size={18} /> },
+    { key: 'collections', label: t('profile.storage.collections'), icon: <Folder size={18} /> },
+    { key: 'tags',        label: t('profile.storage.tags'),        icon: <TagIcon size={18} /> },
   ];
 
-  const SECTION_TITLES = { profile: 'Perfil', ai: 'Claves de IA', storage: 'Almacenamiento', general: 'Preferencias' };
+  const SECTION_TITLES = { profile: t('profile.nav.profile'), ai: t('profile.nav.ai'), storage: t('profile.nav.storage'), general: t('profile.nav.general') };
 
   return (
     <div className="settings-container">
@@ -250,13 +252,13 @@ const Profile = ({ user, onUpdate, onClose }) => {
       <div className="settings-sidebar">
         {onClose && (
           <button className="back-button" onClick={onClose}>
-            <ChevronLeft size={15} /> Volver
+            <ChevronLeft size={15} /> {t('profile.back')}
           </button>
         )}
 
         <nav className="settings-sections">
           <div className="section-group">
-            <h3>CUENTA</h3>
+            <h3>{t('profile.accountGroup')}</h3>
             {navItems.map(({ key, icon, label }) => (
               <button
                 key={key}
@@ -278,7 +280,7 @@ const Profile = ({ user, onUpdate, onClose }) => {
           {section === 'profile' && (
             <p className="info-message">
               <Info size={14} />
-              Los cambios se aplican a toda tu cuenta de Citae.
+              {t('profile.infoMessage')}
             </p>
           )}
         </div>
@@ -292,7 +294,7 @@ const Profile = ({ user, onUpdate, onClose }) => {
         {section === 'storage' && (
           <div className="profile-fields-section">
             <p className="help-text" style={{ marginBottom: 16 }}>
-              Resumen de lo que tienes guardado en Citae.
+              {t('profile.storage.summary')}
             </p>
             <div className="settings-stats">
               {STAT_CARDS.map(c => (
@@ -309,18 +311,18 @@ const Profile = ({ user, onUpdate, onClose }) => {
         {section === 'general' && (
           <div className="profile-fields-section">
             <div className="form-group">
-              <label>Idioma</label>
-              <input type="text" value="Español" disabled />
+              <label>{t('profile.general.language')}</label>
+              <input type="text" value={t('profile.general.languageValue')} disabled />
             </div>
             <div className="form-group">
-              <label>Cuenta</label>
+              <label>{t('profile.general.account')}</label>
               <input type="text" value={`@${user?.username || ''}`} disabled />
             </div>
             <div className="form-group">
-              <label>Tipo de cuenta</label>
-              <input type="text" value={user?.role === 'super_admin' ? 'Super Admin' : 'Usuario'} disabled />
+              <label>{t('profile.general.accountType')}</label>
+              <input type="text" value={user?.role === 'super_admin' ? 'Super Admin' : t('profile.general.roleUser')} disabled />
             </div>
-            <p className="help-text">El tema (claro/oscuro) se cambia con el botón de la barra superior.</p>
+            <p className="help-text">{t('profile.general.themeHint')}</p>
           </div>
         )}
 
@@ -339,11 +341,11 @@ const Profile = ({ user, onUpdate, onClose }) => {
 
           {/* Avatar */}
           <div className="profile-picture-section">
-            <h3>Foto de perfil</h3>
+            <h3>{t('profile.avatar.title')}</h3>
             <div className="picture-controls">
               <div className="picture-preview">
                 {profileImage
-                  ? <img src={profileImage} alt="Avatar" />
+                  ? <img src={profileImage} alt={t('profile.avatar.alt')} />
                   : <div className="avatar-placeholder">{getInitials()}</div>
                 }
               </div>
@@ -355,7 +357,7 @@ const Profile = ({ user, onUpdate, onClose }) => {
                   onClick={() => fileInputRef.current?.click()}
                   disabled={loading}
                 >
-                  <Upload size={14} /> Subir imagen
+                  <Upload size={14} /> {t('profile.avatar.upload')}
                 </button>
                 {profileImage && (
                   <button
@@ -364,7 +366,7 @@ const Profile = ({ user, onUpdate, onClose }) => {
                     onClick={handleRemoveImage}
                     disabled={loading}
                   >
-                    Eliminar
+                    {t('profile.avatar.remove')}
                   </button>
                 )}
               </div>
@@ -377,33 +379,33 @@ const Profile = ({ user, onUpdate, onClose }) => {
                 style={{ display: 'none' }}
               />
             </div>
-            <p className="help-text">PNG, JPEG o GIF · máx. 10 MB</p>
+            <p className="help-text">{t('profile.avatar.help')}</p>
           </div>
 
           <div className="profile-fields-section">
             {/* Name row */}
             <div className="form-row">
               <div className="form-group">
-                <label htmlFor="firstName">Nombre</label>
+                <label htmlFor="firstName">{t('profile.form.firstName')}</label>
                 <input
                   id="firstName" name="firstName" type="text"
                   value={formData.firstName} onChange={handleInput}
-                  placeholder="Tu nombre" required disabled={loading}
+                  placeholder={t('profile.form.firstNamePlaceholder')} required disabled={loading}
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="lastName">Apellido</label>
+                <label htmlFor="lastName">{t('profile.form.lastName')}</label>
                 <input
                   id="lastName" name="lastName" type="text"
                   value={formData.lastName} onChange={handleInput}
-                  placeholder="Tu apellido" disabled={loading}
+                  placeholder={t('profile.form.lastNamePlaceholder')} disabled={loading}
                 />
               </div>
             </div>
 
             {/* Email */}
             <div className="form-group">
-              <label htmlFor="email">Correo electrónico</label>
+              <label htmlFor="email">{t('profile.form.email')}</label>
               <input
                 id="email" name="email" type="email"
                 value={formData.email} onChange={handleInput}
@@ -411,33 +413,33 @@ const Profile = ({ user, onUpdate, onClose }) => {
               />
               <button
                 type="button" className="link-button"
-                onClick={() => Swal.fire({ title: 'Próximamente', text: 'Esta función estará disponible pronto.', icon: 'info' })}
+                onClick={() => Swal.fire({ title: t('profile.changeEmailDialog.title'), text: t('profile.changeEmailDialog.text'), icon: 'info' })}
               >
-                Cambiar dirección de correo
+                {t('profile.form.changeEmail')}
               </button>
             </div>
 
             {/* Timezone */}
             <div className="form-group">
-              <label htmlFor="timezone">Zona horaria</label>
+              <label htmlFor="timezone">{t('profile.form.timezone')}</label>
               <select
                 id="timezone" name="timezone"
                 value={formData.timezone} onChange={handleInput}
                 disabled={loading}
               >
                 <option value="UTC">UTC</option>
-                <option value="America/Lima">America/Lima (Perú)</option>
-                <option value="America/La_Paz">America/La Paz (Bolivia)</option>
-                <option value="America/Bogota">America/Bogotá (Colombia)</option>
-                <option value="America/Guayaquil">America/Guayaquil (Ecuador)</option>
-                <option value="America/Caracas">America/Caracas (Venezuela)</option>
-                <option value="America/Buenos_Aires">America/Buenos Aires (Argentina)</option>
-                <option value="America/Santiago">America/Santiago (Chile)</option>
-                <option value="America/Mexico_City">America/México</option>
-                <option value="America/New_York">America/New York (USA Este)</option>
-                <option value="America/Los_Angeles">America/Los Angeles (USA Oeste)</option>
-                <option value="Europe/Madrid">Europe/Madrid (España)</option>
-                <option value="Europe/London">Europe/London (UK)</option>
+                <option value="America/Lima">{t('profile.timezones.lima')}</option>
+                <option value="America/La_Paz">{t('profile.timezones.laPaz')}</option>
+                <option value="America/Bogota">{t('profile.timezones.bogota')}</option>
+                <option value="America/Guayaquil">{t('profile.timezones.guayaquil')}</option>
+                <option value="America/Caracas">{t('profile.timezones.caracas')}</option>
+                <option value="America/Buenos_Aires">{t('profile.timezones.buenosAires')}</option>
+                <option value="America/Santiago">{t('profile.timezones.santiago')}</option>
+                <option value="America/Mexico_City">{t('profile.timezones.mexico')}</option>
+                <option value="America/New_York">{t('profile.timezones.newYork')}</option>
+                <option value="America/Los_Angeles">{t('profile.timezones.losAngeles')}</option>
+                <option value="Europe/Madrid">{t('profile.timezones.madrid')}</option>
+                <option value="Europe/London">{t('profile.timezones.london')}</option>
               </select>
             </div>
 
@@ -445,8 +447,8 @@ const Profile = ({ user, onUpdate, onClose }) => {
             <div className="form-actions">
               <button type="submit" className="save-button" disabled={loading}>
                 {loading
-                  ? <><Loader size={14} className="spinning" /> Guardando…</>
-                  : 'Guardar cambios'
+                  ? <><Loader size={14} className="spinning" /> {t('profile.form.saving')}</>
+                  : t('profile.form.save')
                 }
               </button>
             </div>

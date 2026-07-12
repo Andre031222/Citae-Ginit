@@ -1,0 +1,144 @@
+{
+  "loading": "Cargando perfil…",
+  "back": "Volver",
+  "accountGroup": "CUENTA",
+  "infoMessage": "Los cambios se aplican a toda tu cuenta de Citae.",
+  "nav": {
+    "profile": "Perfil",
+    "ai": "Claves de IA",
+    "storage": "Almacenamiento",
+    "general": "Preferencias"
+  },
+  "storage": {
+    "summary": "Resumen de lo que tienes guardado en Citae.",
+    "papers": "Papers",
+    "highlights": "Resaltados",
+    "collections": "Colecciones",
+    "tags": "Etiquetas"
+  },
+  "general": {
+    "language": "Idioma",
+    "languageValue": "Español",
+    "account": "Cuenta",
+    "accountType": "Tipo de cuenta",
+    "roleUser": "Usuario",
+    "themeHint": "El tema (claro/oscuro) se cambia con el botón de la barra superior."
+  },
+  "avatar": {
+    "title": "Foto de perfil",
+    "alt": "Avatar",
+    "upload": "Subir imagen",
+    "remove": "Eliminar",
+    "help": "PNG, JPEG o GIF · máx. 10 MB"
+  },
+  "form": {
+    "firstName": "Nombre",
+    "firstNamePlaceholder": "Tu nombre",
+    "lastName": "Apellido",
+    "lastNamePlaceholder": "Tu apellido",
+    "email": "Correo electrónico",
+    "changeEmail": "Cambiar dirección de correo",
+    "timezone": "Zona horaria",
+    "save": "Guardar cambios",
+    "saving": "Guardando…"
+  },
+  "timezones": {
+    "lima": "America/Lima (Perú)",
+    "laPaz": "America/La Paz (Bolivia)",
+    "bogota": "America/Bogotá (Colombia)",
+    "guayaquil": "America/Guayaquil (Ecuador)",
+    "caracas": "America/Caracas (Venezuela)",
+    "buenosAires": "America/Buenos Aires (Argentina)",
+    "santiago": "America/Santiago (Chile)",
+    "mexico": "America/México",
+    "newYork": "America/New York (USA Este)",
+    "losAngeles": "America/Los Angeles (USA Oeste)",
+    "madrid": "Europe/Madrid (España)",
+    "london": "Europe/London (UK)"
+  },
+  "removePhoto": {
+    "title": "¿Eliminar foto de perfil?",
+    "confirm": "Eliminar",
+    "cancel": "Cancelar"
+  },
+  "changeEmailDialog": {
+    "title": "Próximamente",
+    "text": "Esta función estará disponible pronto."
+  },
+  "alerts": {
+    "imageTooLarge": "La imagen no debe superar los 10 MB",
+    "invalidImageType": "Solo PNG, JPEG o GIF",
+    "photoRemoved": "Foto eliminada",
+    "photoRemoveError": "Error al eliminar la foto",
+    "connectionError": "Error de conexión",
+    "nameRequired": "El nombre es requerido",
+    "invalidEmail": "Correo electrónico inválido",
+    "profileUpdated": "Perfil actualizado",
+    "updateError": "Error al actualizar"
+  },
+  "apiKeys": {
+    "intro1": "Usa tu propia clave de IA. Se usará ",
+    "introStrong1": "primero la tuya",
+    "intro2": " y, si se agota, Citae seguirá funcionando con el servicio por defecto. Tus claves se guardan cifradas y nunca se muestran completas. ",
+    "introStrong2": "Con una sola clave de cualquiera de los tres proveedores es suficiente",
+    "intro3": " — y crearla es gratis.",
+    "banner": "Una de tus claves se agotó o dejó de ser válida. Pruébala de nuevo, reemplázala o añade otra.",
+    "providerAria": "Proveedor de IA",
+    "keyPlaceholder": "Pega tu API key aquí",
+    "add": "Añadir",
+    "howToTitle": "Cómo obtener tu clave de {{provider}}",
+    "openProvider": "Abrir {{provider}}",
+    "freeNote": "es gratis crear la clave.",
+    "loading": "Cargando…",
+    "empty": "Aún no has añadido ninguna clave.",
+    "test": "Probar",
+    "testTitle": "Probar la clave",
+    "removeTitle": "Eliminar",
+    "removeAria": "Eliminar clave",
+    "status": {
+      "active": "Activa",
+      "exhausted": "Agotada",
+      "invalid": "Inválida"
+    },
+    "providers": {
+      "groq": {
+        "hint": "Empieza por gsk_…",
+        "steps": [
+          "Crea una cuenta gratis en Groq",
+          "Pulsa «Create API Key»",
+          "Copia la clave (gsk_…) y pégala aquí"
+        ]
+      },
+      "google": {
+        "hint": "Empieza por AIza…",
+        "steps": [
+          "Entra con tu cuenta de Google",
+          "Pulsa «Create API key»",
+          "Copia la clave (AIza…) y pégala aquí"
+        ]
+      },
+      "openrouter": {
+        "hint": "Empieza por sk-or-…",
+        "steps": [
+          "Crea una cuenta gratis en OpenRouter",
+          "Pulsa «Create Key»",
+          "Copia la clave (sk-or-…) y pégala aquí"
+        ]
+      }
+    },
+    "toasts": {
+      "loadError": "No se pudieron cargar tus claves",
+      "invalidKey": "La clave no parece válida",
+      "added": "Clave añadida y validada",
+      "addErrorTitle": "No se pudo añadir",
+      "addErrorText": "Inténtalo de nuevo",
+      "works": "La clave funciona",
+      "noResponse": "La clave no responde",
+      "testError": "No se pudo probar la clave",
+      "removeConfirmTitle": "¿Eliminar esta clave?",
+      "removeConfirmText": "Dejará de usarse de inmediato. Puedes añadir otra cuando quieras.",
+      "removeConfirmBtn": "Eliminar",
+      "removeError": "No se pudo eliminar"
+    }
+  }
+}

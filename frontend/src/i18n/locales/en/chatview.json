@@ -1,0 +1,92 @@
+{
+  "transparency": {
+    "searchLabel": "Search:",
+    "from": "from {{year}}",
+    "to": "until {{year}}",
+    "minCitations": "≥ {{count}} citations",
+    "preprints": "preprints",
+    "articles": "articles",
+    "hidden_one": "{{count}} result hidden by filters",
+    "hidden_other": "{{count}} results hidden by filters"
+  },
+  "assistant": {
+    "metaUpdateError": "Failed to update the metadata",
+    "viewPaper": "View paper",
+    "doiVerified": "DOI verified",
+    "removeFromBiblio": "Remove from bibliography",
+    "addToBiblio": "Add to bibliography",
+    "editMeta": "Edit metadata",
+    "saveToFavorites": "Save to favorites"
+  },
+  "biblio": {
+    "title": "Bibliography ({{count}})",
+    "remove": "Remove",
+    "copied": "Copied",
+    "copy_one": "Copy {{count}} citation",
+    "copy_other": "Copy {{count}} citations",
+    "clearTitle": "Clear bibliography",
+    "clear": "Clear"
+  },
+  "input": {
+    "yearFrom": "Year from",
+    "yearTo": "Year to",
+    "minCites": "Min. citations",
+    "type": "Type",
+    "typeAll": "All",
+    "typeArticle": "Article",
+    "typePreprint": "Preprint",
+    "clearFilters": "Clear filters",
+    "clear": "Clear",
+    "attach": "Upload PDF or image",
+    "filtersToggle": "Search filters (years, citations, type)",
+    "placeholder": "DOI, URL or title — or describe what you're looking for…",
+    "hint": "DOI · URL · title · PDF · image · e.g.: «neural networks since 2020 with more than 100 citations»"
+  },
+  "welcome": {
+    "badgeDoi": "DOI",
+    "badgeTitle": "Title",
+    "badgeUrl": "URL",
+    "featSearch": "DOI, URL or title",
+    "featUpload": "Upload a PDF",
+    "featFormats": "7 citation formats",
+    "featFavorites": "Save favorites",
+    "hello": "Hi",
+    "title": "What do you want to research today?",
+    "sub": "Paste a DOI, a URL or a title to get the citation instantly. You can also upload the PDF directly.",
+    "tryExample": "Try an example",
+    "loginLink": "Sign in",
+    "loginHint": "to save your history and favorites"
+  },
+  "meta": {
+    "title": "Title",
+    "authors": "Authors",
+    "authorsHint": "(comma-separated)",
+    "year": "Year",
+    "journal": "Journal",
+    "volume": "Volume",
+    "issue": "Issue",
+    "pages": "Pages",
+    "doi": "DOI",
+    "saving": "Saving…",
+    "save": "Save and regenerate citations",
+    "cancel": "Cancel"
+  },
+  "search": {
+    "defaultQuery": "your query",
+    "searching": "Searching {{query}}",
+    "title": "Researching",
+    "steps": {
+      "analyzing": "Analyzing your query",
+      "crossref": "Querying CrossRef",
+      "semanticScholar": "Querying Semantic Scholar",
+      "openalex": "Querying OpenAlex",
+      "arxiv": "Querying arXiv",
+      "ranking": "Ranking by relevance"
+    }
+  },
+  "theme": {
+    "toggle": "Toggle theme",
+    "toLight": "Switch to light theme",
+    "toDark": "Switch to dark theme"
+  }
+}

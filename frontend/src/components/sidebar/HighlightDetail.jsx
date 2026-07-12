@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Star, Trash2, Check, ImageIcon } from '../Icons';
 import { HIGHLIGHT_COLORS, colorHex, colorName } from '../../constants/highlightColors';
 import { formatDate } from '../../utils/sidebarUtils';
 import QuoteshotModal from '../share/QuoteshotModal';
 
 const HighlightDetail = ({ hl, onBack, onUpdate, onDelete, onOpenPaper }) => {
+  const { t } = useTranslation();
   const [noteVal,   setNoteVal]   = useState(hl.note || '');
   const [editNote,  setEditNote]  = useState(false);
   const [savedNote, setSavedNote] = useState(false);
@@ -24,22 +26,22 @@ const HighlightDetail = ({ hl, onBack, onUpdate, onDelete, onOpenPaper }) => {
       <div className="cs-detail-topbar">
         <button className="cs-detail-back" onClick={onBack}>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-          Apuntes
+          {t('tools.highlight.back')}
         </button>
         <div className="cs-detail-actions-top">
           <button
             className="cs-detail-fav"
-            title="Crear imagen compartible (Quoteshot)"
+            title={t('tools.highlight.shareTitle')}
             onClick={() => setShowShot(true)}
           ><ImageIcon size={13} /></button>
           <button
             className={`cs-detail-fav ${hl.is_favorite ? 'cs-detail-fav-on' : ''}`}
-            title={hl.is_favorite ? 'Quitar favorito' : 'Marcar favorito'}
+            title={hl.is_favorite ? t('tools.highlight.removeFavorite') : t('tools.highlight.addFavorite')}
             onClick={() => onUpdate?.(hl.id, { is_favorite: !hl.is_favorite })}
           ><Star size={13} /></button>
           <button
             className="cs-detail-del"
-            title="Eliminar apunte"
+            title={t('tools.highlight.deleteTitle')}
             onClick={() => { onDelete?.(hl.id); onBack(); }}
           ><Trash2 size={13} /></button>
         </div>
@@ -47,7 +49,7 @@ const HighlightDetail = ({ hl, onBack, onUpdate, onDelete, onOpenPaper }) => {
 
       <button className="cs-detail-paper-chip" onClick={() => onOpenPaper?.(hl)}>
         <div className="cs-detail-paper-chip-body">
-          <span className="cs-detail-paper-title">{hl.paper_title || 'Paper sin título'}</span>
+          <span className="cs-detail-paper-title">{hl.paper_title || t('tools.highlight.untitledPaper')}</span>
           {hl.paper_authors && (
             <span className="cs-detail-paper-meta">
               {hl.paper_authors.split(',')[0].trim()}
@@ -71,7 +73,7 @@ const HighlightDetail = ({ hl, onBack, onUpdate, onDelete, onOpenPaper }) => {
       </div>
 
       <div className="cs-detail-section">
-        <span className="cs-detail-section-label">Color</span>
+        <span className="cs-detail-section-label">{t('tools.highlight.colorLabel')}</span>
         <div className="cs-detail-color-row">
           {HIGHLIGHT_COLORS.map(c => (
             <button
@@ -87,10 +89,10 @@ const HighlightDetail = ({ hl, onBack, onUpdate, onDelete, onOpenPaper }) => {
 
       <div className="cs-detail-section">
         <div className="cs-detail-section-header">
-          <span className="cs-detail-section-label">Nota</span>
+          <span className="cs-detail-section-label">{t('tools.highlight.noteLabel')}</span>
           {!editNote && (
             <button className="cs-detail-note-edit-btn" onClick={() => setEditNote(true)}>
-              {noteVal ? 'Editar' : '+ Añadir nota'}
+              {noteVal ? t('tools.highlight.editNote') : t('tools.highlight.addNote')}
             </button>
           )}
         </div>
@@ -102,26 +104,26 @@ const HighlightDetail = ({ hl, onBack, onUpdate, onDelete, onOpenPaper }) => {
               value={noteVal}
               onChange={e => setNoteVal(e.target.value)}
               rows={4}
-              placeholder="Escribe tu nota aquí…"
+              placeholder={t('tools.highlight.notePlaceholder')}
               autoFocus
             />
             <div className="cs-detail-note-btns">
-              <button className="cs-detail-note-cancel" onClick={() => { setNoteVal(hl.note || ''); setEditNote(false); }}>Cancelar</button>
+              <button className="cs-detail-note-cancel" onClick={() => { setNoteVal(hl.note || ''); setEditNote(false); }}>{t('tools.highlight.cancel')}</button>
               <button className="cs-detail-note-save" onClick={saveNote}>
-                {savedNote ? <><Check size={11} /> Guardado</> : 'Guardar'}
+                {savedNote ? <><Check size={11} /> {t('tools.highlight.saved')}</> : t('tools.highlight.save')}
               </button>
             </div>
           </div>
         ) : (
           noteVal
             ? <p className="cs-detail-note-text">{noteVal}</p>
-            : <p className="cs-detail-note-empty">Sin nota. Clic en "+ Añadir nota" para agregar.</p>
+            : <p className="cs-detail-note-empty">{t('tools.highlight.noteEmpty')}</p>
         )}
       </div>
 
       <button className="cs-detail-open-paper-btn" onClick={() => onOpenPaper?.(hl)}>
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-        Abrir paper en el drawer
+        {t('tools.highlight.openPaper')}
       </button>
 
       {showShot && (

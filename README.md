@@ -18,7 +18,7 @@
   <a href="https://citae.ginit.dev"><img src="https://img.shields.io/badge/Demo-citae.ginit.dev-0056D6?style=for-the-badge&logo=googlechrome&logoColor=white"></a>
   <img src="https://img.shields.io/badge/Versión-1.2.3-1565C0?style=for-the-badge">
   <img src="https://img.shields.io/badge/Estado-Producción-2E7D32?style=for-the-badge">
-  <img src="https://img.shields.io/badge/Licencia-Propietaria-616161?style=for-the-badge">
+  <img src="https://img.shields.io/badge/Licencia-AGPL--3.0-3DA639?style=for-the-badge">
 </p>
 
 <p>
@@ -346,7 +346,7 @@ Desarrollado por **Richar Andre Vilca Solórzano** — Universidad Nacional del 
 
 ## Licencia
 
-Proyecto **propietario** — todos los derechos reservados. El uso, copia o distribución requiere autorización expresa del autor.
+Software libre bajo **GNU Affero General Public License v3.0** (AGPL-3.0) — ver [LICENSE](LICENSE). Puedes usar, estudiar, modificar y redistribuir el código; si ofreces una versión modificada como servicio en red, debes publicar tu código fuente bajo la misma licencia.
 
 <p align="center">
   <img src="https://capsule-render.vercel.app/api?type=waving&color=0:0F2444,100:0056D6&height=120&section=footer&text=CITAE%20%C2%B7%20v1.0.0&fontColor=ffffff&fontSize=20&fontAlignY=70" width="100%">

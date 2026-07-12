@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Edit, LogOut, Upload,
   Sun, Moon, Settings, Trash2, Star, Clock, Search, X, Filter, Highlighter, ChevronRight,
@@ -36,6 +37,7 @@ const Sidebar = ({
   activeView = 'chat',
   onOpenView,
 }) => {
+  const { t } = useTranslation();
   const { branding } = useBranding();
   const [tab,            setTab]           = useState('history');
   const [searchQuery,    setSearchQuery]   = useState('');
@@ -102,7 +104,7 @@ const Sidebar = ({
         });
       });
       text = lines.join('\n');
-      successMsg = 'Apuntes copiados en Markdown';
+      successMsg = t('shell.sidebar.exportMdSuccess');
     } else if (format === 'json') {
       const data = grouped.map(g => ({
         title: g.title, authors: g.authors, year: g.year, journal: g.journal, doi: g.doi,
@@ -112,10 +114,10 @@ const Sidebar = ({
         })),
       }));
       text = JSON.stringify(data, null, 2);
-      successMsg = 'Exportado como JSON';
+      successMsg = t('shell.sidebar.exportJsonSuccess');
     } else if (format === 'notion') {
       const COLORS = { yellow: '🟡', green: '🟢', blue: '🔵', pink: '🩷', navy: '🔷' };
-      const lines = ['| Paper | Fragmento | Color | Nota |', '|---|---|---|---|'];
+      const lines = [t('shell.sidebar.notionHeader'), '|---|---|---|---|'];
       filteredHighlights.forEach(hl => {
         const title = (hl.paper_title || '').substring(0, 60).replace(/\|/g, '\\|');
         const quote = hl.quote.substring(0, 120).replace(/\|/g, '\\|');
@@ -123,12 +125,12 @@ const Sidebar = ({
         lines.push(`| ${title} | ${quote} | ${COLORS[hl.color] || hl.color} | ${note} |`);
       });
       text = lines.join('\n');
-      successMsg = 'Tabla Notion copiada';
+      successMsg = t('shell.sidebar.exportNotionSuccess');
     }
 
     navigator.clipboard.writeText(text)
       .then(() => notify.success(successMsg))
-      .catch(() => notify.error('No se pudo copiar al portapapeles'));
+      .catch(() => notify.error(t('shell.sidebar.copyError')));
   };
 
   const avatarLetter = (user?.full_name || user?.username || 'U').charAt(0).toUpperCase();
@@ -173,11 +175,11 @@ const Sidebar = ({
           <img src={branding.logo_url || citoLogo} alt={branding.site_name || 'Citae'} className="cs-brand-logo" />
           <span className="cs-brand-name">{branding.site_name || 'Citae'}</span>
         </div>
-        <button className="cs-new-btn" onClick={onNewChat} title="Nueva búsqueda (Ctrl+Shift+N)">
+        <button className="cs-new-btn" onClick={onNewChat} title={t('shell.sidebar.newTitle')}>
           <Edit size={13} />
-          <span className="cs-new-btn-label">Nuevo</span>
+          <span className="cs-new-btn-label">{t('shell.sidebar.new')}</span>
         </button>
-        <button className="cs-close-mobile" onClick={onToggle} title="Cerrar panel" aria-label="Cerrar panel">
+        <button className="cs-close-mobile" onClick={onToggle} title={t('shell.sidebar.closePanel')} aria-label={t('shell.sidebar.closePanel')}>
           <X size={18} />
         </button>
       </div>
@@ -187,28 +189,28 @@ const Sidebar = ({
         <button
           className={`cs-tab ${tab === 'history' ? 'cs-tab-active' : ''}`}
           onClick={() => { setTab('history'); setHlDetail(null); }}
-          title="Historial de búsquedas"
+          title={t('shell.sidebar.tabHistoryTitle')}
         >
           <Clock size={13} className="cs-tab-ic" />
-          <span>Historial</span>
+          <span>{t('shell.sidebar.tabHistory')}</span>
           {histTotal > 0 && <span className="cs-badge">{histTotal}</span>}
         </button>
         <button
           className={`cs-tab ${tab === 'favorites' ? 'cs-tab-active' : ''}`}
           onClick={() => { setTab('favorites'); setHlDetail(null); }}
-          title="Papers guardados"
+          title={t('shell.sidebar.tabFavoritesTitle')}
         >
           <Star size={13} className="cs-tab-ic" />
-          <span>Guardados</span>
+          <span>{t('shell.sidebar.tabFavorites')}</span>
           {favTotal > 0 && <span className="cs-badge">{favTotal}</span>}
         </button>
         <button
           className={`cs-tab ${tab === 'highlights' ? 'cs-tab-active' : ''}`}
           onClick={() => { setTab('highlights'); setHlDetail(null); }}
-          title="Tus apuntes y resaltados"
+          title={t('shell.sidebar.tabHighlightsTitle')}
         >
           <Highlighter size={13} className="cs-tab-ic" />
-          <span>Apuntes</span>
+          <span>{t('shell.sidebar.tabHighlights')}</span>
           {hlTotal > 0 && <span className="cs-badge">{hlTotal}</span>}
         </button>
       </div>
@@ -234,7 +236,7 @@ const Sidebar = ({
               {dragOver ? <ImageIcon size={15} /> : <Upload size={15} />}
             </span>
             <span className="cs-upload-label">
-              {dragOver ? 'Suelta aquí' : 'Importar PDF o imagen'}
+              {dragOver ? t('shell.sidebar.dropHere') : t('shell.sidebar.importFile')}
             </span>
           </div>
         </>
@@ -250,15 +252,15 @@ const Sidebar = ({
                 className="cs-search-input"
                 type="text"
                 placeholder={
-                  tab === 'history'    ? 'Buscar en historial…'
-                  : tab === 'favorites' ? 'Buscar guardados…'
-                  : 'Buscar apuntes…'
+                  tab === 'history'    ? t('shell.sidebar.searchHistory')
+                  : tab === 'favorites' ? t('shell.sidebar.searchFavorites')
+                  : t('shell.sidebar.searchHighlights')
                 }
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
               />
               {searchQuery && (
-                <button className="cs-search-clear" onClick={() => setSearchQuery('')} title="Limpiar">
+                <button className="cs-search-clear" onClick={() => setSearchQuery('')} title={t('shell.sidebar.clear')}>
                   <X size={11} />
                 </button>
               )}
@@ -267,7 +269,7 @@ const Sidebar = ({
               <button
                 className={`cs-filter-btn ${showFilters || histFilter !== 'all' ? 'cs-filter-btn-active' : ''}`}
                 onClick={() => setShowFilters(v => !v)}
-                title="Filtros"
+                title={t('shell.sidebar.filters')}
               >
                 <Filter size={13} />
               </button>
@@ -277,10 +279,10 @@ const Sidebar = ({
           {tab === 'history' && showFilters && (
             <div className="cs-filter-row">
               {[
-                { key: 'all',      label: 'Todos' },
-                { key: 'citation', label: 'Cita' },
+                { key: 'all',      label: t('shell.sidebar.filterAll') },
+                { key: 'citation', label: t('shell.sidebar.filterCitation') },
                 { key: 'pdf',      label: 'PDF',    icon: <Upload size={10} /> },
-                { key: 'image',    label: 'Imagen', icon: <ImageIcon size={10} /> },
+                { key: 'image',    label: t('shell.sidebar.filterImage'), icon: <ImageIcon size={10} /> },
               ].map(f => (
                 <button
                   key={f.key}
@@ -299,7 +301,7 @@ const Sidebar = ({
               <button
                 className={`cs-hl-color-all ${hlColorFilter === 'all' ? 'active' : ''}`}
                 onClick={() => setHlColorFilter('all')}
-              >Todos</button>
+              >{t('shell.sidebar.colorAll')}</button>
               {HIGHLIGHT_COLORS.map(c => (
                 <button
                   key={c.key}
@@ -311,7 +313,7 @@ const Sidebar = ({
               ))}
               <button
                 className={`cs-hl-fav-btn ${hlFavFilter ? 'cs-hl-fav-active' : ''}`}
-                title="Solo favoritos"
+                title={t('shell.sidebar.onlyFavorites')}
                 onClick={() => setHlFavFilter(v => !v)}
               ><Star size={13} /></button>
             </div>
@@ -339,29 +341,29 @@ const Sidebar = ({
             {history.length === 0 ? (
               <div className="cs-empty">
                 <Clock size={28} />
-                <span className="cs-empty-title">Sin historial aún</span>
+                <span className="cs-empty-title">{t('shell.sidebar.histEmptyTitle')}</span>
                 <span className="cs-empty-sub">
-                  {user ? 'Busca un paper para empezar.' : 'Inicia sesión para guardar tu historial.'}
+                  {user ? t('shell.sidebar.histEmptyUser') : t('shell.sidebar.histEmptyGuest')}
                 </span>
               </div>
             ) : filteredHistory.length === 0 ? (
               <div className="cs-empty cs-empty-sm">
                 <Search size={22} />
-                <span>Sin resultados para "{searchQuery}"</span>
+                <span>{t('shell.sidebar.noResultsFor', { query: searchQuery })}</span>
               </div>
             ) : (
               <>
                 <div className="cs-list-actions">
                   {hasFiltersActive && (
-                    <span className="cs-filter-info">{filteredHistory.length} de {histTotal}</span>
+                    <span className="cs-filter-info">{t('shell.sidebar.filterInfo', { shown: filteredHistory.length, total: histTotal })}</span>
                   )}
-                  <button className="cs-clear-btn" onClick={onClearHistory} title="Limpiar todo">
-                    <Trash2 size={11} /> Limpiar todo
+                  <button className="cs-clear-btn" onClick={onClearHistory} title={t('shell.sidebar.clearAll')}>
+                    <Trash2 size={11} /> {t('shell.sidebar.clearAll')}
                   </button>
                 </div>
                 {groupedHistory.map(([group, items]) => (
                   <div key={group} className="cs-date-group">
-                    <span className="cs-date-group-label">{group}</span>
+                    <span className="cs-date-group-label">{t(`shell.sidebar.dateGroups.${group}`)}</span>
                     {items.map(item => (
                       <button
                         key={item.id}
@@ -379,7 +381,7 @@ const Sidebar = ({
                             </span>
                           )}
                         </div>
-                        <span className="cs-item-time">{formatTime(item.created_at)}</span>
+                        <span className="cs-item-time">{formatTime(item.created_at, t)}</span>
                       </button>
                     ))}
                   </div>
@@ -395,36 +397,36 @@ const Sidebar = ({
             {!user ? (
               <div className="cs-empty">
                 <Highlighter size={28} />
-                <span className="cs-empty-title">Inicia sesión</span>
-                <span className="cs-empty-sub">Inicia sesión para guardar tus apuntes.</span>
+                <span className="cs-empty-title">{t('shell.sidebar.hlEmptyLoginTitle')}</span>
+                <span className="cs-empty-sub">{t('shell.sidebar.hlEmptyLoginSub')}</span>
               </div>
             ) : highlights.length === 0 ? (
               <div className="cs-empty">
                 <Highlighter size={28} />
-                <span className="cs-empty-title">Sin apuntes aún</span>
-                <span className="cs-empty-sub">Selecciona texto en el abstract de un paper y elige un color.</span>
+                <span className="cs-empty-title">{t('shell.sidebar.hlEmptyTitle')}</span>
+                <span className="cs-empty-sub">{t('shell.sidebar.hlEmptySub')}</span>
               </div>
             ) : (
               <>
                 <div className="cs-hl-toolbar-row">
                   <span className="cs-filter-info">
-                    {filteredHighlights.length} apunte{filteredHighlights.length !== 1 ? 's' : ''}
+                    {t('shell.sidebar.notesCount', { count: filteredHighlights.length })}
                   </span>
                   <div className="cs-hl-toolbar-actions">
-                    <button className="cs-hl-export-btn" onClick={() => exportHighlights('md')} title="Copiar como Markdown">
+                    <button className="cs-hl-export-btn" onClick={() => exportHighlights('md')} title={t('shell.sidebar.copyMd')}>
                       <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                       MD
                     </button>
-                    <button className="cs-hl-export-btn" onClick={() => exportHighlights('json')} title="Copiar como JSON">
+                    <button className="cs-hl-export-btn" onClick={() => exportHighlights('json')} title={t('shell.sidebar.copyJson')}>
                       <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
                       JSON
                     </button>
-                    <button className="cs-hl-export-btn" onClick={() => exportHighlights('notion')} title="Copiar tabla para Notion">
+                    <button className="cs-hl-export-btn" onClick={() => exportHighlights('notion')} title={t('shell.sidebar.copyNotion')}>
                       <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
                       Notion
                     </button>
-                    <button className="cs-clear-btn" onClick={onClearHighlights} title="Eliminar todos">
-                      <Trash2 size={11} /> Limpiar
+                    <button className="cs-clear-btn" onClick={onClearHighlights} title={t('shell.sidebar.deleteAll')}>
+                      <Trash2 size={11} /> {t('shell.sidebar.clear')}
                     </button>
                   </div>
                 </div>
@@ -432,7 +434,7 @@ const Sidebar = ({
                 {filteredHighlights.length === 0 ? (
                   <div className="cs-empty cs-empty-sm">
                     <Search size={22} />
-                    <span>Sin resultados</span>
+                    <span>{t('shell.sidebar.noResults')}</span>
                   </div>
                 ) : (
                   <div className="cs-hl-list">
@@ -472,7 +474,7 @@ const Sidebar = ({
                               <p className="cs-hl-quote">"{hl.quote}"</p>
                               {hl.note && <p className="cs-hl-note">{hl.note}</p>}
                               <div className="cs-hl-item-footer">
-                                <span className="cs-hl-date">{formatTime(hl.created_at)}</span>
+                                <span className="cs-hl-date">{formatTime(hl.created_at, t)}</span>
                                 {hl.is_favorite && <span className="cs-hl-fav-dot"><Star size={10} /></span>}
                               </div>
                             </div>
@@ -494,13 +496,13 @@ const Sidebar = ({
             {favorites.length === 0 ? (
               <div className="cs-empty">
                 <Star size={28} />
-                <span className="cs-empty-title">Sin guardados</span>
-                <span className="cs-empty-sub">Marca papers con <Star size={11} /> para guardarlos aquí.</span>
+                <span className="cs-empty-title">{t('shell.sidebar.favEmptyTitle')}</span>
+                <span className="cs-empty-sub">{t('shell.sidebar.favEmptyBefore')}<Star size={11} />{t('shell.sidebar.favEmptyAfter')}</span>
               </div>
             ) : filteredFavorites.length === 0 ? (
               <div className="cs-empty cs-empty-sm">
                 <Search size={22} />
-                <span>Sin resultados para "{searchQuery}"</span>
+                <span>{t('shell.sidebar.noResultsFor', { query: searchQuery })}</span>
               </div>
             ) : (
               <div style={{ paddingTop: '6px' }}>
@@ -514,7 +516,7 @@ const Sidebar = ({
                     >
                       <span className="cs-item-title">{item.title}</span>
                       <span className="cs-item-meta">
-                        {item.authors ? item.authors.split(',')[0].trim() : 'Autor desconocido'}
+                        {item.authors ? item.authors.split(',')[0].trim() : t('shell.sidebar.unknownAuthor')}
                         {item.publication_year ? ` · ${item.publication_year}` : ''}
                         {item.journal ? ` · ${item.journal}` : ''}
                       </span>
@@ -522,7 +524,7 @@ const Sidebar = ({
                     <button
                       className="cs-item-del"
                       onClick={() => onRemoveFavorite(item.id)}
-                      title="Quitar de guardados"
+                      title={t('shell.sidebar.removeFavorite')}
                     >
                       <Trash2 size={12} />
                     </button>
@@ -540,26 +542,26 @@ const Sidebar = ({
         <div className="cs-footer-group">
           <button className="cs-footer-btn" onClick={onToggleTheme}>
             <span className="cs-footer-ic">{theme === 'dark' ? <Sun size={15} /> : <Moon size={15} />}</span>
-            <span>{theme === 'dark' ? 'Tema claro' : 'Tema oscuro'}</span>
+            <span>{theme === 'dark' ? t('shell.sidebar.themeLight') : t('shell.sidebar.themeDark')}</span>
           </button>
           <button className="cs-footer-btn" onClick={onOpenProfile}>
             <span className="cs-footer-ic"><Settings size={15} /></span>
-            <span>Configuración</span>
+            <span>{t('shell.settings')}</span>
           </button>
           {user?.role === 'super_admin' && (
             <button
               className={`cs-footer-btn cs-footer-btn--admin ${activeView === 'admin' ? 'cs-footer-btn-active' : ''}`}
               onClick={() => onOpenView?.('admin')}
-              title="Admin — Identidad visual del sitio"
+              title={t('shell.sidebar.adminTitle')}
             >
               <span className="cs-footer-ic"><Palette size={15} /></span>
-              <span>Admin — Branding</span>
+              <span>{t('shell.sidebar.adminBranding')}</span>
             </button>
           )}
         </div>
 
         {user ? (
-          <div className="cs-user" onClick={onOpenProfile} title="Perfil y configuración">
+          <div className="cs-user" onClick={onOpenProfile} title={t('shell.sidebar.profileTitle')}>
             <div className="cs-user-avatar">
               {avatarImg
                 ? <img src={avatarImg} alt="avatar" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} />
@@ -573,15 +575,15 @@ const Sidebar = ({
             <button
               className="cs-icon-btn cs-logout"
               onClick={(e) => { e.stopPropagation(); handleLogout(); }}
-              title="Cerrar sesión"
+              title={t('shell.sidebar.logout')}
             >
               <LogOut size={14} />
             </button>
           </div>
         ) : (
           <div className="cs-guest-actions">
-            <a href="/login"    className="cs-guest-btn cs-guest-login">Iniciar sesión</a>
-            <a href="/register" className="cs-guest-btn cs-guest-register">Crear cuenta</a>
+            <a href="/login"    className="cs-guest-btn cs-guest-login">{t('shell.sidebar.login')}</a>
+            <a href="/register" className="cs-guest-btn cs-guest-register">{t('shell.sidebar.register')}</a>
           </div>
         )}
       </div>

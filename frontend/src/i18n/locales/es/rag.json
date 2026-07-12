@@ -1,0 +1,48 @@
+{
+  "back": "Biblioteca",
+  "backTitle": "Volver a la biblioteca",
+  "ask": {
+    "title": "Pregunta a tu biblioteca",
+    "corpusTitle": "Fuentes indexadas (papers + resaltados)",
+    "welcomeTitle": "Conversa con todo lo que has guardado",
+    "welcomeText": "Pregunto sobre tus papers y resaltados a la vez, sintetizo entre ellos y cito de dónde sale cada dato.",
+    "aiBadge": "IA",
+    "searching": "Buscando en tu biblioteca…",
+    "placeholder": "Pregunta sobre tus papers y resaltados…",
+    "unavailable": "⚠ La IA no está disponible. Configura GROQ_API_KEY en el servidor.",
+    "errorToast": "No se pudo consultar tu biblioteca",
+    "error": "⚠ Ocurrió un error al consultar tu biblioteca.",
+    "openSource": "Abrir fuente",
+    "kindHighlight": "Resaltado",
+    "kindPaper": "Paper",
+    "examples": [
+      "¿Qué temas principales cubre mi biblioteca?",
+      "¿Qué métodos de investigación aparecen en mis papers?",
+      "Resume lo que sé sobre transformers",
+      "¿Hay contradicciones entre mis fuentes?"
+    ]
+  },
+  "deep": {
+    "title": "Deep Research",
+    "subtitle": "Elige una colección y la IA generará una revisión de literatura: temas, metodologías, hallazgos, contradicciones y vacíos.",
+    "selectPlaceholder": "Selecciona una colección…",
+    "analyzing": "Analizando…",
+    "generate": "Generar informe",
+    "phase": "Leyendo los papers y sintetizando patrones… puede tardar unos segundos.",
+    "insufficient": "Esta colección necesita al menos 2 papers para analizar.",
+    "unavailable": "La IA no está disponible. Configura GROQ_API_KEY en el servidor.",
+    "analyzedCount": "{{analyzed}} de {{total}} papers analizados",
+    "synthesis": "Síntesis",
+    "sourcesTitle": "Papers analizados",
+    "open": "Abrir",
+    "chooseCollection": "Elige una colección",
+    "generateError": "No se pudo generar el análisis",
+    "sections": {
+      "themes": "Temas y clusters",
+      "methods": "Metodologías",
+      "findings": "Hallazgos clave",
+      "contradictions": "Contradicciones",
+      "gaps": "Vacíos de investigación"
+    }
+  }
+}

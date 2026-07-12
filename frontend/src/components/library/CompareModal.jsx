@@ -1,8 +1,9 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { X, Download } from '../Icons';
 
-function exportCsv(papers, dimensions) {
-  const headers = ['Dimensión', ...papers.map(p => `"${p.title?.replace(/"/g, '""') || ''}"`)]
+function exportCsv(papers, dimensions, dimensionLabel) {
+  const headers = [`"${dimensionLabel}"`, ...papers.map(p => `"${p.title?.replace(/"/g, '""') || ''}"`)]
     .join(',');
   const rows = dimensions.map(d =>
     [`"${d.label}"`, ...d.values.map(v => `"${String(v || '').replace(/"/g, '""')}"`)].join(',')
@@ -18,25 +19,26 @@ function exportCsv(papers, dimensions) {
 }
 
 const CompareModal = ({ result, onClose }) => {
+  const { t } = useTranslation();
   const { papers, dimensions, available } = result;
 
   return (
     <div className="lib-modal-backdrop" onClick={onClose}>
       <div className="cmp-modal" onClick={e => e.stopPropagation()}>
         <div className="cmp-header">
-          <span className="cmp-title">Comparación de papers</span>
+          <span className="cmp-title">{t('library.compare.title')}</span>
           <div className="cmp-actions">
             {available && (
               <button
                 className="lib-btn-ghost cmp-export-btn"
-                onClick={() => exportCsv(papers, dimensions)}
-                title="Exportar CSV"
+                onClick={() => exportCsv(papers, dimensions, t('library.compare.dimension'))}
+                title={t('library.compare.exportCsvTitle')}
               >
                 <Download size={13} />
                 CSV
               </button>
             )}
-            <button className="lib-icon-btn" onClick={onClose} title="Cerrar">
+            <button className="lib-icon-btn" onClick={onClose} title={t('library.close')}>
               <X size={15} />
             </button>
           </div>
@@ -44,14 +46,14 @@ const CompareModal = ({ result, onClose }) => {
 
         {!available ? (
           <div className="cmp-unavailable">
-            La comparación con IA no está disponible. Configura GROQ_API_KEY en el servidor.
+            {t('library.compare.unavailable')}
           </div>
         ) : (
           <div className="cmp-table-wrap">
             <table className="cmp-table">
               <thead>
                 <tr>
-                  <th className="cmp-th-dim">Dimensión</th>
+                  <th className="cmp-th-dim">{t('library.compare.dimension')}</th>
                   {papers.map((p, i) => (
                     <th key={i} className="cmp-th-paper">
                       <span className="cmp-paper-title">{p.title}</span>

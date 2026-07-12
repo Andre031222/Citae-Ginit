@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate, Link } from 'react-router-dom';
 import {
   Loader, AlertCircle, Eye, EyeOff,
@@ -24,12 +25,13 @@ function usernameFromEmail(email) {
   return email.split('@')[0].replace(/[^a-z0-9]/gi, '').toLowerCase().slice(0, 30) || 'user';
 }
 
-const STRENGTH_LABELS = ['', 'Débil', 'Buena', 'Fuerte'];
 const STRENGTH_COLORS = ['', '#DC2626', '#D97706', '#16A34A'];
 
 const Register = ({ onLogin }) => {
+  const { t }        = useTranslation();
   const navigate     = useNavigate();
   const { branding } = useBranding();
+  const STRENGTH_LABELS = ['', t('auth.strengthWeak'), t('auth.strengthGood'), t('auth.strengthStrong')];
   const [email, setEmail]       = useState('');
   const [password, setPassword] = useState('');
   const [role, setRole]         = useState('');
@@ -44,7 +46,7 @@ const Register = ({ onLogin }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (password.length < 8) { setError('La contraseña debe tener al menos 8 caracteres.'); return; }
+    if (password.length < 8) { setError(t('auth.errorPasswordTooShort')); return; }
     setLoading(true);
     setError('');
     try {
@@ -53,7 +55,7 @@ const Register = ({ onLogin }) => {
       onLogin(res.user);
       navigate('/app');
     } catch (err) {
-      setError(err.response?.data?.error || 'No se pudo crear la cuenta. Intenta de nuevo.');
+      setError(err.response?.data?.error || t('auth.errorCreateAccount'));
     } finally {
       setLoading(false);
     }
@@ -63,8 +65,8 @@ const Register = ({ onLogin }) => {
     <div className="auth-page">
       <div className="auth-card">
         <div className="auth-right-toplinks">
-          <Link to="/" className="auth-back"><ChevronLeft size={13} /> Inicio</Link>
-          <Link to="/login" className="auth-switch">Ya tengo cuenta</Link>
+          <Link to="/" className="auth-back"><ChevronLeft size={13} /> {t('auth.home')}</Link>
+          <Link to="/login" className="auth-switch">{t('auth.haveAccount')}</Link>
         </div>
 
         <div className="auth-brand-logo-wrap">
@@ -72,18 +74,18 @@ const Register = ({ onLogin }) => {
         </div>
 
         <div className="auth-form-head">
-          <h2>Crear cuenta gratis</h2>
-          <p>Empieza a investigar mejor hoy mismo</p>
+          <h2>{t('auth.createFreeAccount')}</h2>
+          <p>{t('auth.registerSubtitle')}</p>
         </div>
 
         <a className="auth-google" href={GOOGLE_AUTH_URL}>
           <GoogleIcon />
-          <span>Continuar con Google</span>
+          <span>{t('auth.continueGoogle')}</span>
         </a>
 
         <div className="auth-or">
           <span />
-          <span>o con email</span>
+          <span>{t('auth.orWithEmail')}</span>
           <span />
         </div>
 
@@ -96,12 +98,12 @@ const Register = ({ onLogin }) => {
 
         <form onSubmit={handleSubmit} className="auth-form" autoComplete="off">
           <div className="auth-field">
-            <label>Email</label>
+            <label>{t('auth.email')}</label>
             <input
               type="email"
               value={email}
               onChange={e => { setEmail(e.target.value); setError(''); }}
-              placeholder="correo@ejemplo.com"
+              placeholder={t('auth.emailPlaceholder')}
               required
               autoComplete="off"
               autoCorrect="off"
@@ -111,13 +113,13 @@ const Register = ({ onLogin }) => {
           </div>
 
           <div className="auth-field">
-            <label>Contraseña</label>
+            <label>{t('auth.password')}</label>
             <div className="auth-input-wrap">
               <input
                 type={showPass ? 'text' : 'password'}
                 value={password}
                 onChange={e => { setPassword(e.target.value); setError(''); }}
-                placeholder="Mínimo 8 caracteres"
+                placeholder={t('auth.passwordPlaceholder')}
                 required
                 autoComplete="new-password"
               />
@@ -141,33 +143,33 @@ const Register = ({ onLogin }) => {
           </div>
 
           <div className="auth-field">
-            <label>Perfil <span style={{ fontWeight: 400, color: 'var(--f-muted)' }}>(opcional)</span></label>
+            <label>{t('auth.profile')} <span style={{ fontWeight: 400, color: 'var(--f-muted)' }}>{t('auth.optional')}</span></label>
             <select
               value={role}
               onChange={e => setRole(e.target.value)}
               className="auth-select"
             >
-              <option value="">Selecciona tu perfil</option>
-              <option value="student">Estudiante</option>
-              <option value="researcher">Investigador/a</option>
-              <option value="professor">Docente / Profesor/a</option>
-              <option value="other">Otro</option>
+              <option value="">{t('auth.selectProfile')}</option>
+              <option value="student">{t('auth.roleStudent')}</option>
+              <option value="researcher">{t('auth.roleResearcher')}</option>
+              <option value="professor">{t('auth.roleProfessor')}</option>
+              <option value="other">{t('auth.roleOther')}</option>
             </select>
           </div>
 
           <button type="submit" className="auth-submit" disabled={loading}>
             {loading
-              ? <><Loader size={15} className="spinning" /> Creando cuenta…</>
-              : <>Crear cuenta <ArrowRight size={14} /></>
+              ? <><Loader size={15} className="spinning" /> {t('auth.creatingAccount')}</>
+              : <>{t('auth.createAccount')} <ArrowRight size={14} /></>
             }
           </button>
         </form>
 
         <p className="auth-footer-note">
-          ¿Ya tienes cuenta? <Link to="/login">Inicia sesión</Link>
+          {t('auth.alreadyHaveAccount')} <Link to="/login">{t('auth.signInLink')}</Link>
         </p>
         <p className="auth-footer-note auth-footer-legal">
-          Sin suscripción · Sin tarjeta · 100% gratuito
+          {t('auth.legal')}
         </p>
       </div>
     </div>
