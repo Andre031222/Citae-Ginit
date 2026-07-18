@@ -8,7 +8,7 @@
 
 <div align="center">
 
-<img src="frontend/src/assets/citae-logo-v2.png" width="92" alt="Citae" />
+<img src="https://raw.githubusercontent.com/Andre031222/Citae-Ginit/main/frontend/src/assets/citae-logo-v2.png" width="92" alt="Citae" />
 
 # CITAE
 
