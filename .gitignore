@@ -30,6 +30,7 @@ coverage/
 .DS_Store
 Thumbs.db
 .idea/
+.vscode/
 *.swp
 
 # Config local de herramientas (no se versiona)
