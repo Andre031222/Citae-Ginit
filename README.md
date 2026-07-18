@@ -19,6 +19,7 @@
   <img src="https://img.shields.io/badge/Versión-1.2.3-1565C0?style=for-the-badge">
   <img src="https://img.shields.io/badge/Estado-Producción-2E7D32?style=for-the-badge">
   <img src="https://img.shields.io/badge/Licencia-AGPL--3.0-3DA639?style=for-the-badge">
+  <a href="https://doi.org/10.5281/zenodo.21423376"><img alt="DOI" src="https://img.shields.io/badge/DOI-10.5281%2Fzenodo.21423376-0056D6?style=for-the-badge&logo=doi&logoColor=white"></a>
 </p>
 
 <p>
